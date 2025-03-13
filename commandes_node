@@ -1,0 +1,10 @@
+npm init -y
+npm install express mongoose dotenv nodemon
+ {
+    "type": "module",
+
+ }
+ { "scripts": 
+    "start": "nodemon ./api_backend/server.js"}
+
+    nodemon start 
