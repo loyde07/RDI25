@@ -7,4 +7,18 @@ npm install express mongoose dotenv nodemon
  { "scripts": 
     "start": "nodemon ./api_backend/server.js"}
 
-    nodemon start 
+nodemon start //redemarre automatiquement apres chaque mise à jour 
+
+
+```test requette API pour créer un local
+{
+    "nom": "local 203",
+    "tempMoy": "24",
+    "carte": "exemple.com/image"
+}```
+
+''' pour la mise à jour juste le champ modifié
+{
+    "nom": "local 203 up"
+}
+'''
