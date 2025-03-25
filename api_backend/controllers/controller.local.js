@@ -6,10 +6,7 @@ import mongoose from "mongoose";
 
 export const getLocal = async (req, res) => {
     try{
-<<<<<<< Updated upstream
-=======
         console.log("recup des locaux réussie");
->>>>>>> Stashed changes
         const locals = await Local.find({}); //si vide alors il prend tout 
         res.status(200).json({success: true, data: locals})
     } catch (error) {
