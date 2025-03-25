@@ -1,3 +1,5 @@
+API
+
 npm init -y
 npm install express mongoose dotenv nodemon
  {
@@ -22,3 +24,16 @@ nodemon start //redemarre automatiquement apres chaque mise à jour
     "nom": "local 203 up"
 }
 '''
+
+
+ WEB
+
+npm create vite@latest ./web_backend  //attention commandes differentes en fct de si on travaille dans le back ou front
+
+npm i
+
+npm i react-router-dom
+
+npm i cors
+
+npm i axios

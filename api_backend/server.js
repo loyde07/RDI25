@@ -3,6 +3,7 @@ import dotenv from "dotenv";
 import { connectDB } from "../config/db.js";
 
 import routesLocal from "../routes/routes.local.js";
+import cors from 'cors'
 
 dotenv.config();
 // get pour récupérer des infos
@@ -10,6 +11,8 @@ dotenv.config();
 //put ou patch pour mettre à jour 
 //delete pour supprimer
 const app = express();
+
+app.use(cors({origin: 'http://localhost:5173'}));
 
 app.use(express.json()); //permet d'accepeter du JSOn dans le req.body
 
