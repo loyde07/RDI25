@@ -1,6 +1,8 @@
 import React, {useEffect, useState} from "react";
 import { useNavigate } from "react-router-dom";
 import axios from 'axios';
+
+
 function Home(){
 
   const navigate = useNavigate();
@@ -29,7 +31,7 @@ function Home(){
       <h1>Home page RDI25</h1>
       <p>clique pour voir une photo drôle</p>
       <button onClick={() => navigate('/image')}>click </button>
-      <h3>locaux</h3>
+      <h3>locaux </h3>
       <div>      
       {locals.length === 0 ? (
         <p>Aucun local trouvé.</p>
@@ -43,7 +45,7 @@ function Home(){
         </ul>
       )}
     </div>
-
+      
     </div>
   );
 }

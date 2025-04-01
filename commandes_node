@@ -1,7 +1,13 @@
+ENLEVER RESTRICTIONS 
+Set-ExecutionPolicy RemoteSigned -Scope CurrentUser
+Get-ExecutionPolicy //verif
+
+
 API
 
-npm init -y
 npm install express mongoose dotenv nodemon
+
+
  {
     "type": "module",
 
@@ -27,7 +33,7 @@ nodemon start //redemarre automatiquement apres chaque mise à jour
 
 
  WEB
-
+npm install -D vite
 npm create vite@latest ./web_backend  //attention commandes differentes en fct de si on travaille dans le back ou front
 
 npm i
