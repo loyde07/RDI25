@@ -6,10 +6,7 @@ import { connectDB } from "../config/db.js";
 import cors from 'cors'
 
 dotenv.config();
-// get pour récupérer des infos
-//post pour créer des nouvelles data
-//put ou patch pour mettre à jour 
-//delete pour supprimer
+
 const app = express();
 
 app.use(cors({origin: 'http://localhost:5173'}));
