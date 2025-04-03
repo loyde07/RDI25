@@ -1,7 +1,7 @@
 import React, {useEffect, useState} from "react";
 import { useNavigate } from "react-router-dom";
 import axios from 'axios';
-
+import Header from "./header.jsx"
 
 function Home(){
 
@@ -28,6 +28,7 @@ function Home(){
 
   return (
     <div style={{textAlign: 'center', padding: '50px'}}>
+      <Header/>
       <h1>Home page RDI25</h1>
       <p>clique pour voir une photo drôle</p>
       <button onClick={() => navigate('/image')}>click </button>
