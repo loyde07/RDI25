@@ -6,12 +6,13 @@ import Image from "./pages/image.jsx";
 function App(){
 
     return (
-        <Router>
+        
+        <><h1>blalallqskhj</h1><Router>
             <Routes>
-                <Route path="/" element={<Home/>} />
-                <Route path="/image" element={<Image/>} />
+                <Route path="/" element={<Home />} />
+                <Route path="/image" element={<Image />} />
             </Routes>
-        </Router>
+        </Router></>
     );
 }
 

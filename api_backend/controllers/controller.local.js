@@ -1,10 +1,10 @@
-import Local from "../models/local.model.js"
+import Team from "../models.team.js"
 import mongoose from "mongoose";
 
 
 
 
-export const getLocal = async (req, res) => {
+export const getScore = async (req, res) => {
     try{
         console.log("recup des locaux réussie");
         const locals = await Local.find({}); //si vide alors il prend tout 
