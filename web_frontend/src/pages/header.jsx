@@ -1,5 +1,9 @@
+import { useNavigate } from "react-router-dom";
+import React from "react";
 
 function Header(){
+
+    const navigate = useNavigate();
 
     return(
         <header>
@@ -13,4 +17,4 @@ function Header(){
 
 }
 
-export default Header
+export default Header;
