@@ -8,8 +8,9 @@ import Header from "./pages/header.jsx"
 function App(){
 
     return (
-        <><Header/>
+        <>
         <Router>
+            <Header/>
             <Routes>
                 <Route path="/" element={<Home/>} />
                 <Route path="/image" element={<Image/>} />
