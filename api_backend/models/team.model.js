@@ -14,10 +14,19 @@ const teamScheama = new mongoose.Schema({
     },
     logo:{
         type: String,
-    },
-}, {timestamps: true }  // à chaque modif y a la date
-
-);
+    },joueurs: [{
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'Joueur' 
+      }],
+    }, {
+      // Validation du nombre de joueurs
+      validate: {
+        validator: function() {
+          return this.joueurs.length <= 5;  // Vérifier que la longueur du tableau 'joueurs' est <= 5
+        },
+        message: 'Une équipe ne peut pas avoir plus de 5 joueurs.'
+      }
+    });
 
 const Team = mongoose.model("Team", teamScheama); //creation d'une collection Local basé sur le modèle localSchema, chaque local suit le modele 
 //moongose prend le nom des collection avec Maj et sg --> locals

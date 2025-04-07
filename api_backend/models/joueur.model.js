@@ -13,12 +13,12 @@ const joueurScheama = new mongoose.Schema({
         required: true
     },
     ecole_id: {
-        type: Number,
+        type: mongoose.Schema.Types.ObjectId,
         ref: 'Ecole',
         required: true
     },
     team_id: {
-        type: Number,
+        type: mongoose.Schema.Types.ObjectId,
         ref: 'Team',
         required: true
     },
