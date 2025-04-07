@@ -6,8 +6,7 @@ import Image from "./pages/image.jsx";
 function App(){
 
     return (
-        <>
-        <Header />
+        <><Header/>
         <Router>
             <Routes>
                 <Route path="/" element={<Home/>} />
