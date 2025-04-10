@@ -1,7 +1,7 @@
 import React, {useEffect, useState} from "react";
 import { useNavigate } from "react-router-dom";
 import axios from 'axios';
-
+import { Link } from "react-router-dom";
 
 function Home(){
 
@@ -24,8 +24,7 @@ function Home(){
     fetchData();
   }, []);
 
-
-
+  
   return (
     <div style={{textAlign: 'center', padding: '50px'}}>
       <h1>Home page RDI25</h1>
@@ -44,6 +43,12 @@ function Home(){
           ))}
         </ul>
       )}
+    </div>
+
+    
+    <div>
+        <h1>Bienvenue</h1>
+        <Link to="/register">S'inscrire</Link>
     </div>
       
     </div>

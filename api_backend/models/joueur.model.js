@@ -1,9 +1,9 @@
-const mongoose = require('mongoose');
-const Ecole = require('./ecole.model.js');
-const Team = require('./team.model.js');
+import mongoose from 'mongoose';
+import Ecole from './ecole.model.js';
+import bcrypt from 'bcrypt';
 
 
-const joueurScheama = new mongoose.Schema({
+const joueurSchema = new mongoose.Schema({
     nom:{
         type: String,
         required: true
@@ -17,9 +17,8 @@ const joueurScheama = new mongoose.Schema({
         ref: 'Ecole',
         required: true
     },
-    team_id: {
-        type: mongoose.Schema.Types.ObjectId,
-        ref: 'Team',
+    password: {
+        type: String,
         required: true
     },
     niveau:{
@@ -33,6 +32,13 @@ const joueurScheama = new mongoose.Schema({
 
 );
 
-const Joueur = mongoose.model("Joueur", joueurScheama); //creation d'une collection Local basé sur le modèle localSchema, chaque local suit le modele 
+const Joueur = mongoose.model("Joueur", joueurSchema); //creation d'une collection Local basé sur le modèle localSchema, chaque local suit le modele 
 //moongose prend le nom des collection avec Maj et sg --> locals
 export default Joueur;
+
+joueurSchema.pre('save', async function (next) {
+    if (!this.isModified('password')) return next();
+    const salt = await bcrypt.genSalt(10);
+    this.password = await bcrypt.hash(this.password, salt);
+    next();
+});
