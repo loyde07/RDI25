@@ -1,4 +1,4 @@
-const mongoose = require('mongoose');
+import mongoose from "mongoose";
 const Ecole = require('./ecole.model.js');
 const Team = require('./team.model.js');
 

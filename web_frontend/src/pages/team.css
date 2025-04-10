@@ -1,0 +1,46 @@
+/* Team.css */
+
+body {
+    background-color: #e9d9d9; /* beige/blanc */
+    font-family: Arial, sans-serif;
+    color: #382c2c; /*brun foncé*/
+  }
+  
+  .team-container {
+    text-align: center;
+    padding: 50px;
+  }
+  
+  .team-list {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 20px;
+  }
+  
+  .team-card {
+    background-color: #8d695d; /* brun/gris*/
+    border-radius: 20px;
+    padding: 20px;
+    width: 160px;
+    transition: transform 0.3s ease;
+    box-shadow: 0 4px 8px #8f8360;
+    cursor: pointer;
+  }
+  
+  .team-card:hover {
+    transform: scale(1.05); /* effet de zoom */
+    background-color: #52130c; /* bordeaux au survol */
+  }
+  
+  .team-card img {
+    width: 150px;
+    border-radius: 8px;
+  }
+  
+  .team-card p {
+    margin-top: 10px;
+    font-size: 16px;
+    color: #fff;
+  }
+  

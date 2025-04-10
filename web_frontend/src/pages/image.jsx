@@ -14,7 +14,11 @@ function Image(){
 
           <img src={imageUrl} alt="Description de l'image" style={{ width: '300px', borderRadius: '8px' }} />
 
-          <button onClick={() => navigate('/')}>Retour à l'Accueil</button>
+          <div style={{ marginTop: "20px" }}>
+            <button onClick={() => navigate('/')}>Retour à l'Accueil</button>
+            <br /><br />
+            <button onClick={() => navigate('/team')}> Voir les équipes</button>
+          </div>
         </div>
       );
     }

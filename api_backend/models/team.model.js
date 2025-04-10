@@ -1,15 +1,10 @@
 import mongoose from "mongoose";
-const Ecole = require('./ecole.model.js');
+
 
 
 const teamScheama = new mongoose.Schema({
     nom:{
         type: String,
-        required: true
-    },
-    ecole_id: {
-        type: Number,
-        ref: 'Ecole',
         required: true
     },
     logo:{
@@ -25,6 +20,9 @@ const teamScheama = new mongoose.Schema({
           return this.joueurs.length <= 5;  // Vérifier que la longueur du tableau 'joueurs' est <= 5
         },
         message: 'Une équipe ne peut pas avoir plus de 5 joueurs.'
+      },
+      points:{
+        type: Number,
       }
     });
 
