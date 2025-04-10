@@ -24,7 +24,11 @@ const matchScheama = new mongoose.Schema({
         ref: 'Team',
         required: true
     },
-    
+    round: {
+        type: Number,
+        default: 1
+    }
+      
 }, {timestamps: true }  // à chaque modif y a la date
 
 );

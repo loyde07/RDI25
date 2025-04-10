@@ -3,7 +3,7 @@ import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import Home from "./pages/home.jsx";
 import Image from "./pages/image.jsx";
 import Header from "./pages/header.jsx"
-import Tournement from "./pages/tournement.jsx"
+import Tournement from "./pages/tournois.jsx"
 
 function App(){
 
@@ -14,7 +14,7 @@ function App(){
             <Routes>
                 <Route path="/" element={<Home/>} />
                 <Route path="/image" element={<Image/>} />
-                <Route path="/tournement" element={<Tournement/>} />
+                <Route path="/tournois" element={<Tournement/>} />
             </Routes> 
         </Router>
         </>
