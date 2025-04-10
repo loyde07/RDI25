@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import axios from "axios";
 
+
 function TeamDetail() {
   const { id } = useParams(); // ID de l'équipe depuis l'URL
   const navigate = useNavigate();
@@ -40,7 +41,7 @@ function TeamDetail() {
       <ul style={{ listStyle: "none", padding: 0 }}>
         {team.joueurs.map((player, index) => (
           <li key={index} style={{ marginBottom: "15px" }}>
-            <strong> Joueur : {player.nom}</strong><br />
+            <strong> Joueur : {player.nom} {player.prenom} </strong><br />
             École : {player.ecole}
           </li>
         ))}

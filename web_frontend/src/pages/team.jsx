@@ -21,6 +21,8 @@ function Team() {
     fetchTeams();
   }, []);
 
+  const cardWidth = 100 / teams.length;
+
   return (
     <div className="team-container">
       <h1>Nos équipes</h1>
