@@ -13,7 +13,11 @@ function App(){
                 <Route path="/" element={<Home/>} />
                 <Route path="/image" element={<Image/>} />
                 <Route path="/team" element={<Team/>} />
+<<<<<<< Updated upstream
                 <Route path="/team/:id" element={<TeamDetail/>} />
+=======
+                <Route path="/team/:id" element={<TeamDetail />} /> {/* meme page mais contenue diff selon id donc selon la team */}
+>>>>>>> Stashed changes
             </Routes>
         </Router>
     );

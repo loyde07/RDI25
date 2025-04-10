@@ -13,12 +13,20 @@ function Image(){
           <p>Ceci est la page "drole".</p>
 
           <img src={imageUrl} alt="Description de l'image" style={{ width: '300px', borderRadius: '8px' }} />
+<<<<<<< Updated upstream
 
           <div style={{ marginTop: "20px" }}>
             <button onClick={() => navigate('/')}>Retour à l'Accueil</button>
             <br /><br />
             <button onClick={() => navigate('/team')}> Voir les équipes</button>
           </div>
+=======
+        <div style={{ marginTop: "20px" }}>
+        <button onClick={() => navigate('/')}> Retour à l'Accueil</button>
+        <br /><br />
+        <button onClick={() => navigate('/teams')}>👥 Voir les équipes</button>
+      </div>
+>>>>>>> Stashed changes
         </div>
       );
     }
