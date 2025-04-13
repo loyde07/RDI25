@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
+import '../css/RegisterForm.css'; // Assure-toi que le chemin d'importation correspond à l'emplacement de ton fichier CSS
 
 import { useNavigate } from 'react-router-dom';
 

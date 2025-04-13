@@ -16,7 +16,12 @@ function AccountPage() {
     useEffect(() => {
         // Récupérer les données de l'utilisateur connecté
         const fetchUserData = async () => {
-            const res = await axios.get('http://localhost:5000/api/user/profile'); // Assure-toi que cette route est disponible côté backend
+            const token = localStorage.getItem('token');
+            const res = await axios.get('http://localhost:5000/api/user/profile', {
+                headers: {
+                    'Authorization': `Bearer ${token}`
+                }
+            });
             setUserData(res.data);
         };
         fetchUserData();
@@ -31,14 +36,20 @@ function AccountPage() {
             formData.append('logo', newLogo);
             formData.append('password', newPassword || userData.password);
 
+            const token = localStorage.getItem('token');
+
             const response = await axios.put('http://localhost:5000/api/user/update', formData, {
                 headers: {
-                    'Content-Type': 'multipart/form-data'
+                    'Content-Type': 'multipart/form-data',
+                    'Authorization': `Bearer ${token}`
                 }
             });
+            
 
             alert('Informations mises à jour avec succès !');
             setUserData(response.data); // Met à jour l’état avec les nouvelles données de l'utilisateur
+            console.log("Mise à jour réussie, données :", response.data);
+
         } catch (error) {
             console.error('Erreur lors de la mise à jour du profil', error);
             alert('Erreur lors de la mise à jour du profil.');
