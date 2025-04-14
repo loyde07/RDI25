@@ -21,7 +21,7 @@ app.get("/api/teams", async (req, res) => {
         const teams = await Team.find({});
         res.status(200).json({success: true, data: teams})
     }catch (error){
-        console.log("les teams ne fonctionent pas")
+        console.log("les teams ne fonctionnent pas")
     }
 } )
 
