@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
+import "./teamDetail.css"; 
 import axios from "axios";
 
 
@@ -26,28 +27,28 @@ function TeamDetail() {
   }
 
   return (
-    <div style={{ textAlign: "center", padding: "50px" }}>
+    <div className="team-detail-container">
       <h1>{team.nom}</h1>
 
       {team.logo && ( 
       <img
         src={team.logo}
         alt={team.nom}
-        style={{ width: "200px", borderRadius: "8px", marginBottom: "30px" }}
+        className="team-logo"
       />
       )}
 
-      <h3>Mmebres de l'équipes:</h3>
-      <ul style={{ listStyle: "none", padding: 0 }}>
+      <h3>Membres de l'équipes:</h3>
+      <ul className="player-list">
         {team.joueurs.map((player, index) => (
-          <li key={index} style={{ marginBottom: "15px" }}>
+          <li key={index} className="player-card" >
             <strong> Joueur : {player.nom} {player.prenom} </strong><br />
             École : {player.ecole}
           </li>
         ))}
       </ul>
 
-      <button onClick={() => navigate("/team")} style={{ marginTop: "30px" }}>
+      <button className="back-button" onClick={() => navigate("/team")}>
         Retour aux équipes
       </button>
     </div>

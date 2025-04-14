@@ -25,20 +25,6 @@ app.get("/api/teams", async (req, res) => {
     }
 } )
 
-app.get("/api/teams/:id", async (req, res) => {
-
-    try{
-        console.log("voila les informations de la teams")
-        const team = await Team.findById(req.params.id);
-
-        if(!team){
-            return res.status(404).json({succes: false, message: "Team non trouvée"}); 
-        }
-        res.status(200).json({success: true, data: team})
-    }catch (error){
-        console.log("l'affichage des équipes ne focntionnent pas")
-    }
-} )
 
 
 
