@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import "../tournois.css"; // N'oublie pas ce fichier CSS à côté
+import "../tournois.css"; 
 
 const Match = ({ team1, team2, onWinner }) => {
     const [score1, setScore1] = useState("");
@@ -36,7 +36,7 @@ const Match = ({ team1, team2, onWinner }) => {
     );
   };
   
-  const TournamentBracket = () => {
+  const Tournament = () => {
     const [round1, setRound1] = useState([
       "TEAM DACH",
       "TEAM NORDICS",
@@ -98,4 +98,4 @@ const Match = ({ team1, team2, onWinner }) => {
     );
   };
   
-  export default TournamentBracket;
+  export default Tournament;
