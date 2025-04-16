@@ -9,14 +9,15 @@ const teamScheama = new mongoose.Schema({
         type: String,
         required: true
     },
-    ecole_id: {
+    tournois_id: {
         type: Number,
-        ref: 'Ecole',
+        ref: 'Tournois',
         required: true
     },
     logo:{
         type: String,
-    },joueurs: [{
+    },
+    joueurs: [{
         type: mongoose.Schema.Types.ObjectId,
         ref: 'Joueur' 
       }],

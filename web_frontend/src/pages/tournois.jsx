@@ -47,7 +47,7 @@ const Match = ({ team1, team2, onWinner }) => {
       try {
         const response = await axios.get("http://localhost:5000/api/teams/67f8c2993634ef292b6a5d0b/teams");
   
-        const nomsDesTeams = response.data.data.map(team => team.nom);
+        const nomsDesTeams = response.data.map(team => team.nom);
   
         setRound1(nomsDesTeams);
       } catch (error) {
