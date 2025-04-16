@@ -21,4 +21,21 @@ router.post('/', async (req, res) => {
   }
 });
 
+router.get('/:id/complet', async (req, res) => {
+    try {
+      const { id } = req.params;
+  
+      const tournois = await Tournois.findById(id).populate('teams');
+  
+      if (!tournois) {
+        return res.status(404).json({ message: 'Tournoi introuvable' });
+      }
+  
+      res.status(200).json(tournois);
+    } catch (error) {
+      console.error("Erreur lors de la récupération du tournoi :", error);
+      res.status(500).json({ message: "Erreur serveur" });
+    }
+  });
+
 export default router;

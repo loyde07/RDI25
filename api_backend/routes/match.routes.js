@@ -9,7 +9,7 @@ router.post('/init/:tournoisId', async (req, res) => {
     const { tournoisId } = req.params;
 
     // Récupérer les équipes du tournoi
-    const teams = await Team.find({}); // Tu peux ajouter un filtre par tournoi si nécessaire
+    const teams = await Team.find({tournois_id: tournoisId}); // Tu peux ajouter un filtre par tournoi si nécessaire
 
     if (teams.length % 2 !== 0) {
       return res.status(400).json({ message: "Nombre d'équipes impair, impossible de créer les matchs." });

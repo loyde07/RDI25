@@ -8,6 +8,8 @@ const TournamentTree = ({ tournoisId }) => {
     const fetchMatches = async () => {
       try {
         const res = await axios.get(`/api/matches?tournois_id=${tournoisId}`);
+        console.log("Résultat brut des matchs :", res.data); // 👈 ICI
+
         const matches = res.data;
 
         // Grouper les matchs par round
