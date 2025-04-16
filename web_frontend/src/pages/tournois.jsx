@@ -1,5 +1,9 @@
-import React, { useState } from "react";
-import "../tournois.css"; 
+import React, {useEffect, useState} from "react";
+import axios from 'axios';
+import "../tournois.css"; // N'oublie pas ce fichier CSS à côté
+
+
+
 
 const Match = ({ team1, team2, onWinner }) => {
     const [score1, setScore1] = useState("");
@@ -37,17 +41,26 @@ const Match = ({ team1, team2, onWinner }) => {
   };
   
   const Tournament = () => {
-    const [round1, setRound1] = useState([
-      "TEAM DACH",
-      "TEAM NORDICS",
-      "TEAM POLAND",
-      "TEAM FRANCE",
-      "TEAM UK/IRELAND",
-      "TEAM BALKANS/ITALY",
-      "TEAM BENELUX",
-      "TEAM IBERIA",
-    ]);
+    const [round1, setRound1] = useState([]);
   
+    const fetchData = async () => {
+      try {
+        const response = await axios.get("http://localhost:5000/api/teams/67f8c2993634ef292b6a5d0b/teams");
+  
+        const nomsDesTeams = response.data.data.map(team => team.nom);
+  
+        setRound1(nomsDesTeams);
+      } catch (error) {
+        console.error("Erreur lors de la récupération :", error);
+      }
+    };
+  
+    useEffect(() => {
+      fetchData();
+    }, []);
+  
+
+
     const [round2, setRound2] = useState(Array(4).fill(null));
     const [semis, setSemis] = useState(Array(2).fill(null));
     const [final, setFinal] = useState(null);
