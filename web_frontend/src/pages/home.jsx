@@ -7,9 +7,6 @@ function Home(){
 
   const navigate = useNavigate();
 
-
-
-
   const [locals, setLocals] = useState([]); //pour créer un tableau
   const fetchData = async () => {
     try {

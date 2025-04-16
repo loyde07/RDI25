@@ -27,7 +27,6 @@ app.get("/api/teams", async (req, res) => {
 
 
 
-
 app.get("/", (req, res) => {
     res.send("Server is ready");
 });
