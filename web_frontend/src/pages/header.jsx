@@ -9,9 +9,12 @@ function Header() {
     <header>
       {/* Bande 1 - Sponsors */}
       <div className="header-sponsors">
+        
+        <img src="https://www.aseus.be/sites/default/files/upload/aseus/EPHEC_Sport.png" alt="logo" className="logo-left" />
+        
         <div className="sponsor-title">POWERED BY</div>
         <div className="sponsor-logos">
-          {/* Ajoute ici des <img src="..." alt="logo" /> */}
+          {/*<img src="" alt="logo" />*/}
         </div>
       </div>
 

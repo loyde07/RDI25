@@ -9,9 +9,12 @@ header {
     align-items: center;
     background-color: white;
     padding: 10px 0;
-    border-bottom: 2px solid red;
+    border-bottom: 2px solid #521a14;
   }
   
+  .logo-left {
+    height: 50px;
+  }
   .sponsor-title {
     font-weight: bold;
     color: red;
@@ -54,7 +57,7 @@ header {
   }
   
   .nav-buttons button:hover {
-    background-color: red;
+    background-color: #d6cbcb;
     color: white;
     border-color: red;
   }
@@ -76,7 +79,7 @@ header {
   
   /* Bande 3 - Logos écoles */
   .header-schools {
-    background-color: red;
+    background-color:#d6cbcb;
     display: flex;
     justify-content: center;
     align-items: center;
