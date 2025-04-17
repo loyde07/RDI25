@@ -36,5 +36,26 @@ export const creationTeams = async (req, res) => {
       console.error("Erreur de création d'une team:", error.message);
       res.status(500).json({ success: false, message: "Erreur serveur" });
     }
-  };
+  }
+
+  export const updateTeam = async (req, res) => {
+    const { id } = req.params;
+    const { playerId } = req.body;
+  
+    try {
+      const team = await Team.findById(id);
+      if (!team) return res.status(404).json({ success: false, message: "Team introuvable" });
+  
+      // Ajouter le joueur (évite les doublons)
+      if (!team.joueurs.includes(playerId)) {
+        team.joueurs.push(playerId);
+        await team.save();
+      }
+  
+      res.status(200).json({ success: true, message: "Joueur ajouté à l'équipe" });
+    } catch (err) {
+      console.error(err.message);
+      res.status(500).json({ success: false, message: "Erreur serveur" });
+    }
+  }
   
