@@ -1,15 +1,9 @@
 import mongoose from "mongoose";
-const Ecole = require('./ecole.model.js');
 
 
 const teamScheama = new mongoose.Schema({
     nom:{
         type: String,
-        required: true
-    },
-    ecole_id: {
-        type: Number,
-        ref: 'Ecole',
         required: true
     },
     logo:{

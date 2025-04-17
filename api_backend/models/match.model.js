@@ -1,6 +1,4 @@
 import mongoose from "mongoose";
-const Team = require('./team.model.js');
-const Tournois = require('./tournois.model.js');
 
 
 const matchScheama = new mongoose.Schema({

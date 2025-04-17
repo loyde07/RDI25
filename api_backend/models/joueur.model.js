@@ -1,6 +1,4 @@
 const mongoose = require('mongoose');
-const Ecole = require('./ecole.model.js');
-const Team = require('./team.model.js');
 
 
 const joueurScheama = new mongoose.Schema({
