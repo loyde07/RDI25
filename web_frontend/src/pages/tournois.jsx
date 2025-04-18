@@ -12,7 +12,12 @@ const Match = ({ team1, team2, onWinner }) => {
     const handleWinner = () => {
       const s1 = parseInt(score1, 10);
       const s2 = parseInt(score2, 10);
-      if (!isNaN(s1) && !isNaN(s2)) {
+      if (
+        !isNaN(s1) &&
+        !isNaN(s2) &&
+        s1 >= 0 &&
+        s2 >= 0
+      ) {
         onWinner(s1 > s2 ? team1 : team2);
       }
     };
