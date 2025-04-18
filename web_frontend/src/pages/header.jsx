@@ -21,6 +21,7 @@ function Header() {
       {/* Bande 2 - Navigation + Réseaux */}
       <div className="header-nav">
         <div className="nav-buttons">
+          <button onClick={() => navigate('')}>Home</button>
           <button onClick={() => navigate('')}>Team</button>
           <button onClick={() => navigate('')}>Score</button>
           <button onClick={() => navigate('/tournois')}>Tournament</button>
