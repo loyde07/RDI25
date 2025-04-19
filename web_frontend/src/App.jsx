@@ -5,6 +5,7 @@ import Image from "./pages/image.jsx";
 import Header from "./pages/header.jsx"
 
 
+
 function App(){
 
     return (
@@ -14,6 +15,7 @@ function App(){
             <Routes>
                 <Route path="/" element={<Home/>} />
                 <Route path="/image" element={<Image/>} />
+                
             </Routes>
         </Router>
         </>
