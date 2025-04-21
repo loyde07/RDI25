@@ -1,10 +1,11 @@
 import mongoose from "mongoose";
 
 
-const teamScheama = new mongoose.Schema({
+const teamSchema = new mongoose.Schema({
     nom:{
         type: String,
-        required: true
+        required: true,
+        unique: true
     },
     logo:{
         type: String,
@@ -12,16 +13,20 @@ const teamScheama = new mongoose.Schema({
         type: mongoose.Schema.Types.ObjectId,
         ref: 'Joueur' 
       }],
-    }, {
-      // Validation du nombre de joueurs
-      validate: {
-        validator: function() {
-          return this.joueurs.length <= 5;  // Vérifier que la longueur du tableau 'joueurs' est <= 5
-        },
-        message: 'Une équipe ne peut pas avoir plus de 5 joueurs.'
-      }
-    });
+    }, 
+    );
 
-const Team = mongoose.model("Team", teamScheama); //creation d'une collection Local basé sur le modèle localSchema, chaque local suit le modele 
+  teamSchema.pre("save", function (next) {
+    // Convertit chaque ID en string pour comparaison
+    const uniqueJoueurs = [...new Set(this.joueurs.map(id => id.toString()))];
+  
+    if (uniqueJoueurs.length !== this.joueurs.length) {
+      return next(new Error("Chaque joueur doit être unique dans l’équipe."));
+    }
+  
+    next();
+  });
+
+const Team = mongoose.model("Team", teamSchema); //creation d'une collection Local basé sur le modèle localSchema, chaque local suit le modele 
 //moongose prend le nom des collection avec Maj et sg --> locals
 export default Team;

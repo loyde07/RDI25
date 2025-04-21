@@ -7,21 +7,16 @@ const matchScheama = new mongoose.Schema({
         ref: 'Tournois',
         required: true
     },
-    team1_id: {
+    equipe1_id: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'Team_id',
+        required: true
+    },
+    equipe2_id: {
         type: mongoose.Schema.Types.ObjectId,
         ref: 'Team',
         required: true
-    },
-    team2_id: {
-        type: mongoose.Schema.Types.ObjectId,
-        ref: 'Team',
-        required: true
-    },
-    winner_id: {
-        type: mongoose.Schema.Types.ObjectId,
-        ref: 'Team',
-        required: true
-    },
+    }
     
 }, {timestamps: true }  // à chaque modif y a la date
 
