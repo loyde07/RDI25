@@ -7,12 +7,12 @@ const matchScheama = new mongoose.Schema({
         ref: 'Tournois',
         required: true
     },
-    equipe1_id: {
+    team1_id: {
         type: mongoose.Schema.Types.ObjectId,
-        ref: 'Team_id',
+        ref: 'Team',
         required: true
     },
-    equipe2_id: {
+    team2_id: {
         type: mongoose.Schema.Types.ObjectId,
         ref: 'Team',
         required: true
