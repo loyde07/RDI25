@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
-import CreationTeam from './newTeam.jsx';
-import RejoindreTeam from './joinTeam.jsx';
+import CreationTeam from '../composants/newTeam.jsx';
+import RejoindreTeam from '../composants/joinTeam.jsx';
 import '../home.css';
 
 function Home() {

@@ -1,6 +1,10 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 
+const api = import.meta.env.VITE;
+// ou avec CRA : process.env.REACT_APP_API_URL
+
+
 function RejoindreTeam() {
     const [teams, setTeams] = useState([]);
     const [selectedTeamId, setSelectedTeamId] = useState('');
@@ -10,7 +14,7 @@ function RejoindreTeam() {
   useEffect(() => {
     const fetchTeams = async () => {
       try {
-        const res = await axios.get('http://localhost:5000/api/teams');
+        const res = await axios.get(api +'/api/teams');
         setTeams(res.data.data); // selon ton backend
       } catch (error) {
         console.error("Erreur lors de la récupération des teams :", error.message);
@@ -24,7 +28,7 @@ function RejoindreTeam() {
     e.preventDefault();
 
     try {
-      await axios.patch(`http://localhost:5000/api/teams/${selectedTeamId}/join`, {
+      await axios.patch(`${api}/api/teams/${selectedTeamId}/join`, {
         playerId: hardcodedPlayerId,
       });
 

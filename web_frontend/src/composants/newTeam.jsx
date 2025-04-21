@@ -1,6 +1,7 @@
 import React, {useState} from "react";
 import axios from 'axios';
 
+const api = import.meta.env.VITE;
 
 const CreationTeam = () => {
   const [nom, setNom] = useState('');
@@ -10,7 +11,7 @@ const CreationTeam = () => {
     e.preventDefault();
 
     try {
-      const response = await axios.post('http://localhost:5000/api/teams', {
+      const response = await axios.post(api +'/api/teams', {
         nom,
         logo
       });
