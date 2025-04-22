@@ -1,0 +1,81 @@
+body {
+  background-color: #e9d9d9;
+  margin: 0;
+  font-family: 'Arial', sans-serif;
+}
+
+.home-container {
+  max-width: 1000px;
+  margin: 0 auto;
+  padding: 40px 20px;
+  text-align: center;
+}
+
+.home-title {
+  font-size: 48px;
+  color: #382c2c;
+  margin-bottom: 20px;
+}
+
+.home-image {
+  width: 100%;
+  max-width: 800px;
+  border: 5px solid #8d695d;
+  border-radius: 12px;
+  margin: 0 auto 40px;
+  display: block;
+}
+
+.prix-section h2 {
+  color: #382c2c;
+  margin-bottom: 15px;
+}
+
+.prix-section ul {
+  list-style: none;
+  padding: 0;
+  font-size: 18px;
+  color: #382c2c;
+  border-radius: 10px;
+  max-width: 500px;
+  margin: 0 auto 40px;
+  padding: 20px;
+}
+
+.button-container {
+  margin-bottom: 30px;
+}
+
+.home-button {
+  padding: 15px 30px;
+  font-size: 16px;
+  margin: 10px;
+  cursor: pointer;
+  border-radius: 8px;
+  border: none;
+  color: #fff;
+  transition: background-color 0.3s ease;
+}
+
+.home-button.creation {
+  background-color: #8f8360;
+}
+
+.home-button.join {
+  background-color: #8f8360;
+}
+
+.home-button:hover {
+  background-color: #52130c;
+}
+
+.home-button.active {
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.4);
+}
+
+.action-container {
+  margin-top: 50px;
+  background-color: #8f8360;
+  padding: 30px;
+  border-radius: 10px;
+}
