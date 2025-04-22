@@ -43,3 +43,15 @@ npm i react-router-dom
 npm i cors
 
 npm i axios
+
+
+test unitaire
+npm install vitest --save-dev
+npm install -D vitest @testing-library/react @testing-library/jest-dom jsdom
+    
+    ajout dans package.json dans scripts --> "test": "vitest"
+    ajout dans vite.config.js --> 
+    test: {
+        environment: 'jsdom',
+        globals: true,
+    },

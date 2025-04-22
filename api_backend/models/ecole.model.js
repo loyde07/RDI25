@@ -1,4 +1,7 @@
-import mongoose from "mongoose";
+//const mongoose = require('mongoose');
+
+import mongoose from 'mongoose';
+
 const ecoleSchema = new mongoose.Schema({
   nom: {
     type: String,
