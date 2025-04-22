@@ -8,12 +8,7 @@ export default defineConfig({
     react(),
     tailwindcss(),
   ],
-})
-
-=========
-  plugins: [react()],
   server: {
     port: 5173
   }
-});
->>>>>>>>> Temporary merge branch 2
+})

@@ -24,9 +24,6 @@ import ResetPasswordPage from "./pages/ResetPasswordPage.jsx"
 // Page principale
 import Home from "./pages/home.jsx";
 
-// Pourquoi ce truc existe
-import Image from "./pages/image.jsx";
-
 // Navbar, header dans toutes les pages
 import Header from "./pages/header.jsx"
 
