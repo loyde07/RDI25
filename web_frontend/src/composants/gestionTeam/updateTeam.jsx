@@ -17,14 +17,14 @@ function UpdateTeam() {
     joueurs: []
   });
 
-  // 🔁 Charger toutes les équipes
+  //  Charger toutes les équipes
   useEffect(() => {
     axios.get(`${API}/api/teams`)
       .then(res => setTeams(res.data.data || res.data)) // dépend de ton format
       .catch(err => console.error("Erreur chargement équipes :", err));
   }, []);
 
-  // 📥 Charger l'équipe sélectionnée
+  //  Charger l'équipe sélectionnée
   useEffect(() => {
     if (!selectedTeamId) return;
 
@@ -54,13 +54,16 @@ function UpdateTeam() {
     const nouvelleListe = form.joueurs.filter(id => !joueursÀRetirer.includes(id));
   
     try {
-      await axios.patch(`${API}/api/teams/${selectedTeamId}`, {
+      await axios.patch(`${API}/api/teams/${selectedTeamId}/update`, {
         ...form,
         joueurs: nouvelleListe
       });
   
-      alert("✅ Équipe mise à jour !");
+      alert("Équipe mise à jour !");
       setJoueursÀRetirer([]);
+
+
+      
     } catch (err) {
       console.error("Erreur modification :", err);
       alert("Erreur lors de la mise à jour");
