@@ -1,4 +1,5 @@
 import Team from "../models/team.model.js";
+import Joueur from "../models/joueur.model.js";
 
 export const getTeams = async (req, res) => {
 
@@ -38,7 +39,7 @@ export const creationTeams = async (req, res) => {
     }
   }
 
-  export const updateTeam = async (req, res) => {
+  export const joinTeam = async (req, res) => {
     const { id } = req.params;
     const { playerId } = req.body;
   
@@ -59,3 +60,73 @@ export const creationTeams = async (req, res) => {
     }
   }
   
+
+  export const deleteTeam = async (req, res)  => {
+
+    const {id} = req.params;
+
+    try{
+
+      const team =await Team.findById(id);
+      if(!team) return res.status(404).json({success: false, message: "Team introuvable"});
+
+      await team.deleteOne();
+
+      res.status(200).json({ success: true, message: "Joueur ajouté à l'équipe" });
+    } catch (err) {
+      console.error(err.message);
+      res.status(500).json({ success: false, message: "Erreur serveur" });
+  }
+}
+
+
+// PATCH /api/teams/:id/update
+export const updateTeam = async (req, res) => {
+  const { id } = req.params;
+  const { nom, logo, joueurs } = req.body;
+
+  try {
+    const team = await Team.findById(id);
+    if (!team) {
+      return res.status(404).json({ success: false, message: "Équipe introuvable" });
+    }
+
+    if (nom) team.nom = nom;
+    if (logo) team.logo = logo;
+    if (joueurs) {
+      if (joueurs.length > 5) {
+        return res.status(400).json({ success: false, message: "Une équipe ne peut pas avoir plus de 5 joueurs." });
+      }
+      // Vérifier unicité
+      const uniqueJoueurs = [...new Set(joueurs.map(id => id.toString()))];
+      if (uniqueJoueurs.length !== joueurs.length) {
+        return res.status(400).json({ success: false, message: "Un joueur ne peut apparaître qu'une seule fois." });
+      }
+      team.joueurs = joueurs;
+    }
+
+    await team.save();
+    res.status(200).json({ success: true, message: "Équipe mise à jour", data: team });
+
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ success: false, message: "Erreur serveur" });
+  }
+};
+
+
+export const getTeamById = async (req, res) => {
+  const { id } = req.params;
+  try {
+    const team = await Team.findById(id).populate('joueurs');
+
+    if (!team) {
+      return res.status(404).json({ success: false, message: "Équipe introuvable" });
+    }
+
+    res.status(200).json({ success: true, data: team });
+  } catch (err) {
+    console.error(err.message);
+    res.status(500).json({ success: false, message: "Erreur serveur" });
+  }
+};

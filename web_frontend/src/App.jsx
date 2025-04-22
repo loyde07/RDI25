@@ -2,7 +2,9 @@ import React from "react";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import Home from "./pages/home.jsx";
 import Image from "./pages/image.jsx";
-import NewTeam from "./composants/newTeam.jsx";
+
+import NewTeam from "./composants/gestionTeam/newTeam.jsx";
+
 function App(){
 
     return (
