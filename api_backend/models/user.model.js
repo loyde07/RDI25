@@ -1,20 +1,21 @@
 import mongoose from 'mongoose';
-import bcrypt from 'bcrypt';
 
-const joueurSchema = new mongoose.Schema({
-    nom: {
+const userSchema = new mongoose.Schema({
+    lName: {
         type: String,
         required: true,
         trim: true
     },
-    prenom: {
+    fName: {
         type: String,
         required: true,
         trim: true
     },
     pseudo: {
         type: String,
-        unique: true,
+        default: null,
+        unique:true,
+        require: true,
         sparse: true,
         trim: true
     },
@@ -36,26 +37,31 @@ const joueurSchema = new mongoose.Schema({
         max: 100
     },
     logo: {
-        type: String // chemin vers l’image (ex: "uploads/logos/1712779851517.png")
+        type: String,
+        defaul: ""
     },
     ecole_id: {
         type: mongoose.Schema.Types.ObjectId,
         ref: 'Ecole',
-        required: true
     },
     team_id: {
         type: mongoose.Schema.Types.ObjectId,
         ref: 'Team' // à créer plus tard
-    }
+    },
+    lastLogin:{
+    type: Date,
+    default: Date.now
+    },
+    isVerified: {
+        type: Boolean,
+        default: false
+    },
+    resetPasswordToken: String,
+    resetPasswordExpiresAt: Date,
+    verificationToken: String,
+    verificationTokenExpiresAt: Date,
+
 }, { timestamps: true });
 
-// Hash automatique du mot de passe avant sauvegarde
-joueurSchema.pre('save', async function (next) {
-    if (!this.isModified('password')) return next();
-    const salt = await bcrypt.genSalt(10);
-    this.password = await bcrypt.hash(this.password, salt);
-    next();
-});
+export const User = mongoose.model("Joueur", userSchema);
 
-const Joueur = mongoose.model("Joueur", joueurSchema);
-export default Joueur;

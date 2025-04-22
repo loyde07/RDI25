@@ -12,7 +12,6 @@ import auth from '../middleware/auth.js';
 const router = express.Router();
 dotenv.config();
 
-// Multer config pour les logos
 const storage = multer.diskStorage({
     destination: (req, file, cb) => {
         cb(null, './uploads/logos');
@@ -26,7 +25,6 @@ const upload = multer({ storage });
 
 
 
-// 🔒 GET Profil
 router.get('/profile', auth, async (req, res) => {
     try {
         const joueur = req.joueur;
@@ -37,7 +35,6 @@ router.get('/profile', auth, async (req, res) => {
     }
 });
 
-// 🔄 PUT Mise à jour
 router.put('/update', auth, upload.single('logo'), async (req, res) => {
     const { pseudo, password, niveau, team_id } = req.body;
 
@@ -73,7 +70,6 @@ router.put('/update', auth, upload.single('logo'), async (req, res) => {
     }
 });
 
-// 🆕 POST Inscription
 router.post('/register', async (req, res) => {
     const { nom, prenom, email, password, ecole_id, niveau } = req.body;
 
@@ -102,7 +98,6 @@ router.post('/register', async (req, res) => {
 });
 
 
-// 🔐 POST Connexion
 router.post('/login', async (req, res) => {
     const { email, password } = req.body;
 
