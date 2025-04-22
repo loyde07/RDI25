@@ -1,7 +1,10 @@
 import React, { useState } from 'react';
-import CreationTeam from '../composants/newTeam.jsx';
-import RejoindreTeam from '../composants/joinTeam.jsx';
+import CreationTeam from '../composants/gestionTeam/newTeam.jsx';
+import RejoindreTeam from '../composants/gestionTeam/joinTeam.jsx';
+import SupprimerTeam from '../composants/gestionTeam/deleteTeam.jsx';
 import '../home.css';
+import UpdateTeam from '../composants/gestionTeam/updateTeam.jsx';
+
 
 function Home() {
   const [selectedAction, setSelectedAction] = useState(null);
@@ -45,10 +48,28 @@ function Home() {
         >
            Rejoindre une Team
         </button>
+
+        <button
+          onClick={() => setSelectedAction('delete')}
+          className={`home-button join ${selectedAction === 'delete' ? 'active' : ''}`}
+
+        >
+           Supprimer une Team
+        </button>
+        
+        <button
+          onClick={() => setSelectedAction('update')}
+          className={`home-button join ${selectedAction === 'update' ? 'active' : ''}`}
+
+        >
+           update une Team
+        </button>
       </div>
       <div id="action-container" className="action-container">      
       {selectedAction === 'creation' && <CreationTeam />}
       {selectedAction === 'join' && <RejoindreTeam />}
+      {selectedAction === 'delete' && <SupprimerTeam /> }
+      {selectedAction === 'update' && <UpdateTeam /> }
       </div>
     </div>
   );
