@@ -1,7 +1,6 @@
 import React, {useEffect, useState} from "react";
 import axios from 'axios';
-import "../tournois.css"; // N'oublie pas ce fichier CSS à côté
-
+import "../tournois.css"; 
 
 
 
