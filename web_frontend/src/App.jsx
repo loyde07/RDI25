@@ -4,13 +4,10 @@ import React from "react";
 import {Toaster} from 'react-hot-toast'
 import {useAuthStore} from './store/authStore.js'
 import { useEffect } from "react"
-import { BrowserRouter as Router, Routes, Route, Navigate } from "react-router-dom";
+import { BrowserRouter as Router, Routes, Route, Navigate, BrowserRouter } from "react-router-dom";
 
 // Page Principale
 import Home from "./pages/home.jsx";
-
-// svp faites disparaitre ce truc mdrrr
-import Image from "./pages/image.jsx";
 
 // Header
 import Header from "./pages/header.jsx"
@@ -76,7 +73,7 @@ function App(){
       <FloatingShape color="bg-rose-500" size="w-64 h-64" top="-5%" left="10%" delay={0}  />
       <FloatingShape color="bg-pink-500" size="w-48 h-48" top="70%" left="80%" delay={5}  />
       <FloatingShape color="bg-fuchsia-500" size="w-32 h-32" top="40%" left="20%" delay={2}  />
-      <Router>
+
         <Routes>
           <Route path='/dashboard'
           element={
@@ -104,11 +101,10 @@ function App(){
           <Route path='/forgotPassword' element={<ForgotPasswordPage/>} />
           <Route path='/ResetPassword' element={<ResetPasswordPage/>} />   
           <Route path="/" element={<Home/>} />
-          <Route path="/image" element={<Image/>} />
 
         </Routes>
         <Toaster/>
-      </Router>
+      
     </div>
   )
 }
