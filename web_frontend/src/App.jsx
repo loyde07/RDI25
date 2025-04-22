@@ -101,6 +101,8 @@ function App(){
           <Route path='/forgotPassword' element={<ForgotPasswordPage/>} />
           <Route path='/ResetPassword' element={<ResetPasswordPage/>} />   
           <Route path="/" element={<Home/>} />
+          <Route path="/image" element={<Image/>} />
+          <Route path="/tournois" element={<Tournement/>} />
 
         </Routes>
         <Toaster/>
