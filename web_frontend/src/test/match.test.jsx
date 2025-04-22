@@ -1,14 +1,16 @@
+import React from 'react';
+import { describe, test, expect, vi } from 'vitest';
 import { render, screen, fireEvent } from '@testing-library/react';
-import '@testing-library/jest-dom';
+import { Match } from '../pages/tournois'; 
 
 describe('Match component', () => {
-  it('affiche les noms des équipes', () => {
+  test('affiche les noms des équipes', () => {
     render(<Match team1="France" team2="Brésil" onWinner={() => {}} />);
     expect(screen.getByText('France')).toBeInTheDocument();
     expect(screen.getByText('Brésil')).toBeInTheDocument();
   });
 
-  it('déclare la bonne équipe gagnante', () => {
+  test('déclare la bonne équipe gagnante', () => {
     const mockOnWinner = vi.fn(); // vi.fn() au lieu de jest.fn()
     render(<Match team1="France" team2="Brésil" onWinner={mockOnWinner} />);
 
@@ -21,7 +23,7 @@ describe('Match component', () => {
     expect(mockOnWinner).toHaveBeenCalledWith('France');
   });
 
-  it('ne fait rien si les scores sont invalides', () => {
+  test('ne fait rien si les scores sont invalides', () => {
     const mockOnWinner = vi.fn();
     render(<Match team1="France" team2="Brésil" onWinner={mockOnWinner} />);
 

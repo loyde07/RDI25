@@ -117,3 +117,4 @@ const Match = ({ team1, team2, onWinner }) => {
   };
   
   export default Tournament;
+  export { Match };
