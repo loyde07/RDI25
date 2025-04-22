@@ -1,17 +1,14 @@
 import mongoose from "mongoose";
+
 //const Ecole = require('./ecole.model.js');
 
 import Ecole from './ecole.model.js';
 
 
+
 const teamScheama = new mongoose.Schema({
     nom:{
         type: String,
-        required: true
-    },
-    tournois_id: {
-        type: Number,
-        ref: 'Tournois',
         required: true
     },
     logo:{

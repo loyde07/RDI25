@@ -1,6 +1,6 @@
-//const mongoose = require('mongoose');
 
-import mongoose from 'mongoose';
+import mongoose from "mongoose";
+
 
 
 const tournoisSchema = new mongoose.Schema({
