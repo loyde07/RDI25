@@ -4,8 +4,6 @@ import mongoose from "mongoose";
 
 import Ecole from './ecole.model.js';
 
-
-
 const teamScheama = new mongoose.Schema({
     nom:{
         type: String,
