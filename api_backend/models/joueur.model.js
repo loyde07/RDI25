@@ -1,5 +1,11 @@
-const mongoose = require('mongoose');
 
+import mongoose from "mongoose";
+//const Ecole = require('./ecole.model.js');
+//const Team = require('./team.model.js');
+
+
+import Ecole from './ecole.model.js';
+import Team from './team.model.jsx';
 
 const joueurScheama = new mongoose.Schema({
     nom:{

@@ -4,6 +4,7 @@ import Home from "./pages/home.jsx";
 import Image from "./pages/image.jsx";
 import Header from "./pages/header.jsx"
 
+import Tournement from "./pages/tournois.jsx"
 
 
 function App(){
@@ -11,12 +12,14 @@ function App(){
     return (
         <>
         <Router>
-            <Header/>
+<<<<<<< tournois
+            <Header/> 
             <Routes>
                 <Route path="/" element={<Home/>} />
                 <Route path="/image" element={<Image/>} />
-                
-            </Routes>
+                <Route path="/tournois" element={<Tournement/>} />
+            </Routes> 
+
         </Router>
         </>
     );
