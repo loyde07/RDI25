@@ -9,6 +9,8 @@ function UpdateTeam() {
   const [teamData, setTeamData] = useState(null);
   const [joueurs, setJoueurs] = useState([]);
   const [joueursÀRetirer, setJoueursÀRetirer] = useState([]);
+  const [showAddPlayer, setShowAddPlayer] = useState(false);
+
 
 
   const [form, setForm] = useState({
@@ -156,10 +158,9 @@ function UpdateTeam() {
                 })}
             </ul>
             <button
-                onClick={() => < RajouterJoueur/>}>Rajouter un joueur</button>
+              onClick={() => setShowAddPlayer(true)}>Rajouter un joueur</button>
             <div className='chercher-joueur'></div>
-
-
+            {showAddPlayer && <RajouterJoueur />}
           </div>
 
           <button type="submit" style={{ marginTop: '20px' }}>
