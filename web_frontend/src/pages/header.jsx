@@ -61,7 +61,7 @@ const Navbar = () => {
 
         {/* Bottom section with links */}
         <div className="flex justify-around  gap-6 py-2 ">
-          <Link to="/tournois" className="text-sm font-medium hover:opacity-80 transition-all bg-clip-text text-transparent bg-gradient-to-r from-blue-400 to-indigo-700">
+          <Link to="/" className="text-sm font-medium hover:opacity-80 transition-all bg-clip-text text-transparent bg-gradient-to-r from-blue-400 to-indigo-700">
             Tournois
           </Link>
           <Link to="/" className="text-sm font-medium hover:opacity-80 transition-all bg-clip-text text-transparent bg-gradient-to-r from-blue-400 to-indigo-700">

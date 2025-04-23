@@ -2,7 +2,6 @@
 import React, { useState } from 'react';
 //import CreationTeam from 'newTeam.jsx';
 //import RejoindreTeam from 'joinTeam.jsx';
-import '../home.css';
 
 
 function Home() {

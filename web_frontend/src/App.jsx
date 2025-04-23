@@ -28,7 +28,7 @@ import Home from "./pages/home.jsx";
 import Header from "./pages/header.jsx"
 
 // Page du tournois
-import Tournement from "./pages/tournois.jsx"
+// import Tournement from "./pages/tournois.jsx"
 
 // Protège les routes qui demandent une authentification
 const ProtectedRoute = ({ children }) => {
@@ -89,12 +89,15 @@ function App() {
 						<Route path="/forgotPassword" element={<ForgotPasswordPage />} />
 						<Route path="/ResetPassword" element={<ResetPasswordPage />} />
 						<Route path="/editProfile/" element={<ProtectedRoute><EditProfilePage/></ProtectedRoute>} />
-						<Route path="/tournois" element={<Tournement />} />
+						{/* <Route path="/tournois" element={<Tournement />} /> */}
 					</Routes>
 				</div>
 			</div>
 
-			<Toaster />
+			<Toaster
+				position="bottom-right"
+				reverseOrder={false}
+			/>
 		</div>
 	);
 }
