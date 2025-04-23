@@ -1,3 +1,4 @@
+
 ENLEVER RESTRICTIONS 
 Set-ExecutionPolicy RemoteSigned -Scope CurrentUser
 Get-ExecutionPolicy //verif
@@ -21,6 +22,7 @@ API
 npm install express mongoose dotenv nodemon
 
 
+
  {
     "type": "module",
 
@@ -42,6 +44,7 @@ nodemon start //redemarre automatiquement apres chaque mise à jour
 {
     "nom": "local 203 up"
 }
+
 '''
 
 
@@ -56,3 +59,4 @@ npm i react-router-dom
 npm i cors
 
 npm i axios
+
