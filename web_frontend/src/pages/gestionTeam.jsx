@@ -4,6 +4,7 @@ import CreationTeam from '../composants/gestionTeam/newTeam.jsx';
 import RejoindreTeam from '../composants/gestionTeam/joinTeam.jsx';
 import SupprimerTeam from '../composants/gestionTeam/deleteTeam.jsx';
 import UpdateTeam from '../composants/gestionTeam/updateTeam.jsx';
+import {motion} from 'framer-motion'
 
 
 
@@ -12,43 +13,72 @@ function Gestion() {
 
 
   return (
-
+    <motion.div
+        initial={{ opacity: 0, y: 20 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.5 }}
+        className="max-w-md w-full bg-gray-800 bg-opacity-50 backdrop-filter backdrop-blur-xl rounded-2xl shadow-xl overflow-hidden"
+        >{
     <div className="home-container">
-      <h1 className="home-title">LAN Valorant</h1>
+      <h2 className="text-3xl font-bold mb-6 text-center bg-gradient-to-r from-blue-400 to-indigo-400 text-transparent bg-clip-text">
+        Créer une équipe
+        </h2>
 
       {/* Boutons d'action */}
       <div className="button-container">
-        <button
-          className={`home-button creation ${selectedAction === 'creation' ? 'active' : ''}`}
+      <motion.button
+            onClick={() => setSelectedAction('creation')}
+            whileHover={{ scale: 1.02 }}
+            whileTap={{ scale: 0.98 }}
+            className={`mt-5 w-full py-3 px-4 bg-gradient-to-r from-blue-500 to-indigo-600 text-white 
+                        font-bold rounded-lg shadow-lg hover:from-blue-600 hover:to-indigo-700 
+                        focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 
+                        focus:ring-offset-gray-900 transition duration-200
+                        ${selectedAction === 'creation' ? 'ring-2 ring-blue-400' : ''}`}
+            >
+            Créer une Team
+            </motion.button>
 
-          onClick={() => setSelectedAction('creation')}
+
+            <motion.button
+        onClick={() => setSelectedAction('join')}
+        whileHover={{ scale: 1.02 }}
+        whileTap={{ scale: 0.98 }}
+        className={`mt-5 w-full py-3 px-4 bg-gradient-to-r from-blue-500 to-indigo-600 text-white 
+                    font-bold rounded-lg shadow-lg hover:from-blue-600 hover:to-indigo-700 
+                    focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 
+                    focus:ring-offset-gray-900 transition duration-200
+                    ${selectedAction === 'join' ? 'ring-2 ring-blue-300' : ''}`}
         >
-           Créer une Team
-        </button>
+        Rejoindre une Team
+        </motion.button>
 
-        <button
-          onClick={() => setSelectedAction('join')}
-          className={`home-button join ${selectedAction === 'join' ? 'active' : ''}`}
-
+        <motion.button
+        onClick={() => setSelectedAction('delete')}
+        whileHover={{ scale: 1.02 }}
+        whileTap={{ scale: 0.98 }}
+        className={`mt-5 w-full py-3 px-4 bg-gradient-to-r from-blue-500 to-indigo-600 text-white 
+                    font-bold rounded-lg shadow-lg hover:from-blue-600 hover:to-indigo-700 
+                    focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 
+                    focus:ring-offset-gray-900 transition duration-200
+                    ${selectedAction === 'delete' ? 'ring-2 ring-blue-300' : ''}`}
         >
-           Rejoindre une Team
-        </button>
+        Supprimer une Team
+        </motion.button>
 
-        <button
-          onClick={() => setSelectedAction('delete')}
-          className={`home-button join ${selectedAction === 'delete' ? 'active' : ''}`}
-
+        <motion.button
+        onClick={() => setSelectedAction('update')}
+        whileHover={{ scale: 1.02 }}
+        whileTap={{ scale: 0.98 }}
+        className={`mt-5 w-full py-3 px-4 bg-gradient-to-r from-blue-500 to-indigo-600 text-white 
+                    font-bold rounded-lg shadow-lg hover:from-blue-600 hover:to-indigo-700 
+                    focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 
+                    focus:ring-offset-gray-900 transition duration-200
+                    ${selectedAction === 'update' ? 'ring-2 ring-blue-300' : ''}`}
         >
-           Supprimer une Team
-        </button>
-        
-        <button
-          onClick={() => setSelectedAction('update')}
-          className={`home-button join ${selectedAction === 'update' ? 'active' : ''}`}
+        Update une Team
+        </motion.button>
 
-        >
-           update une Team
-        </button>
       </div>
       <div id="action-container" className="action-container">      
       {selectedAction === 'creation' && <CreationTeam />}
@@ -57,6 +87,8 @@ function Gestion() {
       {selectedAction === 'update' && <UpdateTeam /> }
       </div>
     </div>
+
+        }</motion.div>
   );
 }
 

@@ -1,5 +1,6 @@
 import React, {useEffect, useState} from "react";
 import axios from 'axios';
+import {motion} from 'framer-motion'
 
 const API = import.meta.env.VITE_API || "http://localhost:5000";
 
@@ -42,46 +43,38 @@ const handleDelete = async (e) => {
 };
 
 
-return <form onSubmit={handleDelete} style={{ marginTop: '30px', maxWidth: '600px', margin: '0 auto' }}>
-    <h2 style={{ color: '#382c2c', textAlign: 'center' }}> Supprimer une équipe</h2>
-
-    <select
+return (
+    <motion.form
+      onSubmit={handleDelete}
+      initial={{ opacity: 0, y: 20 }}
+      animate={{ opacity: 1, y: 0 }}
+      transition={{ duration: 0.5 }}
+      className="max-w-md w-full mx-auto bg-gray-800 bg-opacity-50 backdrop-blur-md rounded-2xl shadow-xl p-8"
+    >
+      <h2 className="text-3xl font-bold mb-6 text-center bg-gradient-to-r from-blue-400 to-indigo-400 text-transparent bg-clip-text">
+        Supprimer une équipe
+      </h2>
+  
+      <select
         value={selectedTeamId}
         onChange={(e) => setSelectedTeamId(e.target.value)}
         required
-        style={{
-        width: '100%',
-        padding: '12px',
-        borderRadius: '8px',
-        border: '2px solid #8d695d',
-        backgroundColor: '#e9d9d9',
-        color: '#382c2c',
-        marginBottom: '20px',
-        fontSize: '16px'
-        }}
-    ><option value="">Sélectionner une équipe</option>
-    {teams.map((team) => (
-      <option key={team._id} value={team._id}>{team.nom}</option>
-    ))}
-  </select>
-
-  <button
+        className="w-full px-4 py-3 mb-6 bg-gray-700 text-white placeholder-gray-400 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+      >
+        <option value="">Sélectionner une équipe</option>
+        {teams.map((team) => (
+          <option key={team._id} value={team._id}>{team.nom}</option>
+        ))}
+      </select>
+  
+      <motion.button
         type="submit"
-        style={{
-          padding: '15px 30px',
-          backgroundColor: '#8d695d',
-          color: 'white',
-          border: 'none',
-          borderRadius: '8px',
-          fontSize: '18px',
-          cursor: 'pointer',
-          width: '100%'
-        }}
+        whileHover={{ scale: 1.02 }}
+        whileTap={{ scale: 0.98 }}
+        className="w-full py-3 px-4 bg-gradient-to-r from-red-500 to-red-700 text-white font-bold rounded-lg shadow-lg hover:from-red-600 hover:to-red-800 focus:outline-none focus:ring-2 focus:ring-red-500 focus:ring-offset-2 focus:ring-offset-gray-900 transition duration-200"
       >
         Supprimer
-      </button>
-
-
-</form>
-}
+      </motion.button>
+    </motion.form>
+  );}
 export default SupprimerTeam;

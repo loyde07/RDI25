@@ -39,10 +39,10 @@ function Header({ className = "" }) {
           ))}
 
           <button
-            onClick={() => navigate("/register")}
+            onClick={() => navigate("/dashboard")}
             className="px-4 py-2 border border-indigo-500 text-indigo-400 hover:bg-indigo-600 hover:text-white transition duration-300 rounded-md"
           >
-            Register
+            Profil
           </button>
         </div>
 
