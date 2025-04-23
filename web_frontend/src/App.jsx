@@ -5,7 +5,7 @@ import {Toaster} from 'react-hot-toast'
 import { useEffect } from "react"
 import Team from "./pages/team.jsx";
 
-
+import Gestion from "./pages/gestionTeam.jsx"
 
 // fonction d'authentification
 import {useAuthStore} from './store/authStore.js'
@@ -58,7 +58,6 @@ const RedirectAuthenticatedUser = ({ children }) => {
 	return children;
 };
 
-import Gestion from "./composants/gestionTeam/newTeam.jsx";
 
 function App(){
 
@@ -112,7 +111,7 @@ function App(){
         <Route path='/forgotPassword' element={<ForgotPasswordPage/>} />
         <Route path='/ResetPassword' element={<ResetPasswordPage/>} />   
         <Route path="/tournois" element={<Tournement/>} />
-        <Route path="/creationTeam" element={<Gestion/>} />
+        <Route path="/gestion" element={<Gestion/>} />
         <Route path="/team" element={<Team/>} />
       </Routes> 
       <Toaster/>
