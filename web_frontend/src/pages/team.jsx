@@ -76,7 +76,7 @@ function Team() {
           }}
           onClick={() => handleLogoClick(index)}
         >
-          <img src={team.logo}  alt={team.nom} className="carousel3D-img" />
+          <img src={team.logo ? team.logo : "/val.png"}  alt={team.nom} className="carousel3D-img" />
         </div>
       );
     })}
@@ -94,7 +94,7 @@ function Team() {
 
           <h2 className="text-4xl font-bold mb-6 text-center bg-gradient-to-r from-blue-400 to-indigo-400 
                     text-transparent bg-clip-text">{teams[selectedIndex].nom}</h2>
-          <img src={teams[selectedIndex].logo} alt={teams[selectedIndex].nom} className="team-logo" />
+          <img src={teams[selectedIndex].logo || "/val.png"} alt={teams[selectedIndex].nom} className="team-logo" />
           <h3 className="text-3xl font-bold mb-6 text-center bg-gradient-to-r from-blue-400 to-indigo-400 
                     text-transparent bg-clip-text">Membres de l'équipe</h3>
           <ul className="player-list">
