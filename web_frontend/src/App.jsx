@@ -1,22 +1,19 @@
 // Modules
-
+import { Routes, Route, Navigate } from "react-router-dom"
 import React from "react";
 import {Toaster} from 'react-hot-toast'
-import {useAuthStore} from './store/authStore.js'
 import { useEffect } from "react"
-import { BrowserRouter as Router, Routes, Route, Navigate, BrowserRouter } from "react-router-dom";
-
-// Page Principale
-import Home from "./pages/home.jsx";
-
-// Header
-import Header from "./pages/header.jsx"
-
-// Page de Tournois
-import Tournement from "./pages/tournois.jsx"
 
 
-// Page d'authentification 
+// fonction d'authentification
+import {useAuthStore} from './store/authStore.js'
+
+// Composant de style
+import FloatingShape from "./components/FloatingShape.jsx"
+import LoadingSpinner from "./components/LoadingSpinner.jsx"
+
+
+// Page d'authentification
 import SignUpPage from "./pages/SignUpPage.jsx"
 import LoginPage from "./pages/LoginPage.jsx"
 import EmailVerificationPage from "./pages/EmailVerificationPage.jsx"
@@ -24,11 +21,14 @@ import DashboardPage from "./pages/DashBoardPage.jsx"
 import ForgotPasswordPage from "./pages/ForgotPasswordPage.jsx"
 import ResetPasswordPage from "./pages/ResetPasswordPage.jsx"
 
+// Page principale
+import Home from "./pages/home.jsx";
 
-// Composant de style
-import FloatingShape from "./components/FloatingShape.jsx"
-import LoadingSpinner from "./components/LoadingSpinner.jsx"
+// Navbar, header dans toutes les pages
+import Header from "./pages/header.jsx"
 
+// Page du tournois
+import Tournement from "./pages/tournois.jsx"
 
 // protège les routes qui demande une authentification
 const ProtectedRoute = ({ children }) => {
@@ -66,6 +66,8 @@ function App(){
 
   if (isCheckingAuth) return <LoadingSpinner />;
 
+
+
   return (
     <div className="min-h-screen bg-gradient-to-br
     from-gray-900 via-blue-900 to-gray-900 flex items-center justify-center relative overflow-hidden"
@@ -74,39 +76,38 @@ function App(){
       <FloatingShape color="bg-pink-500" size="w-48 h-48" top="70%" left="80%" delay={5}  />
       <FloatingShape color="bg-fuchsia-500" size="w-32 h-32" top="40%" left="20%" delay={2}  />
 
-        <Routes>
-          <Route path='/dashboard'
-          element={
-            <ProtectedRoute>
-              <DashboardPage/>
-            </ProtectedRoute>
-          }  
-          />
-          <Route 
-          path='/signup' 
-            element={
-              <RedirectAuthenticatedUser>
-                <SignUpPage />
-              </RedirectAuthenticatedUser>
-            } 
-          />
-          <Route path='/login'
-            element={
-              <RedirectAuthenticatedUser>
-                <LoginPage />
-              </RedirectAuthenticatedUser>
-            } 
-          />
-          <Route path='/verifyEmail' element={<EmailVerificationPage/>} />
-          <Route path='/forgotPassword' element={<ForgotPasswordPage/>} />
-          <Route path='/ResetPassword' element={<ResetPasswordPage/>} />   
-          <Route path="/" element={<Home/>} />
-          <Route path="/image" element={<Image/>} />
-          <Route path="/tournois" element={<Tournement/>} />
 
-        </Routes>
-        <Toaster/>
-      
+      <Header/> 
+      <Routes>
+        <Route path="/" element={<Home/>} />
+        <Route path='/dashboard'
+         element={
+          <ProtectedRoute>
+            <DashboardPage/>
+          </ProtectedRoute>
+         }  
+        />
+        <Route 
+        path='/signup' 
+          element={
+            <RedirectAuthenticatedUser>
+              <SignUpPage />
+            </RedirectAuthenticatedUser>
+          } 
+        />
+        <Route path='/login'
+          element={
+            <RedirectAuthenticatedUser>
+              <LoginPage />
+            </RedirectAuthenticatedUser>
+           } 
+        />
+        <Route path='/verifyEmail' element={<EmailVerificationPage/>} />
+        <Route path='/forgotPassword' element={<ForgotPasswordPage/>} />
+        <Route path='/ResetPassword' element={<ResetPasswordPage/>} />   
+        <Route path="/tournois" element={<Tournement/>} />
+      </Routes> 
+      <Toaster/>
     </div>
   )
 }
