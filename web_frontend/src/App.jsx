@@ -3,6 +3,8 @@ import { Routes, Route, Navigate } from "react-router-dom"
 import React from "react";
 import {Toaster} from 'react-hot-toast'
 import { useEffect } from "react"
+import Team from "./pages/team.jsx";
+
 
 
 // fonction d'authentification
@@ -111,11 +113,11 @@ function App(){
         <Route path='/ResetPassword' element={<ResetPasswordPage/>} />   
         <Route path="/tournois" element={<Tournement/>} />
         <Route path="/creationTeam" element={<Gestion/>} />
+        <Route path="/team" element={<Team/>} />
       </Routes> 
       <Toaster/>
     </div>
   )
-
 }
 
-export default App
+export default App;

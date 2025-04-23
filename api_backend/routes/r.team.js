@@ -17,5 +17,4 @@ routes.delete('/:id/delete', deleteTeam);
 routes.patch('/:id/update', updateTeam);
 
 
-
 export default routes;
