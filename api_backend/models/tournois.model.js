@@ -1,4 +1,6 @@
+
 import mongoose from "mongoose";
+
 
 
 const tournoisSchema = new mongoose.Schema({
@@ -19,9 +21,13 @@ const tournoisSchema = new mongoose.Schema({
       },
       message: 'La date de fin doit être après la date de début.'
     }
+  },
+  status: {
+    type: String,
   }
+
 });
 
-const Ecole = mongoose.model('Ecole', ecoleSchema);
+const Tournois = mongoose.model('Tournois', tournoisSchema);
 
-export default Ecole;
+export default Tournois;

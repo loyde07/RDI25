@@ -1,33 +1,63 @@
-import express from "express" //version js const express = require('express');
-import dotenv from "dotenv";
-import { connectDB } from "../config/db.js";
+
+// Modules
+
+import express from 'express';
+import dotenv from 'dotenv';
+import cookieParser from 'cookie-parser';
+import cors from 'cors';
+import path from 'path';
+
+// database mongo
+import { connectDB } from '../config/db.js';
+
+
+// api/routes
 import routesTeam from "./routes/r.team.js";
 import joueurRoutes from "./routes/route.joueurs.js";
-//import routesLocal from "../routes/routes.local.js";
-import cors from 'cors'
+
+
+import ecoleRoutes from './routes/ecoles.route.js';
+import authRoutes from './routes/auth.route.js';
+import matchRoutes from "./routes/match.routes.js";
+import tournoisRoutes from './routes/tournois.routes.js';
+
+
 
 
 dotenv.config();
 
 const app = express();
+const PORT = process.env.PORT || 5000;
 
-app.use(cors({origin: 'http://localhost:5173'}));
+// CORS configuration
+app.use(cors({ origin: 'http://localhost:3000', credentials:true }));
 
 app.use(express.json()); //permet d'accepeter du JSOn dans le req.body
+app.use(cookieParser()); // Middleware pour analyser les cookies
 
-//app.use("/api/locals", routesLocal); //origine des routes pour les locaux
+
+
+
+
+
+
+
+// Routes des api
+app.use("/api/auth", authRoutes);
+app.use("/api/ecoles", ecoleRoutes);
 
 app.use("/api/teams", routesTeam);
 
+app.use('/api/tournois', tournoisRoutes);
+app.use("/api/matches", matchRoutes);
 app.use("/api/joueurs", joueurRoutes);
 
 app.get("/", (req, res) => {
     res.send("Server is ready");
 });
 
-
+//lancement du serveur
 app.listen(process.env.PORT, () => {
     connectDB();
-    console.log("serveur lancé sur http://localhost:5000 ");
-
+    console.log(`Serveur lancé sur http://localhost:${PORT}`);
 });

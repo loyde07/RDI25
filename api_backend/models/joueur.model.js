@@ -1,4 +1,6 @@
+
 import mongoose from "mongoose";
+
 
 const joueurScheama = new mongoose.Schema({
     nom:{
@@ -12,11 +14,6 @@ const joueurScheama = new mongoose.Schema({
     ecole_id: {
         type: mongoose.Schema.Types.ObjectId,
         ref: 'Ecole',
-        required: true
-    },
-    team_id: {
-        type: mongoose.Schema.Types.ObjectId,
-        ref: 'Team',
         required: true
     },
     niveau:{

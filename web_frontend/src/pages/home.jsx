@@ -1,3 +1,4 @@
+
 import React, { useState } from 'react';
 import CreationTeam from '../composants/gestionTeam/newTeam.jsx';
 import RejoindreTeam from '../composants/gestionTeam/joinTeam.jsx';
@@ -6,10 +7,12 @@ import '../home.css';
 import UpdateTeam from '../composants/gestionTeam/updateTeam.jsx';
 
 
+
 function Home() {
   const [selectedAction, setSelectedAction] = useState(null);
 
   return (
+
     <div className="home-container">
       <h1 className="home-title">LAN Valorant</h1>
 
@@ -28,6 +31,7 @@ function Home() {
           <li> 1ère place : 500€ + Casques Gamer</li>
           <li> 2ème place : 250€ + Souris gaming</li>
           <li> 3ème place : Clavier mécanique RGB</li>
+
         </ul>
       </section>
 

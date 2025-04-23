@@ -1,5 +1,8 @@
 import mongoose from "mongoose";
 
+//const Ecole = require('./ecole.model.js');
+
+import Ecole from './ecole.model.js';
 
 const teamScheama = new mongoose.Schema({
     nom:{
@@ -8,7 +11,8 @@ const teamScheama = new mongoose.Schema({
     },
     logo:{
         type: String,
-    },joueurs: [{
+    },
+    joueurs: [{
         type: mongoose.Schema.Types.ObjectId,
         ref: 'Joueur' 
       }],
