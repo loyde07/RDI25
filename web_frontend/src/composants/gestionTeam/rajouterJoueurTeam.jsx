@@ -3,8 +3,7 @@ import axios from 'axios';
 
 const API = "http://localhost:5000"; // Remplace par ton URL d'API
 
-function RajouterJoueur() {
-    const [joueurs, setJoueurs] = useState([]);
+function RajouterJoueur({ onJoueurSelectionne }) {
     const [recherche, setRecherche] = useState('');
     const [resultats, setResultats] = useState([]);
  
@@ -18,7 +17,7 @@ function RajouterJoueur() {
       
         const fetchJoueurs = async () => {
           try {
-            const res = await axios.get(`http://localhost:5000/api/joueurs?search=${recherche}`);
+            const res = await axios.get(`${API}/api/joueurs/joueurs?search=${recherche}`);
             setResultats(res.data.data);
             console.log(res.data.data);
             console.log("Recherche :", recherche);
@@ -48,12 +47,24 @@ function RajouterJoueur() {
         }}
       />
 
-            {Array.isArray(resultats) && resultats.length > 0 && (
-            <ul style={{ listStyle: 'none', padding: 0 }}>
+      {Array.isArray(resultats) && resultats.length > 0 && (
+              <ul style={{ listStyle: 'none', padding: 0 }}>
                 {resultats.map(joueur => (
-                <li key={joueur._id}>{joueur.pseudo}</li>
+                  <li
+                    key={joueur._id}
+                    onClick={() => onJoueurSelectionne(joueur)}
+                    style={{
+                      cursor: 'pointer',
+                      padding: '10px',
+                      border: '1px solid #ccc',
+                      marginBottom: '5px',
+                      borderRadius: '5px'
+                    }}
+                  >
+                    {joueur.pseudo}
+                  </li>
                 ))}
-            </ul>
+              </ul>
             )}
     </div>
   );
