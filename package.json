@@ -19,7 +19,6 @@
   },
   "homepage": "https://github.com/loyde07/RDI25#readme",
   "dependencies": {
-
     "cors": "^2.8.5",
     "dotenv": "^16.4.7",
     "express": "^4.21.2",
@@ -29,6 +28,5 @@
   },
   "devDependencies": {
     "vite": "^6.2.4"
-
   }
 }

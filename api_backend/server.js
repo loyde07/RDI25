@@ -1,7 +1,6 @@
 import express from "express" //version js const express = require('express');
 import dotenv from "dotenv";
 import { connectDB } from "../config/db.js";
-
 import joueursRoutes from "./routes/route.joueurs.js";
 import routesTeam from "./routes/r.team.js";
 import ecoleRoutes from "./routes/ecoles.route.js"
@@ -30,11 +29,8 @@ app.get("/", (req, res) => {
 });
 
 
-
 app.listen(process.env.PORT, () => {
     connectDB();
     console.log("serveur lancé sur http://localhost:5000 ");
 
-
 });
-
