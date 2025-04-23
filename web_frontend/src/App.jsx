@@ -56,7 +56,10 @@ const RedirectAuthenticatedUser = ({ children }) => {
 	return children;
 };
 
+import NewTeam from "./composants/gestionTeam/newTeam.jsx";
+
 function App(){
+
 
   const {isCheckingAuth, checkAuth, isAuthenticated, user }=useAuthStore()
 
@@ -106,10 +109,12 @@ function App(){
         <Route path='/forgotPassword' element={<ForgotPasswordPage/>} />
         <Route path='/ResetPassword' element={<ResetPasswordPage/>} />   
         <Route path="/tournois" element={<Tournement/>} />
+        <Route path="/creationTeam" element={<NewTeam/>} />
       </Routes> 
       <Toaster/>
     </div>
   )
+
 }
 
 export default App
