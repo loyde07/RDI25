@@ -20,7 +20,6 @@ import ecoleRoutes from './routes/ecoles.route.js';
 import authRoutes from './routes/auth.route.js';
 import matchRoutes from "./routes/match.routes.js";
 import tournoisRoutes from './routes/tournois.routes.js';
-import ecoleRoutes from "./routes/ecoles.route.js"
 
 
 
@@ -37,12 +36,6 @@ app.use(cors({ origin: 'http://localhost:3000', credentials:true }));
 
 app.use(express.json()); //permet d'accepeter du JSOn dans le req.body
 app.use(cookieParser()); // Middleware pour analyser les cookies
-
-
-
-
-
-
 
 
 

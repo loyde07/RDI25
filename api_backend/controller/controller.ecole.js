@@ -1,5 +1,5 @@
 import Ecole from "../models/ecole.model.js"; 
-import Joueur from "../models/joueur.model.js";
+import {User} from "../models/user.model.js";
 
 
 export const getAllEcoles = async (req, res) => {
@@ -15,7 +15,7 @@ export const getAllEcoles = async (req, res) => {
 export const getEcoleByJoueur = async (req, res) => {
   const { joueurId } = req.params;
   try {
-    const joueur = await Joueur.findById(joueurId).populate("ecole_id");
+    const joueur = await User.findById(joueurId).populate("ecole_id");
 
     if (!joueur) {
       return res.status(404).json({ message: "Joueur non trouvé" });

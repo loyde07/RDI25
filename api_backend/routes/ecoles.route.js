@@ -15,6 +15,7 @@ router.get('/', async (req, res) => {
 });
 
 router.get("/", getAllEcoles);
+
 router.get("/joueur/:joueurId", getEcoleByJoueur);
 
 
