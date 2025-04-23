@@ -76,14 +76,13 @@ function Team() {
           }}
           onClick={() => handleLogoClick(index)}
         >
-          <img src={team.logo} alt={team.nom} className="carousel3D-img" />
+          <img src={team.logo}  alt={team.nom} className="carousel3D-img" />
         </div>
       );
     })}
   </div>
 </div>
 
-{/* BOUTONS BIEN CENTRÉS ICI */}
 <div className="carousel3D-controls">
   <button onClick={rotateLeft} className="carousel3D-btn">{'<'}</button>
   <button onClick={rotateRight} className="carousel3D-btn">{'>'}</button>

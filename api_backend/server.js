@@ -1,10 +1,9 @@
 import express from "express" //version js const express = require('express');
 import dotenv from "dotenv";
 import { connectDB } from "../config/db.js";
-import Team from "./models/team.model.js";
 import joueursRoutes from "./routes/route.joueurs.js";
 import routesTeam from "./routes/r.team.js";
-
+import ecoleRoutes from "./routes/ecoles.route.js"
 import cors from 'cors'
 
 dotenv.config();
@@ -19,6 +18,8 @@ app.use(express.json()); //permet d'accepeter du JSOn dans le req.body
 app.use("/api/teams", routesTeam);
 
 app.use("/api/joueurs", joueursRoutes);
+
+app.use("/api/ecoles", ecoleRoutes); 
     
 
 
