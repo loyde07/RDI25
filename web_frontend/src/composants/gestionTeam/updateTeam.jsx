@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
-
+import RajouterJoueur from "./rajouterJoueurTeam.jsx"
 const API = import.meta.env.VITE_API || "http://localhost:5000";
 
 function UpdateTeam() {
@@ -91,7 +91,7 @@ function UpdateTeam() {
         onChange={(e) => setSelectedTeamId(e.target.value)}
         style={{ marginBottom: '20px', padding: '10px', width: '100%' }}
       >
-        <option value="">-- Sélectionner --</option>
+        <option value="">Sélectionner </option>
         {teams.map(team => (
           <option key={team._id} value={team._id}>
             {team.nom}
@@ -131,7 +131,7 @@ function UpdateTeam() {
                         alignItems: 'center',
                         marginBottom: '8px',
                         opacity: estMarqué ? 0.5 : 1,
-                        textDecoration: estMarqué ? 'line-through' : 'none'
+                       
                     }}
                     >
                     <span style={{ flex: 1 }}>
@@ -149,12 +149,15 @@ function UpdateTeam() {
                         cursor: 'pointer'
                         }}
                     >
-                        {estMarqué ? '↩️ Annuler' : '❌ Retirer'}
+                        {estMarqué ? ' Annuler' : ' Retirer'}
                     </button>
                     </li>
                 );
                 })}
             </ul>
+            <button
+                onClick={() => < RajouterJoueur/>}>Rajouter un joueur</button>
+            <div className='chercher-joueur'></div>
 
 
           </div>
