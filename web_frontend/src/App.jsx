@@ -1,19 +1,36 @@
+// Modules
+
 import { Routes, Route, Navigate } from "react-router-dom"
-import {Toaster} from 'react-hot-toast'
+import React, { useEffect } from "react";
+import { Toaster } from 'react-hot-toast'
+
+// fonction d'authentification
 import {useAuthStore} from './store/authStore.js'
-import { useEffect } from "react"
 
-
+// Composant de style
 import FloatingShape from "./components/FloatingShape.jsx"
 import LoadingSpinner from "./components/LoadingSpinner.jsx"
+
+
+// Page d'authentification
 import SignUpPage from "./pages/SignUpPage.jsx"
 import LoginPage from "./pages/LoginPage.jsx"
 import EmailVerificationPage from "./pages/EmailVerificationPage.jsx"
 import DashboardPage from "./pages/DashBoardPage.jsx"
+import EditProfilePage from "./pages/EditProfilePage.jsx";
 import ForgotPasswordPage from "./pages/ForgotPasswordPage.jsx"
 import ResetPasswordPage from "./pages/ResetPasswordPage.jsx"
 
-// protège les routes qui demande une authentification
+// Page principale
+import Home from "./pages/home.jsx";
+
+// Navbar, header dans toutes les pages
+import Header from "./pages/header.jsx"
+
+// Page du tournois
+import Tournement from "./pages/tournois.jsx"
+
+// Protège les routes qui demandent une authentification
 const ProtectedRoute = ({ children }) => {
 	const { isAuthenticated, user } = useAuthStore();
 
@@ -28,9 +45,9 @@ const ProtectedRoute = ({ children }) => {
 	return children;
 };
 
-// redirige les utilisateur authentifié vers la page principale
+// Redirige les utilisateurs déjà connectés
 const RedirectAuthenticatedUser = ({ children }) => {
-	const { isAuthenticated, user }=useAuthStore();
+	const { isAuthenticated, user } = useAuthStore();
 
 	if (isAuthenticated && user && user.isVerified) {
 		return <Navigate to='/' replace />;
@@ -40,53 +57,46 @@ const RedirectAuthenticatedUser = ({ children }) => {
 };
 
 function App() {
-  const {isCheckingAuth, checkAuth, isAuthenticated, user }=useAuthStore()
+	const { isCheckingAuth, checkAuth } = useAuthStore();
 
-  useEffect( () =>{
-    checkAuth()
-  },[checkAuth])
+	useEffect(() => {
+		checkAuth();
+	}, [checkAuth]);
 
   if (isCheckingAuth) return <LoadingSpinner />;
 
-  return (
-    <div className="min-h-screen bg-gradient-to-br
-    from-gray-900 via-blue-900 to-gray-900 flex items-center justify-center relative overflow-hidden"
-    >
-      <FloatingShape color="bg-rose-500" size="w-64 h-64" top="-5%" left="10%" delay={0}  />
-      <FloatingShape color="bg-pink-500" size="w-48 h-48" top="70%" left="80%" delay={5}  />
-      <FloatingShape color="bg-fuchsia-500" size="w-32 h-32" top="40%" left="20%" delay={2}  />
 
-      <Routes>
-        <Route path='/'
-         element={
-          <ProtectedRoute>
-            <DashboardPage/>
-          </ProtectedRoute>
-         }  
-        />
-        <Route 
-        path='/signup' 
-          element={
-            <RedirectAuthenticatedUser>
-              <SignUpPage />
-            </RedirectAuthenticatedUser>
-          } 
-        />
-        <Route path='/login'
-          element={
-            <RedirectAuthenticatedUser>
-              <LoginPage />
-            </RedirectAuthenticatedUser>
-           } 
-        />
-        <Route path='/verifyEmail' element={<EmailVerificationPage/>} />
-        <Route path='/forgotPassword' element={<ForgotPasswordPage/>} />
-        <Route path='/ResetPassword' element={<ResetPasswordPage/>} />   
 
-      </Routes>
-      <Toaster/>
-    </div>
-  )
+	return (
+		<div className="min-h-screen flex flex-col">
+			<Header />
+
+			{/* Fond flottant avec décalage du contenu */}
+			<div className="relative flex-1 bg-gradient-to-br from-gray-900 via-blue-900 to-gray-900 overflow-hidden pt-[90px]">
+				{/* Éléments décoratifs */}
+				<FloatingShape color="bg-rose-500" size="w-64 h-64" top="-5%" left="10%" delay={0} />
+				<FloatingShape color="bg-pink-500" size="w-48 h-48" top="70%" left="80%" delay={5} />
+				<FloatingShape color="bg-fuchsia-500" size="w-32 h-32" top="40%" left="20%" delay={2} />
+
+				{/* Contenu des pages */}
+				<div className="flex items-center justify-center min-h-[calc(100vh-100px)]">
+					<Routes>
+						<Route path="/" element={<Home />} />
+						<Route path="/dashboard" element={<ProtectedRoute><DashboardPage /></ProtectedRoute>} />
+						<Route path="/signup" element={<RedirectAuthenticatedUser><SignUpPage /></RedirectAuthenticatedUser>} />
+						<Route path="/login" element={<RedirectAuthenticatedUser><LoginPage /></RedirectAuthenticatedUser>} />
+						<Route path="/verifyEmail" element={<EmailVerificationPage />} />
+						<Route path="/forgotPassword" element={<ForgotPasswordPage />} />
+						<Route path="/ResetPassword" element={<ResetPasswordPage />} />
+						<Route path="/editProfile/" element={<ProtectedRoute><EditProfilePage/></ProtectedRoute>} />
+						<Route path="/tournois" element={<Tournement />} />
+					</Routes>
+				</div>
+			</div>
+
+			<Toaster />
+		</div>
+	);
 }
 
-export default App
+export default App;

@@ -240,3 +240,39 @@ export const updatePic = async (req, res) => {
         
     }
 }
+
+export const updateProfile = async (req, res) => {
+	try {
+		const userId = req.userId; // Injecté par verifyToken
+		const { nom, prenom, pseudo, password } = req.body;
+
+		const user = await User.findById(userId);
+		if (!user) {
+			return res.status(404).json({ message: "Utilisateur non trouvé" });
+		}
+
+		// Mettre à jour les champs
+		if (nom) user.lName = nom;
+		if (prenom) user.fName = prenom;
+		if (pseudo) user.pseudo = pseudo;
+
+		// Si password fourni, on le hash avant update
+		if (password) {
+			const salt = await bcrypt.genSalt(10);
+			const hashedPassword = await bcrypt.hash(password, salt);
+			user.password = hashedPassword;
+		}
+
+		// Sauvegarde
+		await user.save();
+
+		// On enlève le mot de passe de la réponse
+		const { password: pwd, ...userData } = user._doc;
+
+		return res.status(200).json({success: true, message: "Profil mis à jour avec succès", user: userData });
+
+	} catch (error) {
+		console.error("Erreur updateProfile:", error);
+		return res.status(500).json({ message: "Erreur serveur" });
+	}
+};
