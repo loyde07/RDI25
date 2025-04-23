@@ -3,7 +3,6 @@ import React, { useState } from 'react';
 import CreationTeam from '../composants/gestionTeam/newTeam.jsx';
 import RejoindreTeam from '../composants/gestionTeam/joinTeam.jsx';
 import SupprimerTeam from '../composants/gestionTeam/deleteTeam.jsx';
-import '../home.css';
 import UpdateTeam from '../composants/gestionTeam/updateTeam.jsx';
 
 

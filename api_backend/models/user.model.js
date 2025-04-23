@@ -44,10 +44,6 @@ const userSchema = new mongoose.Schema({
         type: mongoose.Schema.Types.ObjectId,
         ref: 'Ecole',
     },
-    team_id: {
-        type: mongoose.Schema.Types.ObjectId,
-        ref: 'Team' // à créer plus tard
-    },
     lastLogin:{
     type: Date,
     default: Date.now

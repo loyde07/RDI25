@@ -1,53 +1,62 @@
 import { useNavigate } from "react-router-dom";
 import React from "react";
-import "../header.css"; // n'oublie pas d'importer ton CSS
+import { Facebook, Instagram, Twitter } from "lucide-react";
 
-function Header() {
+function Header({ className = "" }) {
   const navigate = useNavigate();
 
   return (
-    <header>
-      {/* Bande 1 - Sponsors */}
-      <div className="header-sponsors">
-
-        {/*logo ephec qui dois etre mis sur la gauche tout en haut */}
-        <img src="https://www.aseus.be/sites/default/files/upload/aseus/EPHEC_Sport.png" alt="logoEphec" className="logo-left" />
-        
-        <div className="sponsor-title">POWERED BY</div>
-        <div className="sponsor-logos">
-          {/*<img src="" alt="logo" />*/}
-
+    <header className={`bg-gray-900 text-white shadow-lg py-4 px-6 border-b border-gray-800 ${className}`}>
+      {/* Ligne 1 - Sponsors */}
+      <div className="flex items-center justify-between mb-3">
+        <img
+          src="https://www.aseus.be/sites/default/files/upload/aseus/EPHEC_Sport.png"
+          alt="logoEphec"
+          className="w-28 object-contain"
+        />
+        <div className="text-sm text-gray-400">POWERED BY</div>
+        <div className="flex gap-4">
+          {/* Ajouter logos sponsors ici si disponibles */}
         </div>
       </div>
 
-      {/* Bande 2 - Navigation + Réseaux */}
-      <div className="header-nav">
+      {/* Ligne 2 - Navigation */}
+      <div className="flex gap-4 text-sm font-semibold">
+          {[
+            { name: "Home", path: "/" },
+            { name: "Team", path: "/team" },
+            { name: "Gestion", path: "/gestion" },
+            { name: "Tournament", path: "/tournois" },
+            { name: "Login", path: "/login" },
+          ].map(({ name, path }) => (
+            <button
+              key={name}
+              onClick={() => navigate(path)}
+              className="px-4 py-2 bg-gradient-to-r from-blue-500 to-indigo-600 text-white rounded-md shadow-md hover:from-blue-600 hover:to-indigo-700 transition duration-300"
+            >
+              {name}
+            </button>
+          ))}
 
-        {/*Pour les boutons revoir la taille pour que ca soit propotionnel au site et bouton register sur l'extreme droit */}
-        <div className="nav-buttons">
-          <button onClick={() => navigate('')}>Home</button>
-
-          <button onClick={() => navigate('')}>Team</button>
-          <button onClick={() => navigate('')}>Score</button>
-          <button onClick={() => navigate('/tournois')}>Tournament</button>
-          <button onClick={() => navigate('')}>Register</button>
+          <button
+            onClick={() => navigate("/register")}
+            className="px-4 py-2 border border-indigo-500 text-indigo-400 hover:bg-indigo-600 hover:text-white transition duration-300 rounded-md"
+          >
+            Register
+          </button>
         </div>
-        <div className="social-links">
 
-          {/* Ajoute ici des icônes ex : à voir plus tard*/}
 
-          <a href="#"><img src="/icons/facebook.svg" alt="FB" /></a>
-          <a href="#"><img src="/icons/twitter.svg" alt="TW" /></a>
-          <a href="#"><img src="/icons/instagram.svg" alt="IG" /></a>
+        <div className="flex gap-3">
+          <a href="#"><Facebook className="w-5 h-5 hover:text-blue-500 transition" /></a>
+          <a href="#"><Twitter className="w-5 h-5 hover:text-sky-400 transition" /></a>
+          <a href="#"><Instagram className="w-5 h-5 hover:text-pink-500 transition" /></a>
         </div>
-      </div>
+      
 
-
-      {/* Bande 3 - Écoles  à voir plus tard aussi faut que je vois avec le prof*/}
-
-      <div className="header-schools">
-        {/* Ajoute ici les logos des écoles */}
-        {/* Exemple : <img src="/logos/ephec.png" alt="EPHEC" /> */}
+      {/* Ligne 3 - Écoles (placeholder) */}
+      <div className="mt-4 border-t border-gray-800 pt-2 text-center text-sm text-gray-500">
+        {/* Ajouter logos écoles ici si nécessaire */}
       </div>
     </header>
   );
