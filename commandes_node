@@ -43,3 +43,7 @@ npm i react-router-dom
 npm i cors
 
 npm i axios
+
+
+// modules pour les tests des routes
+npm i --save-dev jest supertest mongodb-memory-server nyc 
