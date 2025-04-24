@@ -59,7 +59,7 @@ function Team() {
   const angleStep = 360 / teams.length;
 
   return (
-    <div className="main-wrapper ">
+    <div className="main-wrapper py-64" >
       <h1 className="text-5xl font-bold mb-6 text-center bg-gradient-to-r from-blue-400 to-indigo-400 
                     text-transparent bg-clip-text">Équipes</h1>
 
