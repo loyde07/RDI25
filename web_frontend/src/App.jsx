@@ -60,6 +60,19 @@ function App(){
 
   const {isCheckingAuth, checkAuth, isAuthenticated, user }=useAuthStore()
 
+    return (
+        <>
+        <Router>
+            <Header/> 
+            <Routes>
+                <Route path="/" element={<Home/>} />
+                <Route path="/image" element={<Image/>} />
+                <Route path="/tournois" element={<Tournement/>} />
+            </Routes> 
+        </Router>
+        </>
+    );
+
   useEffect( () =>{
     checkAuth()
   },[checkAuth])
