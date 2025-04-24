@@ -1,141 +1,154 @@
 /* TournamentBracket.css */
 body {
-    background-color: white;
-    color: black;
-    font-family: sans-serif;
-    margin: 0;
-    padding: 0;
-  }
+  background-color: white;
+  color: black;
+  font-family: sans-serif;
+  margin: 0;
+  padding: 0;
+}
   
-  .bracket-container {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    gap: 80px;
-    padding: 40px;
-    position: relative;
-  }
+.bracket-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 80px;
+  padding: 40px;
+  position: relative;
+}
   
-  .round {
-    display: flex;
-    flex-direction: column;
-    justify-content: space-around;
-    gap: 60px;
-    position: relative;
-    min-height: 400px;
-  }
+.round {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-around;
+  gap: 60px;
+  position: relative;
+  min-height: 400px;
+}
   
-  .match {
-    padding: 0;
-    position: relative;
-    width: 250px;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-  }
+.match {
+  padding: 0;
+  position: relative;
+  width: 250px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
   
-  .match::after {
-    content: "";
-    position: absolute;
-    top: 50%;
-    right: -40px;
-    width: 40px;
-    height: 1px;
-    background-color: black;
-  }
+.match::after {
+  content: "";
+  position: absolute;
+  top: 50%;
+  right: -40px;
+  width: 40px;
+  height: 1px;
+  background-color: black;
+}
   
-  .team {
-    border: 1px solid black;
-    padding: 10px;
-    margin: 4px 0;
-    width: 100%;
-    box-sizing: border-box;
-    background-color: white;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    font-size: 14px;
-    height: 40px;
-    text-align: center;
-  }
+.team {
+  border: 1px solid black;
+  padding: 10px;
+  margin: 4px 0;
+  width: 100%;
+  box-sizing: border-box;
+  background-color: white;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 14px;
+  height: 40px;
+  text-align: center;
+}
   
-  input[type="number"] {
-    width: 30px;
-    margin-left: 5px;
-    border: 1px solid #ccc;
-    padding: 2px;
-  }
+input[type="number"] {
+  width: 30px;
+  margin-left: 5px;
+  border: 1px solid #ccc;
+  padding: 2px;
+}
   
-  button {
-    margin-top: 5px;
-    padding: 4px 8px;
-    background-color: lightgray;
-    color: black;
-    border: 1px solid #ccc;
-    border-radius: 3px;
-    cursor: pointer;
-    font-size: 12px;
-  }
+button {
+  margin-top: 5px;
+  padding: 4px 8px;
+  background-color: lightgray;
+  color: black;
+  border: 1px solid #ccc;
+  border-radius: 3px;
+  cursor: pointer;
+  font-size: 12px;
+}
   
-  .winner {
-    border: 1px solid black;
-    padding: 8px;
-    text-align: center;
-    margin-top: 20px;
-    background-color: lightgray;
-    font-weight: bold;
-  }
+.winner {
+  border: 1px solid black;
+  padding: 8px;
+  text-align: center;
+  margin-top: 20px;
+  background-color: lightgray;
+  font-weight: bold;
+}
   
-  .placeholder {
-    padding: 8px;
-    text-align: center;
-    color: #555;
-    border: 1px dashed #aaa;
-    font-style: italic;
-  }
+.placeholder {
+  padding: 8px;
+  text-align: center;
+  color: #555;
+  border: 1px dashed #aaa;
+  font-style: italic;
+}
   
-  .round:not(:last-child)::after {
-    content: "";
-    position: absolute;
-    top: 0;
-    right: -40px;
-    bottom: 0;
-    width: 1px;
-    background-color: black;
-    margin: auto;
-  }
+.round:not(:last-child)::after {
+  content: "";
+  position: absolute;
+  top: 0;
+  right: -40px;
+  bottom: 0;
+  width: 1px;
+  background-color: black;
+  margin: auto;
+}
   
-  /* Line between match boxes */
-  .match > div {
-    border-bottom: 2px solid black;
-    width: 100%;
-    margin: 0;
-    text-align: center;
-    padding-bottom: 10px;
-  }
+/* Line between match boxes */
+.match > div {
+  border-bottom: 2px solid black;
+  width: 100%;
+  margin: 0;
+  text-align: center;
+  padding-bottom: 10px;
+}
   
-  /* Connecting lines between rounds */
-  .match {
-    position: relative;
-  }
+/* Connecting lines between rounds */
+.match {
+  position: relative;
+}
   
-  .match:after {
-    content: "";
-    position: absolute;
-    top: 50%;
-    left: 100%;
-    height: 2px;
-    width: 20px;
-    background-color: black;
-  }
+.match:after {
+  content: "";
+  position: absolute;
+  top: 50%;
+  left: 100%;
+  height: 2px;
+  width: 20px;
+  background-color: black;
+}
   
-  .round > .match + .match::before {
-    content: "";
-    position: absolute;
-    top: 0;
-    left: -15px;
-    width: 2px;
-    height: 100%;
-    background-color: black;
-  }
+.round > .match + .match::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: -15px;
+  width: 2px;
+  height: 100%;
+  background-color: black;
+}
+
+/* Chrome, Safari, Edge, Opera */
+input[type=number]::-webkit-outer-spin-button,
+input[type=number]::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+/* Firefox */
+input[type=number] {
+  -moz-appearance: textfield;
+}
+
   

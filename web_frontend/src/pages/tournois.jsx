@@ -46,6 +46,9 @@ const Match = ({ team1, team2, onWinner }) => {
   
   const Tournament = () => {
     const [round1, setRound1] = useState([]);
+    const [round2, setRound2] = useState(Array(4).fill(null));
+    const [semis, setSemis] = useState(Array(2).fill(null));
+    const [final, setFinal] = useState(null);
   
     const fetchData = async () => {
       try {
@@ -62,12 +65,6 @@ const Match = ({ team1, team2, onWinner }) => {
     useEffect(() => {
       fetchData();
     }, []);
-  
-
-
-    const [round2, setRound2] = useState(Array(4).fill(null));
-    const [semis, setSemis] = useState(Array(2).fill(null));
-    const [final, setFinal] = useState(null);
   
     const updateNextRound = (roundSetter, index) => (winner) => {
       roundSetter((prev) => {
