@@ -1,100 +1,91 @@
-import { render, screen, waitFor, fireEvent } from '@testing-library/react';
-import '@testing-library/jest-dom';
-import { vi } from 'vitest';
+import React from 'react';
+import { render, screen, waitFor } from '@testing-library/react';
+import Tournament from './Tournament';
 import axios from 'axios';
-import Tournament from './Tournament'; // ajuste le chemin si besoin
+import userEvent from '@testing-library/user-event';
 
-vi.mock('axios'); // on "mocke" axios pour simuler l’API
+jest.mock('axios');
 
-describe('Tournament component', () => {
+const mockTeams = [
+  { nom: 'Team A' },
+  { nom: 'Team B' },
+  { nom: 'Team C' },
+  { nom: 'Team D' },
+  { nom: 'Team E' },
+  { nom: 'Team F' },
+  { nom: 'Team G' },
+  { nom: 'Team H' },
+];
+
+describe('Tournament Component', () => {
   beforeEach(() => {
-    vi.resetAllMocks(); // on nettoie les mocks avant chaque test
+    axios.get.mockResolvedValue({ data: mockTeams });
   });
 
-  it('charge et affiche les matchs du premier round', async () => {
-    // On simule une réponse d’API avec 8 équipes
-    axios.get.mockResolvedValueOnce({
-      data: [
-        { nom: 'Team A' },
-        { nom: 'Team B' },
-        { nom: 'Team C' },
-        { nom: 'Team D' },
-        { nom: 'Team E' },
-        { nom: 'Team F' },
-        { nom: 'Team G' },
-        { nom: 'Team H' },
-      ],
-    });
-
+  it('should fetch teams and render first round of matches', async () => {
     render(<Tournament />);
 
-    // Attendre que les équipes soient affichées
+    await waitFor(() => {
+      expect(screen.getAllByText(/Team [A-H]/).length).toBeGreaterThan(0);
+    });
+
+    const inputs = screen.getAllByRole('spinbutton');
+    expect(inputs.length).toBe(8); // 4 matches x 2 teams
+  });
+
+  it('should simulate a full tournament flow', async () => {
+    render(<Tournament />);
+
     await waitFor(() => {
       expect(screen.getByText('Team A')).toBeInTheDocument();
     });
 
-    // Vérifie qu’on a bien 4 matchs (8 équipes)
     const inputs = screen.getAllByRole('spinbutton');
-    expect(inputs.length).toBe(8); // 2 champs par match x 4 matchs
-  });
+    const buttons = screen.getAllByText('Valider');
 
-  it('simule un tournoi complet jusqu’à la finale', async () => {
-    axios.get.mockResolvedValueOnce({
-      data: [
-        { nom: 'T1' },
-        { nom: 'T2' },
-        { nom: 'T3' },
-        { nom: 'T4' },
-        { nom: 'T5' },
-        { nom: 'T6' },
-        { nom: 'T7' },
-        { nom: 'T8' },
-      ],
-    });
-
-    render(<Tournament />);
-
-    // Attendre que les équipes soient affichées
-    await waitFor(() => {
-      expect(screen.getByText('T1')).toBeInTheDocument();
-    });
-
-    // 1. Remplir les scores du premier round (4 matchs)
-    const inputs = screen.getAllByRole('spinbutton');
-    for (let i = 0; i < inputs.length; i += 2) {
-      fireEvent.change(inputs[i], { target: { value: '1' } });     // team1
-      fireEvent.change(inputs[i + 1], { target: { value: '0' } }); // team2
+    // Round 1
+    for (let i = 0; i < 4; i++) {
+      userEvent.clear(inputs[i * 2]);
+      userEvent.type(inputs[i * 2], '2');
+      userEvent.clear(inputs[i * 2 + 1]);
+      userEvent.type(inputs[i * 2 + 1], '1');
+      userEvent.click(buttons[i]);
     }
 
-    // 2. Valider tous les premiers matchs
-    const buttons = screen.getAllByRole('button', { name: /valider/i });
-    buttons.slice(0, 4).forEach((btn) => fireEvent.click(btn));
-
-    // 3. Valider les demi-finales
+    // Round 2
     await waitFor(() => {
-      expect(screen.getAllByRole('button', { name: /valider/i }).length).toBeGreaterThan(4);
+      expect(screen.getAllByText('Valider').length).toBe(2); // 2 matches
     });
 
-    const semiInputs = screen.getAllByRole('spinbutton').slice(8, 12);
-    for (let i = 0; i < semiInputs.length; i += 2) {
-      fireEvent.change(semiInputs[i], { target: { value: '1' } });
-      fireEvent.change(semiInputs[i + 1], { target: { value: '0' } });
-    }
+    const round2Inputs = screen.getAllByRole('spinbutton');
+    const round2Buttons = screen.getAllByText('Valider');
 
-    screen.getAllByRole('button', { name: /valider/i }).slice(4, 6).forEach((btn) => fireEvent.click(btn));
+    userEvent.clear(round2Inputs[0]);
+    userEvent.type(round2Inputs[0], '3');
+    userEvent.clear(round2Inputs[1]);
+    userEvent.type(round2Inputs[1], '1');
+    userEvent.click(round2Buttons[0]);
 
-    // 4. Valider la finale
+    userEvent.clear(round2Inputs[2]);
+    userEvent.type(round2Inputs[2], '2');
+    userEvent.clear(round2Inputs[3]);
+    userEvent.type(round2Inputs[3], '0');
+    userEvent.click(round2Buttons[1]);
+
+    // Final
     await waitFor(() => {
-      expect(screen.getByText(/En attente des demi-finales.../)).not.toBeInTheDocument();
+      expect(screen.getAllByText('Valider').length).toBe(1); // final match
     });
 
-    const finaleInputs = screen.getAllByRole('spinbutton').slice(-2);
-    fireEvent.change(finaleInputs[0], { target: { value: '3' } });
-    fireEvent.change(finaleInputs[1], { target: { value: '2' } });
+    const finalInputs = screen.getAllByRole('spinbutton');
+    const finalButton = screen.getByText('Valider');
 
-    screen.getAllByRole('button', { name: /valider/i }).slice(-1)[0].click();
+    userEvent.clear(finalInputs[0]);
+    userEvent.type(finalInputs[0], '1');
+    userEvent.clear(finalInputs[1]);
+    userEvent.type(finalInputs[1], '0');
+    userEvent.click(finalButton);
 
-    // 5. Vérifie le vainqueur affiché
     await waitFor(() => {
       expect(screen.getByText(/🏆 Vainqueur/)).toBeInTheDocument();
     });

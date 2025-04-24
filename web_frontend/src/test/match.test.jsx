@@ -1,37 +1,38 @@
 import React from 'react';
-import { describe, test, expect, vi } from 'vitest';
 import { render, screen, fireEvent } from '@testing-library/react';
-import { Match } from '../pages/tournois'; 
+import '@testing-library/jest-dom';
+import { Match } from './pages/tournois'; // si Match est exporté séparément sinon le mettre dans un fichier test dédié
 
-describe('Match component', () => {
-  test('affiche les noms des équipes', () => {
-    render(<Match team1="France" team2="Brésil" onWinner={() => {}} />);
-    expect(screen.getByText('France')).toBeInTheDocument();
-    expect(screen.getByText('Brésil')).toBeInTheDocument();
+describe('Match Component', () => {
+  it('should call onWinner with team1 when score1 > score2', () => {
+    const mockOnWinner = jest.fn();
+    render(<Match team1="Team A" team2="Team B" onWinner={mockOnWinner} />);
+
+    fireEvent.change(screen.getAllByRole('spinbutton')[0], { target: { value: '3' } });
+    fireEvent.change(screen.getAllByRole('spinbutton')[1], { target: { value: '1' } });
+    fireEvent.click(screen.getByText('Valider'));
+
+    expect(mockOnWinner).toHaveBeenCalledWith('Team A');
   });
 
-  test('déclare la bonne équipe gagnante', () => {
-    const mockOnWinner = vi.fn(); // vi.fn() au lieu de jest.fn()
-    render(<Match team1="France" team2="Brésil" onWinner={mockOnWinner} />);
+  it('should call onWinner with team2 when score2 > score1', () => {
+    const mockOnWinner = jest.fn();
+    render(<Match team1="Team A" team2="Team B" onWinner={mockOnWinner} />);
 
-    const inputs = screen.getAllByRole('spinbutton');
-    fireEvent.change(inputs[0], { target: { value: '2' } }); // France
-    fireEvent.change(inputs[1], { target: { value: '1' } }); // Brésil
+    fireEvent.change(screen.getAllByRole('spinbutton')[0], { target: { value: '2' } });
+    fireEvent.change(screen.getAllByRole('spinbutton')[1], { target: { value: '5' } });
+    fireEvent.click(screen.getByText('Valider'));
 
-    fireEvent.click(screen.getByRole('button', { name: /valider/i }));
-
-    expect(mockOnWinner).toHaveBeenCalledWith('France');
+    expect(mockOnWinner).toHaveBeenCalledWith('Team B');
   });
 
-  test('ne fait rien si les scores sont invalides', () => {
-    const mockOnWinner = vi.fn();
-    render(<Match team1="France" team2="Brésil" onWinner={mockOnWinner} />);
+  it('should not call onWinner if invalid input', () => {
+    const mockOnWinner = jest.fn();
+    render(<Match team1="Team A" team2="Team B" onWinner={mockOnWinner} />);
 
-    const inputs = screen.getAllByRole('spinbutton');
-    fireEvent.change(inputs[0], { target: { value: 'abc' } });
-    fireEvent.change(inputs[1], { target: { value: '1' } });
-
-    fireEvent.click(screen.getByRole('button', { name: /valider/i }));
+    fireEvent.change(screen.getAllByRole('spinbutton')[0], { target: { value: '' } });
+    fireEvent.change(screen.getAllByRole('spinbutton')[1], { target: { value: '1' } });
+    fireEvent.click(screen.getByText('Valider'));
 
     expect(mockOnWinner).not.toHaveBeenCalled();
   });
