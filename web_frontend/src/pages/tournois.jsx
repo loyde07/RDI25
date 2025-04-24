@@ -67,6 +67,7 @@ const Tournament = () => {
     fetchData();
   }, []);
 
+
   const updateNextRound = (roundSetter, index) => (winner) => {
     roundSetter((prev) => {
       const updated = [...prev];
