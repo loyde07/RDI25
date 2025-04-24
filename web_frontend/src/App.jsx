@@ -12,7 +12,6 @@ function App(){
     return (
         <>
         <Router>
-<<<<<<< tournois
             <Header/> 
             <Routes>
                 <Route path="/" element={<Home/>} />
