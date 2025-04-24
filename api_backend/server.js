@@ -19,7 +19,6 @@ import joueurRoutes from "./routes/route.joueurs.js";
 import ecoleRoutes from './routes/ecoles.route.js';
 import authRoutes from './routes/auth.route.js';
 import matchRoutes from "./routes/match.routes.js";
-import tournoisRoutes from './routes/tournois.routes.js';
 
 
 
@@ -45,7 +44,6 @@ app.use("/api/ecoles", ecoleRoutes);
 
 app.use("/api/teams", routesTeam);
 
-app.use('/api/tournois', tournoisRoutes);
 app.use("/api/matches", matchRoutes);
 app.use("/api/joueurs", joueurRoutes);
 

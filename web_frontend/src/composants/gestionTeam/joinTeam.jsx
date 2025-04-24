@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import {motion} from 'framer-motion'
 
-const API = import.meta.env.VITE_API || "http://localhost:5000";
+const API = import.meta.env.VITE_API ;
 // ou avec CRA : process.env.REACT_APP_API_URL
 
 

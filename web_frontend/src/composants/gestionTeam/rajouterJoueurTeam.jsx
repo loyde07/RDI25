@@ -2,7 +2,8 @@ import React, { useEffect,useState } from 'react';
 import axios from 'axios';
 import {motion} from 'framer-motion'
 
-const API = "http://localhost:5000"; // Remplace par ton URL d'API
+const API = import.meta.env.VITE_API ;
+
 
 function RajouterJoueur({ onJoueurSelectionne }) {
     const [recherche, setRecherche] = useState('');

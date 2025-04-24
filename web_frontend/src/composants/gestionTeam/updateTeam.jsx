@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import RajouterJoueur from "./rajouterJoueurTeam.jsx"
-const API = import.meta.env.VITE_API || "http://localhost:5000";
+const API = import.meta.env.VITE_API ;
 import {motion} from 'framer-motion'
 
 function UpdateTeam() {

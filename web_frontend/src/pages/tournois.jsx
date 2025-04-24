@@ -2,6 +2,8 @@ import React, { useState, useEffect } from "react";
 import axios from "axios";
 import { Trophy, Swords, Shield } from "lucide-react";
 
+const API = import.meta.env.VITE_API ;
+
 const Match = ({ team1, team2, onWinner }) => {
   const [score1, setScore1] = useState("");
   const [score2, setScore2] = useState("");
@@ -53,8 +55,7 @@ const Tournament = () => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await axios.get(
-          "http://localhost:5000/api/teams/67f8c2993634ef292b6a5d0b/teams"
+        const response = await axios.get( `${API}/api/teams/67f8c2993634ef292b6a5d0b/teams`
         );
         const nomsDesTeams = response.data.map((team) => team.nom);
         setRound1(nomsDesTeams);

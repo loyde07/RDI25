@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import axios from "axios";
 import "./team.css";
 
-const API = import.meta.env.VITE_API || "http://localhost:5000";
+const API = import.meta.env.VITE_API ;
 
 function Team() {
   const [teams, setTeams] = useState([]);
