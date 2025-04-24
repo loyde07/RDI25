@@ -97,17 +97,14 @@ const Match = ({ team1, team2, onWinner }) => {
           ))}
         </div>
         <div className="round">
-          {semis[0] && semis[1] ? (
-            <Match
-              team1={semis[0]}
-              team2={semis[1]}
-              onWinner={setFinal}
-            />
-          ) : (
-            <div className="placeholder">En attente des demi-finales...</div>
-          )}
+          <Match
+            team1={semis[0]}
+            team2={semis[1]}
+            onWinner={setFinal}
+          />
           {final && <div className="winner">🏆 Vainqueur : {final}</div>}
         </div>
+
       </div>
     );
   };
