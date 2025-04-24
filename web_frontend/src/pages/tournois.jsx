@@ -46,6 +46,9 @@ const Match = ({ team1, team2, onWinner }) => {
   
   const Tournament = () => {
     const [round1, setRound1] = useState([]);
+    const [round2, setRound2] = useState(Array(4).fill(null));
+    const [semis, setSemis] = useState(Array(2).fill(null));
+    const [final, setFinal] = useState(null);
   
     const fetchData = async () => {
       try {
@@ -62,12 +65,6 @@ const Match = ({ team1, team2, onWinner }) => {
     useEffect(() => {
       fetchData();
     }, []);
-  
-
-
-    const [round2, setRound2] = useState(Array(4).fill(null));
-    const [semis, setSemis] = useState(Array(2).fill(null));
-    const [final, setFinal] = useState(null);
   
     const updateNextRound = (roundSetter, index) => (winner) => {
       roundSetter((prev) => {
@@ -100,20 +97,17 @@ const Match = ({ team1, team2, onWinner }) => {
           ))}
         </div>
         <div className="round">
-          {semis[0] && semis[1] ? (
-            <Match
-              team1={semis[0]}
-              team2={semis[1]}
-              onWinner={setFinal}
-            />
-          ) : (
-            <div className="placeholder">En attente des demi-finales...</div>
-          )}
+          <Match
+            team1={semis[0]}
+            team2={semis[1]}
+            onWinner={setFinal}
+          />
           {final && <div className="winner">🏆 Vainqueur : {final}</div>}
         </div>
+
       </div>
     );
   };
   
   export default Tournament;
-  export { Match };
+
