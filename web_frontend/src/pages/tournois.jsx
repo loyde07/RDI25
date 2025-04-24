@@ -53,6 +53,7 @@ const Tournament = () => {
   const [final, setFinal] = useState(null);
 
   useEffect(() => {
+
     const fetchData = async () => {
       try {
         const response = await axios.get( `${API}/api/teams/67f8c2993634ef292b6a5d0b/teams`
@@ -72,6 +73,8 @@ const Tournament = () => {
       updated[index] = winner;
       return updated;
     });
+
+  
   };
 
   return (
