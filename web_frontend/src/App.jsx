@@ -1,14 +1,12 @@
 // Modules
+
 import { Routes, Route, Navigate } from "react-router-dom"
-import React from "react";
-import {Toaster} from 'react-hot-toast'
-import { useEffect } from "react"
+import React, { useEffect } from "react";
+import { Toaster } from 'react-hot-toast'
+
+// gestion des teams
 import Team from "./pages/team.jsx";
-
 import Gestion from "./pages/gestionTeam.jsx"
-
-// fonction d'authentification
-import {useAuthStore} from './store/authStore.js'
 
 // Composant de style
 import FloatingShape from "./components/FloatingShape.jsx"
@@ -20,6 +18,7 @@ import SignUpPage from "./pages/SignUpPage.jsx"
 import LoginPage from "./pages/LoginPage.jsx"
 import EmailVerificationPage from "./pages/EmailVerificationPage.jsx"
 import DashboardPage from "./pages/DashBoardPage.jsx"
+import EditProfilePage from "./pages/EditProfilePage.jsx";
 import ForgotPasswordPage from "./pages/ForgotPasswordPage.jsx"
 import ResetPasswordPage from "./pages/ResetPasswordPage.jsx"
 
@@ -32,7 +31,10 @@ import Header from "./pages/header.jsx"
 // Page du tournois
 import Tournement from "./pages/tournois.jsx"
 
-// protège les routes qui demande une authentification
+// fonction d'authentification
+import {useAuthStore} from './store/authStore.js'
+
+// Protège les routes qui demandent une authentification
 const ProtectedRoute = ({ children }) => {
 	const { isAuthenticated, user } = useAuthStore();
 
@@ -47,9 +49,9 @@ const ProtectedRoute = ({ children }) => {
 	return children;
 };
 
-// redirige les utilisateur authentifié vers la page principale
+// Redirige les utilisateurs déjà connectés
 const RedirectAuthenticatedUser = ({ children }) => {
-	const { isAuthenticated, user }=useAuthStore();
+	const { isAuthenticated, user } = useAuthStore();
 
 	if (isAuthenticated && user && user.isVerified) {
 		return <Navigate to='/' replace />;
@@ -62,61 +64,47 @@ const RedirectAuthenticatedUser = ({ children }) => {
 function App(){
 
 
-  const {isCheckingAuth, checkAuth, isAuthenticated, user }=useAuthStore()
+	const { isCheckingAuth, checkAuth } = useAuthStore();
 
-  useEffect( () =>{
-    checkAuth()
-  },[checkAuth])
+	useEffect(() => {
+		checkAuth();
+	}, [checkAuth]);
 
   if (isCheckingAuth) return <LoadingSpinner />;
 
-
-
   return (
+
     <div className="min-h-screen bg-gradient-to-br
     from-gray-900 via-blue-900 to-gray-900 flex items-center justify-center relative overflow-hidden"
-    >
-      <Header className="fixed top-0 left-0 w-full z-50" />
+	>
+		<Header className="fixed top-0 left-0 w-full z-50" />
 
-      <FloatingShape color="bg-rose-500" size="w-64 h-64" top="-5%" left="10%" delay={0}  />
-      <FloatingShape color="bg-pink-500" size="w-48 h-48" top="70%" left="80%" delay={5}  />
-      <FloatingShape color="bg-fuchsia-500" size="w-32 h-32" top="40%" left="20%" delay={2}  />
+		<FloatingShape color="bg-rose-500" size="w-64 h-64" top="-5%" left="10%" delay={0}  />
+		<FloatingShape color="bg-pink-500" size="w-48 h-48" top="70%" left="80%" delay={5}  />
+		<FloatingShape color="bg-fuchsia-500" size="w-32 h-32" top="40%" left="20%" delay={2}  />
 
-      <Routes>
-        
-        <Route path="/" element={<Home/>} />
-        <Route path='/dashboard'
-         element={
-          <ProtectedRoute>
-            <DashboardPage/>
-          </ProtectedRoute>
-         }  
-        />
-        <Route 
-        path='/signup' 
-          element={
-            <RedirectAuthenticatedUser>
-              <SignUpPage />
-            </RedirectAuthenticatedUser>
-          } 
-        />
-        <Route path='/login'
-          element={
-            <RedirectAuthenticatedUser>
-              <LoginPage />
-            </RedirectAuthenticatedUser>
-           } 
-        />
-        <Route path='/verifyEmail' element={<EmailVerificationPage/>} />
-        <Route path='/forgotPassword' element={<ForgotPasswordPage/>} />
-        <Route path='/ResetPassword' element={<ResetPasswordPage/>} />   
-        <Route path="/tournois" element={<Tournement/>} />
-        <Route path="/gestion" element={<Gestion/>} />
-        <Route path="/team" element={<Team/>} />
-      </Routes> 
-      <Toaster/>
-    </div>
-  )
+		{/* Contenu des pages */}
+		<div className="flex items-center justify-center min-h-[calc(100vh-100px)]">
+			<Routes>
+				<Route path="/" element={<Home />} />
+				<Route path="/dashboard" element={<ProtectedRoute><DashboardPage /></ProtectedRoute>} />
+				<Route path="/signup" element={<RedirectAuthenticatedUser><SignUpPage /></RedirectAuthenticatedUser>} />
+				<Route path="/login" element={<RedirectAuthenticatedUser><LoginPage /></RedirectAuthenticatedUser>} />
+				<Route path="/verifyEmail" element={<EmailVerificationPage />} />
+				<Route path="/forgotPassword" element={<ForgotPasswordPage />} />
+				<Route path="/ResetPassword" element={<ResetPasswordPage />} />
+				<Route path="/editProfile/" element={<ProtectedRoute><EditProfilePage/></ProtectedRoute>} />
+				<Route path="/tournois" element={<Tournement/>} />
+				<Route path="/gestion" element={<Gestion/>} />
+				<Route path="/team" element={<Team/>} />
+			</Routes>
+			<Toaster
+				position="bottom-right"
+				reverseOrder={false}
+			/>
+		</div>
+	</div>
+
+	);
 }
-
 export default App;
