@@ -14,7 +14,7 @@ function Home(){
     animate={{ opacity: 1, scale: 1 }}
     exit={{ opacity: 0, scale: 0.9 }}
     transition={{ duration: 0.5 }}
-    className="border w-full p-4 m-6 bg-blend-color bg-gradient-to-b from-sky-600 via-blue-600 to-indigo-900 rounded-xl font-mono"
+    className="border w-full p-4 m-6 bg-blend-color bg-gradient-to-b from-gray-300 via-sky-600 to-indigo-900 rounded-xl font-mono"
     >
       <section className=' flex-col py-15 px-10 mb border-b-2  p-3 '>
         <h1 className=" text-5xl font-extrabold"> <p>LAN-Party</p><p>EPHEC 2025</p></h1>
@@ -186,18 +186,18 @@ function Home(){
       </section>
 
       <section className='flex'>
-        <div className='w-1/2 '>
-          <h2 className='text-2xl font-extrabold '>Galerie</h2>
+        <div className='w-1/2'>
+          <h2 className='text-2xl font-extrabold mb-4 '>Galerie</h2>
           <div className='flex justify-between'>
             <p className='w-1/4 text-sm'>
               Revivez les moment passé des éditions précedentes
               <motion.button
-              whileHover={{ scale: 1.05 }}
-              whileTap={{ scale: 0.95 }}
-              className="m-2 px-4 bg-gradient-to-r from-blue-500 to-indigo-600 text-white text-xl
+                whileHover={{ scale: 1.05 }}
+                whileTap={{ scale: 0.95 }}
+                className="m-2 px-4 bg-gradient-to-r from-blue-500 to-indigo-600 text-white text-xl
                 font-bold rounded-lg shadow-lg hover:from-blue-600 hover:to-indigo-700
                 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 focus:ring-offset-gray-900"
-            >              
+              >              
               Voire Plus
             </motion.button>
             </p>
@@ -209,15 +209,14 @@ function Home(){
               <div> <img className=' w-35 mx-1 border-2 rounded-2xl' src='/Lp_3.jpg'/></div>
             </div>
           </div>
-
         </div>
-        <div className='w-1/2 '>
-          <h2 className='text-2xl font-extrabold '>Partenaire & Sponsor</h2>
+        <div className='w-1/2 px-15'>
+          <h2 className='text-2xl font-extrabold mb-4'>Partenaire & Sponsor</h2>
           <div className='mx-2 flex justify-end-safe'>
             <motion.button
-            whileHover={{ scale: 1.05 }}
-            whileTap={{ scale: 0.95 }}
-            className=" size-30 px-4 mx-2 bg-gradient-to-r from-blue-500 to-indigo-600 text-white text-2xl
+              whileHover={{ scale: 1.05 }}
+              whileTap={{ scale: 0.95 }}
+              className=" size-30 px-4 mx-2 bg-gradient-to-r from-blue-500 to-indigo-600 text-white text-2xl
               font-bold rounded-lg shadow-lg hover:from-blue-600 hover:to-indigo-700
               focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 focus:ring-offset-gray-900"
             >              

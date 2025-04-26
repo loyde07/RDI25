@@ -64,11 +64,11 @@ const Navbar = () => {
           <Link to="/tournois" className="text-sm font-medium hover:opacity-80 transition-all bg-clip-text text-transparent bg-gradient-to-r from-blue-400 to-indigo-700">
             Tournois
           </Link>
-          <Link to="/gestion" className="text-sm font-medium hover:opacity-80 transition-all bg-clip-text text-transparent bg-gradient-to-r from-blue-400 to-indigo-700">
+          <Link to="/team" className="text-sm font-medium hover:opacity-80 transition-all bg-clip-text text-transparent bg-gradient-to-r from-blue-400 to-indigo-700">
             Équipes
           </Link>
-          <Link to="/" className="text-sm font-medium hover:opacity-80 transition-all bg-clip-text text-transparent bg-gradient-to-r from-blue-400 to-indigo-700">
-            À propos
+          <Link to="/gestion" className="text-sm font-medium hover:opacity-80 transition-all bg-clip-text text-transparent bg-gradient-to-r from-blue-400 to-indigo-700">
+            Gestion
           </Link>
         </div>
       </div>

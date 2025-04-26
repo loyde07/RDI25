@@ -2,7 +2,8 @@ import React, { useEffect, useState } from "react";
 import axios from "axios";
 import "./team.css";
 
-const API = import.meta.env.VITE_API ;
+const API = "http://localhost:5000";
+;
 
 function Team() {
   const [teams, setTeams] = useState([]);
@@ -15,6 +16,7 @@ function Team() {
       try {
         const res = await axios.get(`${API}/api/teams`);
         setTeams(res.data.data || res.data);
+
       } catch (err) {
         console.error("Erreur récupération équipes :", err);
       }
@@ -64,30 +66,30 @@ function Team() {
                     text-transparent bg-clip-text">Équipes</h1>
 
       <div className="carousel3D-wrapper">
-  <div className="carousel3D">
-    {teams.map((team, index) => {
-      const angle = angleStep * (index - selectedIndex);
-      return (
-        <div
-          key={team._id}
-          className={`carousel3D-item ${index === selectedIndex ? "active" : ""}`}
-          style={{
-            transform: `translateX(-50%) rotateY(${angle}deg) translateZ(600px)`
-          }}
-          onClick={() => handleLogoClick(index)}
-        >
-          <img src={team.logo ? team.logo : "/val.png"}  alt={team.nom} className="carousel3D-img" />
+        <div className="carousel3D">
+          {teams.map((team, index) => {
+            const angle = angleStep * (index - selectedIndex);
+            return (
+              <div
+                key={team._id}
+                className={`carousel3D-item ${index === selectedIndex ? "active" : ""}`}
+                style={{
+                  transform: `translateX(-50%) rotateY(${angle}deg) translateZ(600px)`
+                }}
+                onClick={() => handleLogoClick(index)}
+              >
+                <img src={team.logo ? team.logo : "/val.png"} alt={team.nom} className="carousel3D-img" />
+              </div>
+            );
+          })}
         </div>
-      );
-    })}
-  </div>
-</div>
+      </div>
 
-<div className="carousel3D-controls">
-  <button onClick={rotateLeft} className="carousel3D-btn">{'<'}</button>
-  <button onClick={rotateRight} className="carousel3D-btn">{'>'}</button>
-</div>
- 
+      <div className="carousel3D-controls">
+        <button onClick={rotateLeft} className="carousel3D-btn">{'<'}</button>
+        <button onClick={rotateRight} className="carousel3D-btn">{'>'}</button>
+      </div>
+
       {teams[selectedIndex] && (
         <div className="max-w-4xl w-full mx-auto p-6 bg-gray-800/40 backdrop-blur-md rounded-2xl shadow-md mt-10">
 
