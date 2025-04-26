@@ -60,10 +60,7 @@ const RedirectAuthenticatedUser = ({ children }) => {
 	return children;
 };
 
-
-function App(){
-
-
+function App() {
 	const { isCheckingAuth, checkAuth } = useAuthStore();
 
 	useEffect(() => {
@@ -72,39 +69,43 @@ function App(){
 
   if (isCheckingAuth) return <LoadingSpinner />;
 
-  return (
 
-    <div className="min-h-screen bg-gradient-to-br
-    from-gray-900 via-blue-900 to-gray-900 flex items-center justify-center relative overflow-hidden"
-	>
-		<Header className="fixed top-0 left-0 w-full z-50" />
 
-		<FloatingShape color="bg-rose-500" size="w-64 h-64" top="-5%" left="10%" delay={0}  />
-		<FloatingShape color="bg-pink-500" size="w-48 h-48" top="70%" left="80%" delay={5}  />
-		<FloatingShape color="bg-fuchsia-500" size="w-32 h-32" top="40%" left="20%" delay={2}  />
+	return (
+		<div className="min-h-screen flex flex-col">
+			<Header />
 
-		{/* Contenu des pages */}
-		<div className="flex items-center justify-center min-h-[calc(100vh-100px)]">
-			<Routes>
-				<Route path="/" element={<Home />} />
-				<Route path="/dashboard" element={<ProtectedRoute><DashboardPage /></ProtectedRoute>} />
-				<Route path="/signup" element={<RedirectAuthenticatedUser><SignUpPage /></RedirectAuthenticatedUser>} />
-				<Route path="/login" element={<RedirectAuthenticatedUser><LoginPage /></RedirectAuthenticatedUser>} />
-				<Route path="/verifyEmail" element={<EmailVerificationPage />} />
-				<Route path="/forgotPassword" element={<ForgotPasswordPage />} />
-				<Route path="/ResetPassword" element={<ResetPasswordPage />} />
-				<Route path="/editProfile/" element={<ProtectedRoute><EditProfilePage/></ProtectedRoute>} />
-				<Route path="/tournois" element={<Tournement/>} />
-				<Route path="/gestion" element={<Gestion/>} />
-				<Route path="/team" element={<Team/>} />
-			</Routes>
+			{/* Fond flottant avec décalage du contenu */}
+			<div className="relative flex-1 bg-gradient-to-br from-gray-900 via-blue-900 to-gray-900 overflow-hidden pt-[90px]">
+				{/* Éléments décoratifs */}
+				<FloatingShape color="bg-rose-500" size="w-64 h-64" top="-5%" left="10%" delay={0} />
+				<FloatingShape color="bg-pink-500" size="w-48 h-48" top="70%" left="80%" delay={5} />
+				<FloatingShape color="bg-fuchsia-500" size="w-32 h-32" top="40%" left="20%" delay={2} />
+
+				{/* Contenu des pages */}
+				<div className="flex items-center justify-center min-h-[calc(100vh-100px)]">
+					<Routes>
+						<Route path="/" element={<Home />} />
+						<Route path="/dashboard" element={<ProtectedRoute><DashboardPage /></ProtectedRoute>} />
+						<Route path="/signup" element={<RedirectAuthenticatedUser><SignUpPage /></RedirectAuthenticatedUser>} />
+						<Route path="/login" element={<RedirectAuthenticatedUser><LoginPage /></RedirectAuthenticatedUser>} />
+						<Route path="/verifyEmail" element={<EmailVerificationPage />} />
+						<Route path="/forgotPassword" element={<ForgotPasswordPage />} />
+						<Route path="/ResetPassword" element={<ResetPasswordPage />} />
+						<Route path="/editProfile/" element={<ProtectedRoute><EditProfilePage/></ProtectedRoute>} />
+						<Route path="/tournois" element={<Tournement/>} />
+						<Route path="/gestion" element={<Gestion/>} />
+						<Route path="/team" element={<Team/>} />
+					</Routes>
+				</div>
+			</div>
+
 			<Toaster
 				position="bottom-right"
 				reverseOrder={false}
 			/>
 		</div>
-	</div>
-
 	);
 }
+
 export default App;
