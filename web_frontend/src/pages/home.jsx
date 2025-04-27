@@ -14,7 +14,7 @@ function Home(){
     animate={{ opacity: 1, scale: 1 }}
     exit={{ opacity: 0, scale: 0.9 }}
     transition={{ duration: 0.5 }}
-    className="border w-full p-4 m-6 bg-blend-color bg-gradient-to-b from-gray-300 via-sky-600 to-indigo-900 rounded-xl font-mono"
+    className="border w-full p-4 m-6 bg-blend-color bg-gradient-to-b from-gray-300 via-sky-600 to-indigo-900 rounded-xl font- "
     >
       <section className=' flex-col py-15 px-10 mb border-b-2  p-3 '>
         <h1 className=" text-5xl font-extrabold"> <p>LAN-Party</p><p>EPHEC 2025</p></h1>

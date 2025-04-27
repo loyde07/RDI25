@@ -60,14 +60,14 @@ const Navbar = () => {
         </div>
 
         {/* Bottom section with links */}
-        <div className="flex justify-around  gap-6 py-2 ">
-          <Link to="/tournois" className="text-sm font-medium hover:opacity-80 transition-all bg-clip-text text-transparent bg-gradient-to-r from-blue-400 to-indigo-700">
+        <div className="flex   gap-6 py-2 ">
+          <Link to="/tournois" className=" mr-15 text-sm font-medium hover:opacity-80 transition-all bg-clip-text text-transparent bg-gradient-to-r from-blue-400 to-indigo-700">
             Tournois
           </Link>
-          <Link to="/team" className="text-sm font-medium hover:opacity-80 transition-all bg-clip-text text-transparent bg-gradient-to-r from-blue-400 to-indigo-700">
+          <Link to="/team" className=" mx-15 text-sm font-medium hover:opacity-80 transition-all bg-clip-text text-transparent bg-gradient-to-r from-blue-400 to-indigo-700">
             Équipes
           </Link>
-          <Link to="/gestion" className="text-sm font-medium hover:opacity-80 transition-all bg-clip-text text-transparent bg-gradient-to-r from-blue-400 to-indigo-700">
+          <Link to="/gestion" className="mx-15 text-sm font-medium hover:opacity-80 transition-all bg-clip-text text-transparent bg-gradient-to-r from-blue-400 to-indigo-700">
             Gestion
           </Link>
         </div>
