@@ -2,10 +2,13 @@ import { motion } from 'framer-motion'
 import {Link, useNavigate} from 'react-router-dom'
 import { User, Mail, Lock, Loader } from "lucide-react"
 import { useState } from 'react'
+import React from 'react'
+import { toast } from 'react-hot-toast'
 import { useAuthStore } from '../store/authStore'
 
 import Input from '../components/Input'
 import PasswordStrengthMeter from '../components/PasswordStrengthMeter'
+import { validateSignup } from '../utils/validation/validationSignUp'; 
 
 const SignUpPage = () => {
 
@@ -14,22 +17,37 @@ const SignUpPage = () => {
     const [pseudo, setUserName] = useState('')
     const [email, setEmail] = useState('')
     const [password, setPassword] = useState('')
-    
+    const [localError, setLocalError] = useState('')  
+
     const navigate = useNavigate()
 
     const { signup, error, isLoading } =  useAuthStore();
 
+
     const handleSignUp = async (e) => {
-        e.preventDefault()
+        e.preventDefault();
+
+        const formData = { lName, fName, pseudo, email, password };
+        const errors = validateSignup(formData);
+
+        if (Object.keys(errors).length > 0) {
+            const firstError = errors.global || Object.values(errors)[0];
+            toast.error(firstError);
+            setLocalError(firstError);
+            return;
+        }
+
+        setLocalError('');
 
         try {
-            await signup(lName, fName, pseudo, email, password)
-            navigate("/verifyEmail")
+            await signup(formData.lName.trim(), formData.fName.trim(), formData.pseudo.trim(), formData.email.trim(), formData.password);
+            navigate("/dashboard");
         } catch (error) {
-            console.log(error)
-            
+            console.error(error);
+            toast.error(localError || error.message || 'Une erreur est survenue lors de l\'inscription');
         }
-    }
+    };
+
 
     return (
         <motion.div
@@ -69,10 +87,11 @@ const SignUpPage = () => {
                     />
                     <Input
                         icon={Mail}
-                        type='email'
+                        type='text'
                         placeholder='adresse mail'
                         value={email}
                         onChange={(e) => setEmail(e.target.value)}
+                        onInvalid={(e) => e.preventDefault()}
                     />
                     <Input
                         icon={Lock}
@@ -81,7 +100,7 @@ const SignUpPage = () => {
                         value={password}
                         onChange={(e) => setPassword(e.target.value)}
                     />
-                    {error && <p className='text-red-500 font-semibold mt-2'>{error}</p>}
+                    {(localError || error) && ( <p className="text-red-500 font-semibold mt-2"> {localError || error}</p>)}
                     <PasswordStrengthMeter password={password}/>
 
                     <motion.button
@@ -93,8 +112,9 @@ const SignUpPage = () => {
                          whileTop={{scale:0.98}}
                          type='submit'
                          disabled={isLoading}
+                         data-testid="submit-button"
                     >
-                    {isLoading? <Loader className='animate-spin mx-auto' size={24}/>:"S'inscrire"}
+                    {isLoading? <Loader data-testid="loader" className='animate-spin mx-auto' size={24}/>:"S'inscrire"}
                     </motion.button>
                 </form>
             </div>

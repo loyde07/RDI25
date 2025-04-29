@@ -1,3 +1,5 @@
+import React from 'react';  // Ajoutez cette ligne en haut du fichier
+
 import { Check, X } from "lucide-react";
 
 const PasswordCriteria = ({ password }) => {

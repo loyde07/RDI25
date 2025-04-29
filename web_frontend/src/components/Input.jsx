@@ -1,3 +1,5 @@
+import React from 'react';  // Ajoutez cette ligne en haut du fichier
+
 const Input = ({ icon: Icon, ...props }) => {
 	return (
 		<div className='relative mb-6'>

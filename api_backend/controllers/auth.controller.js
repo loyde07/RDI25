@@ -64,12 +64,17 @@ export const signup = async  (req, res) => {
         })
 
         // sauvegarde dans la db
+        user.isVerified = true
+        user.verificationToken = undefined;
+        user.verificationTokenExpiresAt = undefined;
         await user.save();
 
         //jwt
         generateTokenAndSetCookie(res, user._id);
 
-        await sendVerificationEmail(user.email, verificationToken);
+        // await sendVerificationEmail(user.email, verificationToken);
+
+
 
         res.status(201).json({
             sucess: true,
