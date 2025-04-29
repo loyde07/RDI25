@@ -56,7 +56,7 @@ const  EditProfilePage =  () => {
       if (password) updatePayload.password = password;
 
       await updateProfile(updatePayload);
-      navigate("/dashboard");
+      navigate("/profile");
     } catch (error) {
       toast.error("Erreur lors de la mise à jour");
       console.error(error);
@@ -131,7 +131,7 @@ const  EditProfilePage =  () => {
 				 font-bold rounded-lg shadow-lg hover:from-blue-800 hover:to-indigo-900
 				 focus:outline-none focus:ring-2 focus:ring-blue-700 focus:ring-offset-2 focus:ring-offset-gray-900'
 				>
-				    <Link to="/dashboard">Annuler</Link> 
+				    <Link to="/profile">Annuler</Link> 
 
 				</motion.button>
       </form>

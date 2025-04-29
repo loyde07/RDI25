@@ -41,10 +41,11 @@ const SignUpPage = () => {
 
         try {
             await signup(formData.lName.trim(), formData.fName.trim(), formData.pseudo.trim(), formData.email.trim(), formData.password);
-            navigate("/dashboard");
+            navigate("/profile");
         } catch (error) {
             console.error(error);
-            toast.error(localError || error.message || 'Une erreur est survenue lors de l\'inscription');
+            const message = error?.response?.data?.message || error.message || 'Une erreur est survenue';
+            toast.error(message);
         }
     };
 

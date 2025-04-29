@@ -127,12 +127,12 @@ export const login = async  (req, res) => {
     try {
         const user = await User.findOne({email});
         if (!user){
-            return res.status(400).json({sucess:false, message:"Invalid credentials"})
+            return res.status(400).json({sucess:false, message:"email incorrecte"})
         }
 
         const ispasswordValid = await bcrypt.compare(password, user.password);
         if (!ispasswordValid){
-            return res.status(400).json({sucess:false, message:"Invalid password"})
+            return res.status(400).json({sucess:false, message:"Mot de passe incorrect"})
         }
 
         generateTokenAndSetCookie(res, user._id);

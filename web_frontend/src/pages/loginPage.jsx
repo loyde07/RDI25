@@ -1,22 +1,49 @@
-import {useState} from 'react'
-import {motion} from 'framer-motion'
+import { useState } from 'react'
+import { motion } from 'framer-motion'
 import { Mail, Lock, Loader } from "lucide-react"
-import {Link} from 'react-router-dom'
+import { Link } from 'react-router-dom'
+import React from 'react'
+import { toast } from 'react-hot-toast'
 
 import { useAuthStore } from '../store/authStore'
 import Input from '../components/Input'
+import { validateLogin } from '../utils/validation/validationLogin.js'; 
+
 
 const LoginPage = () => {
 
     const [email, setEmail] = useState('')
     const [password, setPassword] = useState('')
+    const [localError, setLocalError] = useState('')
 
-    const {login, isLoading, error} = useAuthStore()
+    const { login, isLoading, error } = useAuthStore()
 
     const handleLogin = async (e) => {
         e.preventDefault();
-        await login(email, password)
+        const formData = { email, password };
+        const errors = validateLogin(formData);
+
+        if (Object.keys(errors).length > 0) {
+            const firstError = errors.global || Object.values(errors)[0];
+            toast.error(firstError);
+            setLocalError(firstError);
+            return;
+        }
+
+        setLocalError('');
+        try {
+            await login(email.trim(), password.trim())
+            navigate("/profile");
+
+        } catch (error) {
+            console.error(error);
+            const message = error?.response?.data?.message || error.message || 'Une erreur est survenue';
+            toast.error(message);
+        }
+        // Si la connexion échoue, vous pouvez gérer l'erreur ici        
+        // Si la connexion est réussie, redirige l'utilisateur vers le tableau de bord ou une autre page
     }
+
     return (
         <motion.div
             initial={{ opacity: 0, y: 20 }}
@@ -34,7 +61,7 @@ const LoginPage = () => {
                 <form onSubmit={handleLogin} >
                     <Input
                         icon={Mail}
-                        type='email'
+                        type='text'
                         placeholder='adresse mail'
                         value={email}
                         onChange={(e) => setEmail(e.target.value)}
@@ -52,18 +79,19 @@ const LoginPage = () => {
                             Mot de passe oublier?
                         </Link>
                     </div>
-                    {error && <p className='text-red-500 font-semibold mb-2'>{error}</p>}
+                    {(localError || error) && ( <p className="text-red-500 font-semibold mt-2"> {localError || error}</p>)}
                     <motion.button
                         className='mt-5 w-full py-3 px-4 bg-gradient-to-r from-blue-500 to-indigo-600 text-white 
 						font-bold rounded-lg shadow-lg hover:from-blue-600
 						hover:to-indigo-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2
 						 focus:ring-offset-gray-900 transition duration-200'
-                         whileHover={{scale: 1.02}}
-                         whileTop={{scale:0.98}}
-                         type='submit'
-                         disabled={isLoading}
+                        whileHover={{ scale: 1.02 }}
+                        whileTop={{ scale: 0.98 }}
+                        type='submit'
+                        disabled={isLoading}
+                        data-testid="login-button"
                     >
-                         {isLoading? <Loader className='w-6 h-6 animate-spin mx-auto'/>:"Se connecter"}
+                        {isLoading ? <Loader className='w-6 h-6 animate-spin mx-auto' /> : "Se connecter"}
                     </motion.button>
 
                 </form>
