@@ -17,9 +17,9 @@ import LoadingSpinner from "./components/LoadingSpinner.jsx"
 
 // Page d'authentification
 import SignUpPage from "./pages/SignUpPage.jsx"
-import LoginPage from "./pages/LoginPage.jsx"
+import LoginPage from "./pages/loginPage.jsx"
 import EmailVerificationPage from "./pages/EmailVerificationPage.jsx"
-import DashboardPage from "./pages/DashBoardPage.jsx"
+import DashboardPage from "./pages/DashboardPage.jsx"
 import ForgotPasswordPage from "./pages/ForgotPasswordPage.jsx"
 import ResetPasswordPage from "./pages/ResetPasswordPage.jsx"
 
