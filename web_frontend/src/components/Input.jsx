@@ -1,4 +1,4 @@
-import React from 'react';  // Ajoutez cette ligne en haut du fichier
+import React from 'react';  
 
 const Input = ({ icon: Icon, ...props }) => {
 	return (

@@ -1,13 +1,13 @@
 import { useState } from 'react'
 import { motion } from 'framer-motion'
 import { Mail, Lock, Loader } from "lucide-react"
-import { Link } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
 import React from 'react'
 import { toast } from 'react-hot-toast'
 
 import { useAuthStore } from '../store/authStore'
 import Input from '../components/Input'
-import { validateLogin } from '../utils/validation/validationLogin.js'; 
+import { validateLogin } from '../utils/validation/validationLogin.js';
 
 
 const LoginPage = () => {
@@ -16,6 +16,7 @@ const LoginPage = () => {
     const [password, setPassword] = useState('')
     const [localError, setLocalError] = useState('')
 
+    const navigate = useNavigate();
     const { login, isLoading, error } = useAuthStore()
 
     const handleLogin = async (e) => {
@@ -79,7 +80,7 @@ const LoginPage = () => {
                             Mot de passe oublier?
                         </Link>
                     </div>
-                    {(localError || error) && ( <p className="text-red-500 font-semibold mt-2"> {localError || error}</p>)}
+                    {(localError || error) && (<p className="text-red-500 font-semibold mt-2"> {localError || error}</p>)}
                     <motion.button
                         className='mt-5 w-full py-3 px-4 bg-gradient-to-r from-blue-500 to-indigo-600 text-white 
 						font-bold rounded-lg shadow-lg hover:from-blue-600

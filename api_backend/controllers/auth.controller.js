@@ -14,38 +14,38 @@ import { console } from 'inspector/promises';
 
 export const checkAuth = async (req, res) => {
     try {
-        const user = await User.findById(req.userId).select("-password"); // On récupère l'user de la DB
+        const user = await User.findById(req.userId).select("-password").populate('ecole_id');
         if (!user){
-            return res.status(400).json({success:false, message:"User not found"});
+            return res.status(400).json({ success: false, message: "Utilisateur introuvable" });
         }
-        res.status(200).json({success:true, user}); // On envoie l'user comme réponse
+        res.status(200).json({ success: true, user });
     } catch (error) {
         console.log("Error in checkAuth ", error);
-        res.status(400).json({success:false, message: error.message});
+        res.status(400).json({ success: false, message: error.message });
     }
-
 }
 
+
 export const signup = async  (req, res) => {
-    const {lName, fName,pseudo, email, password} = req.body;
+    const {lName, fName, pseudo, ecole_id, niveau, email, password} = req.body;
     try {
 
         // les champs requis doivent etre entrée
-        if(!lName, !fName, !pseudo, !email, !password){
-            throw new Error("All fields are required")
+        if(!lName, !fName, !pseudo, !ecole_id, !niveau, !email, !password){
+            throw new Error("Tout les champs sont requis")
         }
 
         // Error si l'email existe déja dans la db
         const userAlreadyExists = await User.findOne({email});
         console.log("userAlreadyExists", userAlreadyExists)
         if (userAlreadyExists){
-            return res.status(400).json({sucess:false, message: "User already exists"});
+            return res.status(400).json({sucess:false, message: "Adresse email déjà utilisée"});
         }
 
         const pseudoAlreadyExists = await User.findOne({pseudo});
         console.log("pseudoAlreadyExists", pseudoAlreadyExists)
         if (pseudoAlreadyExists){
-            return res.status(400).json({sucess:false, message: "pseudo already exists"});
+            return res.status(400).json({sucess:false, message: "pseudo déjà utilisé"});
         }
 
         // permet de hashé le mot de passe pour qu'il ne soit pas stocké une fois enregistré
@@ -57,6 +57,8 @@ export const signup = async  (req, res) => {
             lName,
             fName,
             pseudo,
+            ecole_id,
+            niveau,
             email,
             password: hashedPassword,
             verificationToken,
@@ -78,7 +80,7 @@ export const signup = async  (req, res) => {
 
         res.status(201).json({
             sucess: true,
-            message: "User created successfully",
+            message: "Utilisateur créé avec succès",
             user: {
                 ...user._doc,
                 password: undefined //  empèche le client de voire le mot de passe en le supprimant de la réponse
@@ -125,7 +127,7 @@ export const verifyEmail = async (req, res) => {
 export const login = async  (req, res) => {
     const {email, password} = req.body;
     try {
-        const user = await User.findOne({email});
+        const user = await User.findOne({email}).populate('ecole_id');;
         if (!user){
             return res.status(400).json({sucess:false, message:"email incorrecte"})
         }
@@ -250,9 +252,9 @@ export const updatePic = async (req, res) => {
 export const updateProfile = async (req, res) => {
 	try {
 		const userId = req.userId; // Injecté par verifyToken
-		const { nom, prenom, pseudo, password } = req.body;
+		const { nom, prenom, pseudo, ecole_id, niveau, password } = req.body;
 
-		const user = await User.findById(userId);
+		const user = await User.findById(userId).populate('ecole_id');;
 		if (!user) {
 			return res.status(404).json({ message: "Utilisateur non trouvé" });
 		}
@@ -261,6 +263,8 @@ export const updateProfile = async (req, res) => {
 		if (nom) user.lName = nom;
 		if (prenom) user.fName = prenom;
 		if (pseudo) user.pseudo = pseudo;
+        if (ecole_id) user.ecole_id = ecole_id;
+        if (niveau) user.niveau = niveau;
 
 		// Si password fourni, on le hash avant update
 		if (password) {

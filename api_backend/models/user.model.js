@@ -38,7 +38,7 @@ const userSchema = new mongoose.Schema({
     },
     logo: {
         type: String,
-        defaul: ""
+        default: ""
     },
     ecole_id: {
         type: mongoose.Schema.Types.ObjectId,
