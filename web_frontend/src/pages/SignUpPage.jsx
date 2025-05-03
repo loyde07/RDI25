@@ -14,6 +14,7 @@ const SignUpPage = () => {
     const [pseudo, setUserName] = useState('')
     const [email, setEmail] = useState('')
     const [password, setPassword] = useState('')
+    
     const navigate = useNavigate()
 
     const { signup, error, isLoading } =  useAuthStore();
@@ -23,7 +24,8 @@ const SignUpPage = () => {
 
         try {
             await signup(lName, fName, pseudo, email, password)
-            navigate("/verifyEmail")
+            navigate("/dashboard")
+            // navigate("/verifyEmail")
         } catch (error) {
             console.log(error)
             

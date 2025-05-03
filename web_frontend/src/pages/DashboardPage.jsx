@@ -1,10 +1,11 @@
 import { motion } from "framer-motion";
 import { Camera, Mail, User } from "lucide-react";
+import { Link } from "react-router-dom";
+import { useState } from "react";
 
 
 import { useAuthStore } from "../store/authStore";
 import { formatDate } from "../utils/date";
-import { useState } from "react";
 
 const DashboardPage = () => {
 	const { user, logout, isUpdatingPic, updatePic } = useAuthStore();
@@ -26,6 +27,10 @@ const DashboardPage = () => {
           await updatePic({ profilePic: base64Image });
         };
       };
+
+    const handleUpdateProfile = async (e) => {
+        
+    }
 	const handleLogout = () => {
 		logout();
 	};
@@ -134,11 +139,27 @@ const DashboardPage = () => {
 					</p>
 				</motion.div>
 			</div>
-
-			<motion.div
+            <motion.div
 				initial={{ opacity: 0, y: 20 }}
 				animate={{ opacity: 1, y: 0 }}
 				transition={{ delay: 0.6 }}
+				className='mt-4'
+			>
+				<motion.button
+					whileHover={{ scale: 1.05 }}
+					whileTap={{ scale: 0.95 }}
+					className='w-full py-3 px-4 bg-gradient-to-r from-blue-500 to-indigo-600 text-white 
+				 font-bold rounded-lg shadow-lg hover:from-blue-600 hover:to-indigo-700
+				 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 focus:ring-offset-gray-900'
+				>
+				    <Link to="/editProfile" >Modifier Profile</Link> 
+
+				</motion.button>
+			</motion.div>
+			<motion.div
+				initial={{ opacity: 0, y: 20 }}
+				animate={{ opacity: 1, y: 0 }}
+				transition={{ delay: 0.8 }}
 				className='mt-4'
 			>
 				<motion.button
