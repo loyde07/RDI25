@@ -17,7 +17,7 @@ function UpdateTeam() {
   const [joueursÀRetirer, setJoueursÀRetirer] = useState([]);
   const [showAddPlayer, setShowAddPlayer] = useState(false);
   const [joueurSelectionne, setJoueurSelectionne] = useState(null);
-  const { user } = useAuthStore();
+  const { user, updateProfile } = useAuthStore();
   const { id } = useParams();
 
 const ajouterJoueurDansEquipe = async () => {
@@ -93,7 +93,10 @@ const ajouterJoueurDansEquipe = async () => {
   
       toast.success(" Équipe mise à jour !");
       setJoueursÀRetirer([]);
-  
+      
+      const updatePayload = { droit: "" };
+      await updateProfile(updatePayload);
+
       //  recharger les données de l’équipe pour que l’UI soit à jour
       const updatedTeam = await axios.get(`${API}/api/teams/${selectedTeamId}`);
       setTeamData(updatedTeam.data.data);
@@ -128,6 +131,8 @@ const ajouterJoueurDansEquipe = async () => {
       transition={{ duration: 0.5 }}
       className="max-w-xl w-full bg-gray-800 bg-opacity-50 backdrop-filter backdrop-blur-xl rounded-2xl shadow-xl p-8 mx-auto"
     >
+
+    
       <h2 className="text-3xl font-bold mb-6 text-center bg-gradient-to-r from-blue-400 to-indigo-400 
         text-transparent bg-clip-text">
         Modifier l'équipe

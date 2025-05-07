@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import {motion} from 'framer-motion'
+import { useNavigate } from "react-router-dom";
 
 const API = import.meta.env.VITE_API ;
 // ou avec CRA : process.env.REACT_APP_API_URL
@@ -12,6 +13,7 @@ function RejoindreTeam() {
     const [teams, setTeams] = useState([]);
     const [selectedTeamId, setSelectedTeamId] = useState('');
     const { user } = useAuthStore();
+      const navigate = useNavigate();
 
 
   useEffect(() => {
@@ -37,6 +39,9 @@ function RejoindreTeam() {
       });
 
       toast.success("Tu as rejoint l'équipe !");
+
+      navigate("/dashboard");
+
     } catch (error) {
       console.error("Erreur lors de la tentative de rejoindre une équipe :", error.message);
       toast.error("Erreur lors de la tentative de rejoindre l'équipe.");

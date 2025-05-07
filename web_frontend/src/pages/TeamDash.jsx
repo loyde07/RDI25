@@ -74,7 +74,7 @@ function DashTeam () {
             whileTap={{ scale: 0.95 }}
             className="w-full py-3 px-4 bg-gradient-to-r from-blue-500 to-indigo-600 text-white 
             font-bold rounded-lg shadow-lg hover:from-blue-600 hover:to-indigo-700
-            focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 focus:ring-offset-gray-900"
+            focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 focus:ring-offset-gray-900 mb-6"
             >
             Voir mon équipe
             </motion.button>
@@ -83,12 +83,12 @@ function DashTeam () {
 
         {user.droit == "admin" && (
             <div>
-            <lable className='text-xl font-semibold text-blue-400 mb-3'>ADMIN</lable>
+            <lable className="block text-xl font-semibold text-blue-400 text-center " >ADMIN</lable>
             <Link to="/gestion">
             <motion.button
             whileHover={{ scale: 1.05 }}
             whileTap={{ scale: 0.95 }}
-            className="w-full py-3 px-4 bg-gradient-to-r from-blue-500 to-indigo-600 text-white 
+            className="mt-6 w-full py-3 px-4 bg-gradient-to-r from-blue-500 to-indigo-600 text-white 
             font-bold rounded-lg shadow-lg hover:from-blue-600 hover:to-indigo-700
             focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 focus:ring-offset-gray-900"
             >
