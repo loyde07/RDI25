@@ -4,12 +4,14 @@ import {motion} from 'framer-motion'
 
 const API = import.meta.env.VITE_API ;
 // ou avec CRA : process.env.REACT_APP_API_URL
+import { useAuthStore } from "../../store/authStore";
+import toast from 'react-hot-toast';
 
 
 function RejoindreTeam() {
     const [teams, setTeams] = useState([]);
     const [selectedTeamId, setSelectedTeamId] = useState('');
-  const hardcodedPlayerId = '67f962182988c6aad9f20c51'; // à remplacer par un vrai ID
+    const { user } = useAuthStore();
 
 
   useEffect(() => {
@@ -19,7 +21,7 @@ function RejoindreTeam() {
         setTeams(res.data.data); // selon ton backend
         
       } catch (error) {
-        console.error("Erreur lors de la récupération des teams :", error.message);
+        toast.error("Erreur lors de la récupération des teams :", error.message);
       }
     };
 
@@ -31,13 +33,13 @@ function RejoindreTeam() {
 
     try {
       await axios.patch(`${API}/api/teams/${selectedTeamId}/join`, {
-        playerId: hardcodedPlayerId,
+        playerId: user._id,
       });
 
-      alert("Tu as rejoint l'équipe !");
+      toast.success("Tu as rejoint l'équipe !");
     } catch (error) {
       console.error("Erreur lors de la tentative de rejoindre une équipe :", error.message);
-      alert("Erreur lors de la tentative de rejoindre l'équipe.");
+      toast.error("Erreur lors de la tentative de rejoindre l'équipe.");
     }
   };
 

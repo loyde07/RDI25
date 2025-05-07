@@ -1,8 +1,13 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import RajouterJoueur from "./rajouterJoueurTeam.jsx"
-const API = import.meta.env.VITE_API ;
 import {motion} from 'framer-motion'
+import { useAuthStore } from "../../store/authStore";
+import { useParams } from 'react-router-dom';
+import toast from "react-hot-toast";
+
+
+const API = import.meta.env.VITE_API ;
 
 function UpdateTeam() {
   const [teams, setTeams] = useState([]);
@@ -12,13 +17,15 @@ function UpdateTeam() {
   const [joueursÀRetirer, setJoueursÀRetirer] = useState([]);
   const [showAddPlayer, setShowAddPlayer] = useState(false);
   const [joueurSelectionne, setJoueurSelectionne] = useState(null);
+  const { user } = useAuthStore();
+  const { id } = useParams();
 
 const ajouterJoueurDansEquipe = async () => {
   try {
     await axios.patch(`${API}/api/teams/${selectedTeamId}/join`, {
       playerId: joueurSelectionne._id
     });
-    alert("Joueur ajouté !");
+    toast.success("Joueur ajouté !");
     setJoueurSelectionne(null);
     setShowAddPlayer(false);
 
@@ -29,7 +36,7 @@ const ajouterJoueurDansEquipe = async () => {
     
   } catch (err) {
     console.error(err);
-    alert("Erreur lors de l'ajout du joueur");
+    toast.error("Erreur lors de l'ajout du joueur");
   }
 };
 
@@ -49,7 +56,9 @@ const ajouterJoueurDansEquipe = async () => {
 
   //  Charger l'équipe sélectionnée
   useEffect(() => {
-    if (!selectedTeamId) return;
+    if(user.droit !== "admin"){
+      setSelectedTeamId(id);
+    }
 
     const fetchDetails = async () => {
       try {
@@ -69,7 +78,7 @@ const ajouterJoueurDansEquipe = async () => {
     };
 
     fetchDetails();
-  }, [selectedTeamId]);
+  }, [id, selectedTeamId, user.droit]);
 
   const handleUpdate = async (e) => {
     e.preventDefault();
@@ -82,7 +91,7 @@ const ajouterJoueurDansEquipe = async () => {
         joueurs: nouvelleListe
       });
   
-      alert(" Équipe mise à jour !");
+      toast.success(" Équipe mise à jour !");
       setJoueursÀRetirer([]);
   
       //  recharger les données de l’équipe pour que l’UI soit à jour
@@ -96,7 +105,7 @@ const ajouterJoueurDansEquipe = async () => {
   
     } catch (err) {
       console.error("Erreur modification :", err);
-      alert(" Erreur lors de la mise à jour");
+      toast.error(" Erreur lors de la mise à jour");
     }
   };
   
@@ -121,22 +130,28 @@ const ajouterJoueurDansEquipe = async () => {
     >
       <h2 className="text-3xl font-bold mb-6 text-center bg-gradient-to-r from-blue-400 to-indigo-400 
         text-transparent bg-clip-text">
-        Modifier une équipe
+        Modifier l'équipe
       </h2>
   
-      <label className="block mb-2 text-gray-300">Choisir une équipe :</label>
+      
+      {user.droit == "admin" && (
+
       <select
         value={selectedTeamId}
         onChange={(e) => setSelectedTeamId(e.target.value)}
         className="mb-6 w-full px-4 py-3 bg-gray-700 text-white rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
       >
-        <option value="">Sélectionner</option>
+        <option value="">Sélectionner une équipe</option>
         {teams.map(team => (
           <option key={team._id} value={team._id}>
             {team.nom}
           </option>
         ))}
       </select>
+      )}
+
+ 
+
   
       {teamData && (
         <form onSubmit={handleUpdate}>

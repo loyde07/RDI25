@@ -67,9 +67,6 @@ const Navbar = () => {
           <Link to="/team" className=" mx-15 text-sm font-medium hover:opacity-80 transition-all bg-clip-text text-transparent bg-gradient-to-r from-blue-400 to-indigo-700">
             Équipes
           </Link>
-          <Link to="/gestion" className="mx-15 text-sm font-medium hover:opacity-80 transition-all bg-clip-text text-transparent bg-gradient-to-r from-blue-400 to-indigo-700">
-            Gestion
-          </Link>
         </div>
       </div>
     </header>

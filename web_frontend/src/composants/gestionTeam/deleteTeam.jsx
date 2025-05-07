@@ -1,6 +1,8 @@
 import React, {useEffect, useState} from "react";
 import axios from 'axios';
 import {motion} from 'framer-motion'
+import toast from "react-hot-toast";
+
 
 const API = import.meta.env.VITE_API ;
 
@@ -35,10 +37,10 @@ const handleDelete = async (e) => {
         setTeams(prev => prev.filter(team => team._id !== selectedTeamId));
 
         setSelectedTeamId('');;
-        alert("Équipe supprimée avec succès !");
+        toast.success("Équipe supprimée avec succès !");
     }catch (error){
         console.error("erreur de la suppression:", error.response?.data || error.message);
-        alert("Erreur de suppression")
+        toast.error("Erreur de suppression")
     }
 };
 

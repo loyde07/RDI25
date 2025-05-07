@@ -6,8 +6,8 @@ import { Toaster } from 'react-hot-toast'
 
 // gestion des teams
 import Team from "./pages/team.jsx";
-import Gestion from "./pages/gestionTeam.jsx"
-
+import Gestion from "./pages/gestionTeam.jsx";
+import MyTeam from "./pages/MyTeamDash.jsx";
 // Composant de style
 import FloatingShape from "./components/FloatingShape.jsx"
 import LoadingSpinner from "./components/LoadingSpinner.jsx"
@@ -95,6 +95,7 @@ function App() {
 						<Route path="/editProfile/" element={<ProtectedRoute><EditProfilePage/></ProtectedRoute>} />
 						<Route path="/tournois" element={<Tournement/>} />
 						<Route path="/gestion" element={<Gestion/>} />
+						<Route path="/gestion/:id" element= {<MyTeam/>} />
 						<Route path="/team" element={<Team/>} />
 					</Routes>
 				</div>

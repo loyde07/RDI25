@@ -1,6 +1,10 @@
 import React, {useState} from "react";
 import axios from 'axios';
 import {motion} from 'framer-motion'
+import { useAuthStore } from "../../store/authStore";
+import { useNavigate } from "react-router-dom";
+import toast from "react-hot-toast";
+
 
 const API = import.meta.env.VITE_API ;
 
@@ -9,6 +13,10 @@ const API = import.meta.env.VITE_API ;
 const CreationTeam = () => {
   const [nom, setNom] = useState('');
   const [logo, setLogo] = useState('');
+  const { user, updateProfile } = useAuthStore();
+  const navigate = useNavigate();
+
+
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -19,19 +27,34 @@ const CreationTeam = () => {
         logo
       });
 
-      console.log('Équipe créée :', response.data);
-      alert('Équipe créée avec succès !');
+      if (user.droit !== "admin"){
+        const createdTeam = response.data.data;
+
+        await axios.patch(`${API}/api/teams/${createdTeam._id}/join`, {
+          playerId: user._id,
+        });
+
+        const updatePayload = { droit: "capitaine" };
+        await updateProfile(updatePayload);
+
+        navigate("/dashboard");
+
+      }
+
+
+      toast.success('Équipe créée avec succès !');
+
+
     } catch (error) {
         // Récupération du message d'erreur du back si dispo
         const message = error.response?.data?.message;
     
         if (message === "Une équipe avec ce nom existe déjà.") {
-          alert(' Ce nom d’équipe est déjà utilisé. Choisis-en un autre.');
+          toast.error(' Ce nom d’équipe est déjà utilisé. Choisis-en un autre.');
         } else {
-          alert(' Erreur lors de la création de l’équipe. Veuillez réessayer plus tard.');
+          toast.error(' Erreur lors de la création de l’équipe. Veuillez réessayer plus tard.');
         }
     
-        console.error('Erreur lors de la création de l’équipe :', error.response?.data || error.message);
       }
   };
 
