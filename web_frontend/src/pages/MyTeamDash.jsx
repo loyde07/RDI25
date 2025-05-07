@@ -40,7 +40,13 @@ function MyTeam () {
     <div className="max-w-4xl w-full mx-auto p-6 bg-gray-800/40 backdrop-blur-md rounded-2xl shadow-md mt-10">
       <h2 className="text-4xl font-bold mb-6 text-center bg-gradient-to-r from-blue-400 to-indigo-400 
                 text-transparent bg-clip-text">{team.nom}</h2>
-      <img src={team.logo || "/val.png"} alt={team.nom} className="team-logo" />
+      <img src={
+                            team.logo
+                              ? team.logo.startsWith('/uploads/')
+                              ? `${API}${team.logo}`           // Cas 1 : image locale (serveur)
+                              : team.logo                      // Cas 2 : URL externe (non locale)
+                          : "/val.png"                        // Cas 3 : aucun logo → image par défaut
+                        } alt={team.nom} className="team-logo" />
       <h3 className="text-3xl font-bold mb-6 text-center bg-gradient-to-r from-blue-400 to-indigo-400 
                 text-transparent bg-clip-text">Membres de l'équipe</h3>
       <ul className="player-list">
