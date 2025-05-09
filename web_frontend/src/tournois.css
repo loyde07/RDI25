@@ -151,4 +151,18 @@ input[type=number] {
   -moz-appearance: textfield;
 }
 
+
+.reset-btn {
+  margin-top: 2rem;
+  padding: 0.6rem 1.2rem;
+  background-color: #ff4d4f;
+  color: white;
+  border: none;
+  border-radius: 8px;
+  font-weight: bold;
+  cursor: pointer;
+}
+.reset-btn:hover {
+  background-color: #ff7875;
+}
   
