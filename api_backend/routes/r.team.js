@@ -3,7 +3,8 @@ import {getTeamById, joinTeam, updateTeam, getTeams, creationTeams, deleteTeam} 
 import Inscription from "../models/inscription.model.js";
 import multer from "multer";
 import path from "path";
-
+import fs from "fs";
+import Team from "../models/team.model.js"; // Assurez-vous d'importer le modèle Team
 
 const routes = express.Router();
 
@@ -62,6 +63,43 @@ routes.post('/upload-logo', upload.single('logo'), (req, res) => {
     return res.status(200).json({ success: true, path: imagePath });
   });
   
+
+routes.delete('/delete-logo/:teamId', async (req, res) => {
+  const teamId = req.params.teamId;
+
+  try {
+    // 1. Chercher l'équipe et vérifier l'existence du logo
+    const team = await Team.findById(teamId); // adapte si tu utilises Mongoose: Team.findById(teamId)
+    if (!team ) {
+      return res.status(404).json({ success: false, message: ' équipe inexistante.' });
+    }
+
+    if (team.logo) {
+      const filePath = path.join(process.cwd(), team.logo);
+      if (fs.existsSync(filePath)) {
+        const stat = fs.statSync(filePath);
+        if (stat.isFile()) {
+          fs.unlinkSync(filePath);
+          console.log('Logo supprimé :', filePath);
+        } else {
+          console.warn('Le chemin trouvé n\'est pas un fichier mais un dossier, suppression ignorée :', filePath);
+        }
+      } else {
+        console.warn('Fichier logo non trouvé :', filePath);
+      }
+
+      // Nettoyer le champ en base même si le fichier n'existe pas
+      team.logo = null;
+      await team.save();
+    } else {
+      console.log('Aucun logo à supprimer pour cette équipe.');
+    }
+    return res.status(200).json({ success: true, message: 'Logo supprimé avec succès.' });
+  } catch (error) {
+    console.error('Erreur lors de la suppression du logo :', error);
+    return res.status(500).json({ success: false, message: 'Erreur serveur.' });
+  }
+});
   
 
 export default routes;

@@ -1,11 +1,10 @@
 import React, {useState} from "react";
-import axios from 'axios';
 import {motion} from 'framer-motion'
 import { useAuthStore } from "../../store/authStore";
 import { useNavigate } from "react-router-dom";
 import toast from "react-hot-toast";
 import { ImagePlus } from "lucide-react";
-
+import { uploadLogo, createTeamAndJoin } from "./outilsGestionTeams/outilsNew.jsx";
 
 const API = import.meta.env.VITE_API ;
 
@@ -15,68 +14,40 @@ const CreationTeam = () => {
   const [nom, setNom] = useState('');
   const [logo, setLogo] = useState('');
   const { user, updateProfile } = useAuthStore();
+  const [newLogoFile, setNewLogoFile] = useState(null);
   const navigate = useNavigate();
 
 
 
-  const handleSubmit = async (e) => {
-    e.preventDefault();
+    const handleSubmit = async (e) => {
+        e.preventDefault();
 
-    try {
-      const response = await axios.post(API +'/api/teams', {
-        nom,
-        logo
-      });
+        try {
+            let logoPath = logo; // Si tu as déjà un logo (par exemple après édition)
 
-      if (user.droit !== "admin"){
-        const createdTeam = response.data.data;
+            if (newLogoFile) {
+                logoPath = await uploadLogo(newLogoFile);
+            }
 
-        await axios.patch(`${API}/api/teams/${createdTeam._id}/join`, {
-          playerId: user._id,
-        });
+            const createdTeam = await createTeamAndJoin(nom, logoPath, user, updateProfile);
 
-        const updatePayload = { droit: "capitaine" };
-        await updateProfile(updatePayload);
+            toast.success('Équipe créée avec succès !');
+            navigate("/dashboard");
 
-        navigate("/dashboard");
-
-      }
-
-
-      toast.success('Équipe créée avec succès !');
-
-
-    } catch (error) {
-        // Récupération du message d'erreur du back si dispo
-        const message = error.response?.data?.message;
-    
-        if (message === "Une équipe avec ce nom existe déjà.") {
-          toast.error(' Ce nom d’équipe est déjà utilisé. Choisis-en un autre.');
-        } else {
-          toast.error(' Erreur lors de la création de l’équipe. Veuillez réessayer plus tard.');
+        } catch (error) {
+            console.error(error);
+            toast.error("Erreur lors de la création");
         }
-    
-      }
-  };
+    };
 
 
-const handleImageUpload = async (e) => {
-  const file = e.target.files[0];
-  if (!file) return;
+ 
 
-  const formData = new FormData();
-  formData.append('logo', file);
-
-  try {
-    const res = await axios.post(`${API}/api/teams/upload-logo`, formData, {
-      headers: { "Content-Type": "multipart/form-data" }
-    });
-    setLogo(res.data.path); // Chemin statique à stocker dans MongoDB
-    toast.success("Logo uploadé !");
-  } catch (err) {
-    toast.error("Erreur upload logo");
-    console.error(err);
-  }
+  const handleImageUpload = (e) => {
+    const file = e.target.files[0];
+    if (!file) return;
+    setNewLogoFile(file);
+    toast.success("Fichier prêt à être uploadé à la création");
 };
 
 

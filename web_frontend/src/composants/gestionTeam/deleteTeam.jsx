@@ -43,10 +43,12 @@ const handleDelete = async (e) => {
 
 
     try{
+        
 
-      
+        await axios.delete(`${API}/api/teams/delete-logo/${selectedTeamId}`);
 
         await axios.delete(`${API}/api/teams/${teamToDelete}/delete`);
+      
         setTeams(prev => prev.filter(team => team._id !== teamToDelete));
 
         setSelectedTeamId('');;

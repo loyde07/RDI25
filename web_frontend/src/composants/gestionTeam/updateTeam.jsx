@@ -5,7 +5,9 @@ import {motion} from 'framer-motion'
 import { useAuthStore } from "../../store/authStore";
 import { useParams } from 'react-router-dom';
 import toast from "react-hot-toast";
-
+import { ajouterJoueurAListe, retirerJoueurDeListe, toggleSuppressionLogic } from './outilsGestionTeams/outilsUpdate.jsx';
+import { ajouterJoueurDansEquipe } from './outilsGestionTeams/outilsJoin.jsx';
+import { ImagePlus } from "lucide-react";
 
 const API = import.meta.env.VITE_API ;
 
@@ -19,26 +21,8 @@ function UpdateTeam() {
   const [joueurSelectionne, setJoueurSelectionne] = useState(null);
   const { user, updateProfile } = useAuthStore();
   const { id } = useParams();
-
-const ajouterJoueurDansEquipe = async () => {
-  try {
-    await axios.patch(`${API}/api/teams/${selectedTeamId}/join`, {
-      playerId: joueurSelectionne._id
-    });
-    toast.success("Joueur ajouté !");
-    setJoueurSelectionne(null);
-    setShowAddPlayer(false);
-
-    setForm(prev => ({
-      ...prev,
-      joueurs: [...prev.joueurs, joueurSelectionne._id]
-    }));
-    
-  } catch (err) {
-    console.error(err);
-    toast.error("Erreur lors de l'ajout du joueur");
-  }
-};
+  const [logo, setLogo] = useState('');
+  const [newLogoFile, setNewLogoFile] = useState(null);
 
 
   const [form, setForm] = useState({
@@ -86,9 +70,33 @@ const ajouterJoueurDansEquipe = async () => {
     const nouvelleListe = form.joueurs.filter(id => !joueursÀRetirer.includes(id));
   
     try {
+
+        let logoPath = form.logo;
+
+        // 1. Gestion du remplacement de logo uniquement si un nouveau est sélectionné
+        if (newLogoFile) {
+            // Supprimer ancien logo si présent
+            await axios.delete(`${API}/api/teams/delete-logo/${selectedTeamId}`);
+      
+            // Upload nouveau logo
+            const formData = new FormData();
+            formData.append('logo', newLogoFile);
+            const res = await axios.post(`${API}/api/teams/upload-logo`, formData, {
+                headers: { 'Content-Type': 'multipart/form-data' }
+            });
+
+            logoPath = res.data.path;
+          } else if (form.logo === '') {
+            // Si l'utilisateur a supprimé l'image, on s'assure que le logo est vide
+            logoPath = '';  // Met à jour le logoPath à une chaîne vide si l'image est supprimée
+          }
+
+
+
       const res = await axios.patch(`${API}/api/teams/${selectedTeamId}/update`, {
-        ...form,
-        joueurs: nouvelleListe
+          ...form,
+          joueurs: nouvelleListe,
+          logo: logoPath // ✅ Ici tu dois bien envoyer logoPath et pas form.logo
       });
   
       toast.success(" Équipe mise à jour !");
@@ -115,14 +123,34 @@ const ajouterJoueurDansEquipe = async () => {
   
 
   const toggleSuppression = (joueurId) => {
-    setJoueursÀRetirer((prev) =>
-      prev.includes(joueurId)
-        ? prev.filter(id => id !== joueurId) // déjà marqué → on annule
-        : [...prev, joueurId]                // sinon on le marque à retirer
-    );
+    try {
+      setJoueursÀRetirer(prev => toggleSuppressionLogic(prev, joueurId));
+    } catch (err) {
+      console.error(err);
+      toast.error(err.message);
+    }
   };
   
-  
+const handleImageChange = (e) => {
+    const file = e.target.files[0];
+    if (file) {
+        setNewLogoFile(file);
+        toast.success("Logo chargé, sera uploadé à l'enregistrement");
+    }
+};
+
+const handleDeleteLogo = async () => {
+
+    try {
+        await axios.delete(`${API}/api/teams/delete-logo/${selectedTeamId}`);
+        setForm({ ...form, logo: '' });
+        toast.success("Logo supprimé !");
+    } catch (error) {
+        console.error("Erreur suppression logo :", error.message);
+        toast.error("Erreur lors de la suppression du logo");
+    }
+};
+
 
   return (
     <motion.div
@@ -167,14 +195,48 @@ const ajouterJoueurDansEquipe = async () => {
             onChange={(e) => setForm({ ...form, nom: e.target.value })}
             className="w-full px-4 py-3 mb-4 bg-gray-700 text-white rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
           />
-  
-          <label className="block mb-2 text-gray-300">Logo (URL) :</label>
-          <input
-            type="text"
-            value={form.logo}
-            onChange={(e) => setForm({ ...form, logo: e.target.value })}
-            className="w-full px-4 py-3 mb-4 bg-gray-700 text-white rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
-          />
+          <div>
+            <label className="block mb-2 text-gray-300">Logo (URL) :</label>
+            <input
+              type="text"
+              value={form.logo}
+              onChange={(e) => setForm({ ...form, logo: e.target.value })}
+              className="w-full px-4 py-3 mb-4 bg-gray-700 text-white rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+            />
+            <div className="flex items-center gap-3">
+            <label
+              htmlFor="logo-upload"
+              className="flex items-center gap-2 px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-lg cursor-pointer transition-all"
+            >
+              <ImagePlus className="w-5 h-5" />
+              <span>Choisir un fichier</span>
+            </label>
+            <input
+              id="logo-upload"
+              type="file"
+              accept="image/*"
+              onChange={handleImageChange}
+              className="hidden"
+            />
+            {logo && (
+              <span className="text-sm text-green-400">Logo chargé</span>
+            )}
+          </div>
+
+             {form.logo ? (
+                <>
+                      <button
+                          type="button"
+                          onClick={handleDeleteLogo}
+                          className="mt-2 px-2 py-1 text-xs bg-blue-900 hover:bg-red-700 text-white rounded transition-all"
+                      >
+                          Supprimer
+                      </button>
+                </>
+              ) : (
+                <p className="text-gray-200 font-semibold mb-2 text-red-500">aucun logo</p>
+              )}
+          </div>
   
           <label className="block mb-4 text-gray-300">Joueurs :</label>
           <div className="flex flex-col gap-2">
@@ -226,7 +288,7 @@ const ajouterJoueurDansEquipe = async () => {
                     </p>
                     <motion.button
                       type="button"
-                      onClick={ajouterJoueurDansEquipe}
+                      onClick={() => ajouterJoueurDansEquipe(selectedTeamId, joueurSelectionne, setForm)}
                       className="mt-2 py-2 px-4 bg-gradient-to-r from-blue-500 to-indigo-600 text-white font-bold 
                         rounded-lg shadow-md hover:from-blue-600 hover:to-indigo-700 transition duration-200"
                       whileHover={{ scale: 1.02 }}

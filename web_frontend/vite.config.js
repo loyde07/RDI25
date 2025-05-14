@@ -9,6 +9,13 @@ export default defineConfig({
     tailwindcss(),
   ],
   server: {
-    port: 5173
-  }
-})
+    port: 5173,
+  },
+  test: {
+    environment: 'jsdom', // Pour émuler un environnement de navigateur
+    globals: true,
+    transformMode: {
+      web: [/\.[jt]sx?$/],
+    },
+  },
+});
