@@ -1,43 +1,52 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import {motion} from 'framer-motion'
+import { useNavigate } from "react-router-dom";
+import { validerSelectionEquipe, genererOptionsEquipes, fetchTeams, rejoindreEquipe } from './outilsGestionTeams/outilsJoin.jsx';
+
+
 
 const API = import.meta.env.VITE_API ;
 // ou avec CRA : process.env.REACT_APP_API_URL
+import { useAuthStore } from "../../store/authStore";
+import toast from 'react-hot-toast';
 
 
 function RejoindreTeam() {
     const [teams, setTeams] = useState([]);
     const [selectedTeamId, setSelectedTeamId] = useState('');
-  const hardcodedPlayerId = '67f962182988c6aad9f20c51'; // à remplacer par un vrai ID
+    const { user } = useAuthStore();
+      const navigate = useNavigate();
 
 
-  useEffect(() => {
-    const fetchTeams = async () => {
-      try {
-        const res = await axios.get(API +'/api/teams');
-        setTeams(res.data.data); // selon ton backend
-        
-      } catch (error) {
-        console.error("Erreur lors de la récupération des teams :", error.message);
-      }
-    };
-
-    fetchTeams();
-  }, []);
+      useEffect(() => {
+        fetchTeams(API)
+          .then(setTeams)
+          .catch((error) => toast.error(error.message));
+      }, []);
 
   const handleJoin = async (e) => {
     e.preventDefault();
 
-    try {
-      await axios.patch(`${API}/api/teams/${selectedTeamId}/join`, {
-        playerId: hardcodedPlayerId,
-      });
 
-      alert("Tu as rejoint l'équipe !");
+    try {
+
+      const userDejaDansUneEquipe = teams.some(team =>
+          team.joueurs.includes(user._id)
+      );
+
+      if (userDejaDansUneEquipe) {
+          toast.error("Tu fais déjà partie d'une équipe.");
+          return;
+      }
+
+
+      validerSelectionEquipe(teams, selectedTeamId);
+      await rejoindreEquipe(API, selectedTeamId, user._id);
+      toast.success("Tu as rejoint l'équipe !");
+      navigate("/dashboard");
     } catch (error) {
-      console.error("Erreur lors de la tentative de rejoindre une équipe :", error.message);
-      alert("Erreur lors de la tentative de rejoindre l'équipe.");
+      toast.error(error.message);
     }
   };
 
@@ -60,9 +69,10 @@ function RejoindreTeam() {
         className="w-full px-4 py-3 mb-6 bg-gray-700 text-white placeholder-gray-400 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
       >
         <option value="">Sélectionner une équipe</option>
-        {teams.map((team) => (
-          <option key={team._id} value={team._id}>{team.nom}</option>
-        ))}
+          {genererOptionsEquipes(teams).map((opt) => (
+            <option key={opt.value} value={opt.value}>
+              {opt.label}
+            </option>        ))}
       </select>
   
       <motion.button

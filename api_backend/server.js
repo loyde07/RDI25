@@ -47,6 +47,7 @@ app.use("/api/teams", routesTeam);
 app.use("/api/matches", matchRoutes);
 app.use("/api/joueurs", joueurRoutes);
 
+app.use('/uploads', express.static(path.join(process.cwd(), 'uploads')));
 
 app.use("/api/ecoles", ecoleRoutes); 
     

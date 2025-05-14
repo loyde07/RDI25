@@ -1,6 +1,8 @@
 import React, { useEffect, useState } from 'react';
-import axios from 'axios';
 import { motion } from 'framer-motion';
+
+import { rechercherJoueurs, estRechercheValide } from './outilsGestionTeams/outilsRecherche.jsx';
+
 
 const API = import.meta.env.VITE_API;
 
@@ -9,22 +11,21 @@ function RajouterJoueur({ onJoueurSelectionne }) {
   const [resultats, setResultats] = useState([]);
 
   useEffect(() => {
-    if (recherche.length === 0) {
+    if (!estRechercheValide(recherche)) {
       setResultats([]);
       return;
     }
 
-    const fetchJoueurs = async () => {
-      try {
-        const res = await axios.get(`${API}/api/joueurs/joueurs?search=${recherche}`);
-        setResultats(res.data.data);
-      } catch (err) {
-        console.error(err);
-      }
-    };
-
-    fetchJoueurs();
-  }, [recherche]);
+      const fetchJoueurs = async () => {
+        try {
+          const joueurs = await rechercherJoueurs(recherche);
+          setResultats(joueurs);
+        } catch (err) {
+          console.error(err);
+        }
+      };
+        fetchJoueurs();
+      }, [recherche]);
 
   return (
     <motion.div

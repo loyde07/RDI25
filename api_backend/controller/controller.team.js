@@ -1,4 +1,5 @@
 import Team from "../models/team.model.js";
+import {User} from "../models/user.model.js";
 
 export const getTeams = async (req, res) => {
 
@@ -68,6 +69,13 @@ export const creationTeams = async (req, res) => {
 
       const team =await Team.findById(id);
       if(!team) return res.status(404).json({success: false, message: "Team introuvable"});
+
+
+      await User.updateMany(
+        { _id: { $in: team.joueurs } },
+        { $set: { droit: "" } }
+      );
+
 
       await team.deleteOne();
 
