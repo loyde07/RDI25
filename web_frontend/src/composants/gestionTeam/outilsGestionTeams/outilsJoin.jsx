@@ -20,6 +20,7 @@ export async function ajouterJoueurDansEquipe(API, selectedTeamId, joueurSelecti
   try {
     await axios.patch(`${API}/api/teams/${selectedTeamId}/join`, {
       playerId: joueurSelectionne._id
+
     });
     toast.success("Joueur ajouté !");
     setJoueurSelectionne(null);

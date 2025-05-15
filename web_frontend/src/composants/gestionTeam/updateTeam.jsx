@@ -34,7 +34,7 @@ function UpdateTeam() {
   //  Charger toutes les équipes
   useEffect(() => {
     axios.get(`${API}/api/teams`)
-      .then(res => setTeams(res.data.data || res.data)) // dépend de ton format
+      .then(res => setTeams(res.data.data )) // dépend de ton format
       .catch(err => console.error("Erreur chargement équipes :", err));
   }, []);
 
@@ -44,17 +44,24 @@ function UpdateTeam() {
       setSelectedTeamId(id);
     }
 
+
     const fetchDetails = async () => {
       try {
         const teamRes = await axios.get(`${API}/api/teams/${selectedTeamId}`);
         const joueursRes = await axios.get(`${API}/api/joueurs`);
-        setTeamData(teamRes.data.data);
+        setTeamData(teamRes.data);
         setJoueurs(joueursRes.data);
 
+        const team = teamRes.data.data || teamRes.data;
+
+        if (!team.joueurs || !Array.isArray(team.joueurs)) {
+          throw new Error("L'équipe ne contient pas de joueurs !");
+        }
+
         setForm({
-          nom: teamRes.data.data.nom,
-          logo: teamRes.data.data.logo,
-          joueurs: teamRes.data.data.joueurs.map(j => j._id)
+          nom: team.nom,
+          logo: team.logo,
+          joueurs: team.joueurs.map(j => j._id)
         });
       } catch (err) {
         console.error("Erreur chargement team ou joueurs :", err);
@@ -288,7 +295,7 @@ const handleDeleteLogo = async () => {
                     </p>
                     <motion.button
                       type="button"
-                      onClick={() => ajouterJoueurDansEquipe(selectedTeamId, joueurSelectionne, setForm)}
+                      onClick={() => ajouterJoueurDansEquipe(API, selectedTeamId, joueurSelectionne, setForm, setShowAddPlayer, setJoueurSelectionne)}
                       className="mt-2 py-2 px-4 bg-gradient-to-r from-blue-500 to-indigo-600 text-white font-bold 
                         rounded-lg shadow-md hover:from-blue-600 hover:to-indigo-700 transition duration-200"
                       whileHover={{ scale: 1.02 }}
