@@ -103,6 +103,28 @@ const Tournament = () => {
 
 
 
+  
+  const Tournament = () => {
+    const [round1, setRound1] = useState([]);
+    const [round2, setRound2] = useState(Array(4).fill(null));
+    const [semis, setSemis] = useState(Array(2).fill(null));
+    const [final, setFinal] = useState(null);
+  
+    const fetchData = async () => {
+      try {
+        const response = await axios.get("http://localhost:5000/api/teams/67f8c2993634ef292b6a5d0b/teams");
+        console.log("Données reçues:", response.data);
+        const nomsDesTeams = response.data
+          .filter(team => team && team.nom) // ignore les `null` et objets sans `nom`
+          .map(team => team.nom);
+
+        console.log("Équipes valides :", nomsDesTeams); // debug
+  
+        setRound1(nomsDesTeams);
+      } catch (error) {
+        console.error("Erreur lors de la récupération :", error);
+      }
+    };
 
     useEffect(() => {
       // Charger les équipes depuis localStorage ou depuis l'API

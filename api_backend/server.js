@@ -33,6 +33,7 @@ const PORT = process.env.PORT || 5000;
 app.use(cors({ origin: 'http://localhost:3000', credentials:true }));
 
 
+
 app.use(express.json()); //permet d'accepeter du JSOn dans le req.body
 app.use(cookieParser()); // Middleware pour analyser les cookies
 
