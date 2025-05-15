@@ -103,6 +103,7 @@ const Tournament = () => {
 
 
 
+
     useEffect(() => {
       // Charger les équipes depuis localStorage ou depuis l'API
       const savedTeams = JSON.parse(localStorage.getItem("teams"));
