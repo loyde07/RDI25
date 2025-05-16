@@ -20,7 +20,7 @@ import ecoleRoutes from './routes/ecoles.route.js';
 import authRoutes from './routes/auth.route.js';
 import matchRoutes from "./routes/match.routes.js";
 
-import inscriptionRoutes from "./routes/inscription.routes.js";
+import inscriptionRoutes from "./routes/inscription.route.js";
 
 
 
