@@ -162,29 +162,31 @@ const Tournament = () => {
   /* UI                                                                 */
   /* ------------------------------------------------------------------ */
   return (
-    <div className="flex flex-col items-center min-h-screen py-24 px-6 bg-[#1e1e1e] text-white">
+     <div className="min-h-screen w-screen bg-[#1e1e1e] text-white overflow-x-auto overflow-y-auto flex flex-col items-center p-6">
       {/* Titre */}
       <h1 className="text-4xl font-bold mb-10 flex items-center gap-3">
         <Swords size={32} /> Tournoi Valo
       </h1>
 
-      <div className="flex justify-center gap-20">
+       <div className="flex w-full justify-center items-start gap-32 px-4 overflow-x-auto">
         {/* -------------------- Round 1 -------------------- */}
-        <div className="flex flex-col items-center gap-20">
+        <div className="flex flex-col items-center flex-1 min-w-[250px]">
           <h2 className="text-xl font-semibold mb-4">1er tour</h2>
-          {[0, 2, 4, 6].map((i, idx) => (
-            <Match
-              key={`R1-${idx}`}
-              matchId={`R1-${idx}`}
-              team1={round1[i]}
-              team2={round1[i + 1]}
-              onWinner={updateNextRound(setRound2, "round2", idx)}
-            />
-          ))}
+          <div className="flex flex-col gap-12">
+                {[0, 2, 4, 6].map((i, idx) => (
+                    <Match
+                    key={`R1-${idx}`}
+                    matchId={`R1-${idx}`}
+                    team1={round1[i]}
+                    team2={round1[i + 1]}
+                    onWinner={updateNextRound(setRound2, "round2", idx)}
+                    />
+                ))}
+            </div>
         </div>
 
         {/* ---------------- Demi-finales ------------------- */}
-        <div className="flex flex-col items-center gap-40 mt-20">
+        <div className="flex flex-col items-center gap-24 flex-1 min-w-[250px]">
           <h2 className="text-xl font-semibold mb-4">Demi-finales</h2>
           {[0, 2].map((i, idx) => (
             <Match
@@ -198,17 +200,19 @@ const Tournament = () => {
         </div>
 
         {/* -------------------- Finale --------------------- */}
-        <div className="flex flex-col items-center mt-52">
+        <div className="flex flex-col items-center flex-1 min-w-[250px]">
           <h2 className="text-xl font-semibold mb-4">Finale</h2>
-            <Match
-                matchId="Final"
-                team1={semis[0] ?? "?"}
-                team2={semis[1] ?? "?"}
-                onWinner={(winner) => {
-                    setFinal(winner);
-                    localStorage.setItem("final", JSON.stringify(winner));
-                }}
-            />
+          <div className="mt-[180px]">
+                <Match
+                    matchId="Final"
+                    team1={semis[0] ?? "?"}
+                    team2={semis[1] ?? "?"}
+                    onWinner={(winner) => {
+                        setFinal(winner);
+                        localStorage.setItem("final", JSON.stringify(winner));
+                    }}
+                />
+            </div>
           {final && (
             <div className="mt-10 text-2xl font-bold text-yellow-400 flex items-center gap-2">
               <Trophy size={28} /> Vainqueur : {final}
