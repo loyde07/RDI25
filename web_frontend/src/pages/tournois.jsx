@@ -189,20 +189,23 @@ const Tournament = () => {
         <div className="flex flex-col items-center gap-24 flex-1 min-w-[250px]">
           <h2 className="text-xl font-semibold mb-4">Demi-finales</h2>
           {[0, 2].map((i, idx) => (
-            <Match
-              key={`R2-${idx}`}
-              matchId={`R2-${idx}`}
-              team1={round2[i]}
-              team2={round2[i + 1]}
-              onWinner={updateNextRound(setSemis, "semis", idx)}
-            />
+            <div className="mt-[76px]">
+                <Match
+                key={`R2-${idx}`}
+                matchId={`R2-${idx}`}
+                team1={round2[i]}
+                team2={round2[i + 1]}
+                onWinner={updateNextRound(setSemis, "semis", idx)}
+                />
+            </div>
+            
           ))}
         </div>
 
         {/* -------------------- Finale --------------------- */}
         <div className="flex flex-col items-center flex-1 min-w-[250px]">
           <h2 className="text-xl font-semibold mb-4">Finale</h2>
-          <div className="mt-[180px]">
+          <div className="mt-[345px]">
                 <Match
                     matchId="Final"
                     team1={semis[0] ?? "?"}
