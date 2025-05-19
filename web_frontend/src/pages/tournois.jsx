@@ -62,7 +62,8 @@ const Match = ({ team1 = "?", team2 = "?", onWinner, matchId }) => {
           type="number"
           value={score1}
           onChange={handleScore1Change}
-          className="w-16 px-2 py-1 bg-gray-700 text-white rounded-md"
+          min="0"
+          className="w-16 px-2 py-1 bg-gray-700 text-white rounded-md [&::-webkit-inner-spin-button]:appearance-none [&::-webkit-outer-spin-button]:appearance-none"
         />
       </div>
       <div className="w-full flex justify-between items-center">
@@ -71,7 +72,8 @@ const Match = ({ team1 = "?", team2 = "?", onWinner, matchId }) => {
           type="number"
           value={score2}
           onChange={handleScore2Change}
-          className="w-16 px-2 py-1 bg-gray-700 text-white rounded-md"
+          min="0"
+          className="w-16 px-2 py-1 bg-gray-700 text-white rounded-md [&::-webkit-inner-spin-button]:appearance-none [&::-webkit-outer-spin-button]:appearance-none"
         />
       </div>
       <button
@@ -149,12 +151,14 @@ const Tournament = () => {
   /* ------------------------------------------------------------------ */
   /* RESET / RESTART                                                    */
   /* ------------------------------------------------------------------ */
+  const [resetId, setResetId] = useState(0);
   const resetTournament = () => {
     setRound1([]);
     setRound2(Array(4).fill(null));
     setSemis(Array(2).fill(null));
     setFinal(null);
     localStorage.clear();
+    setResetId((prev) => prev + 1);
     fetchTeams();
   };
 
@@ -175,8 +179,8 @@ const Tournament = () => {
           <div className="flex flex-col gap-12">
                 {[0, 2, 4, 6].map((i, idx) => (
                     <Match
-                    key={`R1-${idx}`}
-                    matchId={`R1-${idx}`}
+                    key={`R1-${idx}-${resetId}`}
+                    matchId={`R1-${idx}-${resetId}`}
                     team1={round1[i]}
                     team2={round1[i + 1]}
                     onWinner={updateNextRound(setRound2, "round2", idx)}
@@ -189,10 +193,10 @@ const Tournament = () => {
         <div className="flex flex-col items-center gap-24 flex-1 min-w-[250px]">
           <h2 className="text-xl font-semibold mb-4">Demi-finales</h2>
           {[0, 2].map((i, idx) => (
-            <div className="mt-[76px]">
+            <div key={`R2-${idx}-${resetId}`} className="mt-[76px]">
                 <Match
-                key={`R2-${idx}`}
-                matchId={`R2-${idx}`}
+                key={`R2-${idx}-${resetId}`}
+                matchId={`R2-${idx}-${resetId}`}
                 team1={round2[i]}
                 team2={round2[i + 1]}
                 onWinner={updateNextRound(setSemis, "semis", idx)}
@@ -207,7 +211,8 @@ const Tournament = () => {
           <h2 className="text-xl font-semibold mb-4">Finale</h2>
           <div className="mt-[345px]">
                 <Match
-                    matchId="Final"
+                    key={`Final-${resetId}`}
+                    matchId={`Final-${resetId}`}
                     team1={semis[0] ?? "?"}
                     team2={semis[1] ?? "?"}
                     onWinner={(winner) => {
