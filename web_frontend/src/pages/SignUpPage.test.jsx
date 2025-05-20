@@ -436,6 +436,73 @@ describe("SignUpPage", () => {
     });
   });
 
+    it("shows error if password is too long", async () => {
+    render(<MemoryRouter><SignUpPage /></MemoryRouter>);
+  
+    fireEvent.change(screen.getByPlaceholderText(/^Nom$/i), { target: { value: "Doe" } });
+    fireEvent.change(screen.getByPlaceholderText(/Prenom/i), { target: { value: "John" } });
+    fireEvent.change(screen.getByPlaceholderText(/Pseudo/i), { target: { value: "johnny" } });
+    fireEvent.change(screen.getByPlaceholderText(/Adresse mail/i), { target: { value: "john@example.com" } });
+    fireEvent.change(screen.getByPlaceholderText(/Mot de passe/i), { target: { value: "Passwwwwwwwwwwwwwwwwwwwwwwwwwwwwwword123!" } });
+
+    fireEvent.click(screen.getByText(/École/i));
+    await waitFor(() => screen.getByText("EPHEC"));
+    fireEvent.click(screen.getByText("EPHEC"));
+
+    fireEvent.click(screen.getByText(/Niveau/i));
+    await waitFor(() => screen.getByText("Iron 2"));
+    fireEvent.click(screen.getByText("Iron 2"));
+  
+    fireEvent.click(screen.getByTestId("submit-button"));
+  
+    await waitFor(() => {
+      expect(screen.getByText(/Le mot de passe ne doit pas dépasser 20 caractères/i)).toBeInTheDocument();
+    });
+  });
+
+  it("shows error if ecole is unselected", async () => {
+    render(<MemoryRouter><SignUpPage /></MemoryRouter>);
+
+    fireEvent.change(screen.getByPlaceholderText(/^Nom$/i), { target: { value: "Doe" } });
+    fireEvent.change(screen.getByPlaceholderText(/Prenom/i), { target: { value: "John" } });
+    fireEvent.change(screen.getByPlaceholderText(/Pseudo/i), { target: { value: "johnny" } });
+    fireEvent.change(screen.getByPlaceholderText(/Adresse mail/i), { target: { value: "john@example.com" } });
+    fireEvent.change(screen.getByPlaceholderText(/Mot de passe/i), { target: { value: "Password123!" } });
+
+    fireEvent.click(screen.getByText(/École/i));
+    await waitFor(() => screen.getByText("EPHEC"));
+    fireEvent.click(screen.getByText("EPHEC"));
+
+    fireEvent.click(screen.getByTestId("submit-button"));
+    
+    await waitFor(() => {
+      expect(screen.getByText(/Veuillez remplir tous les champs/i)).toBeInTheDocument();
+    });
+  });
+
+
+  it("shows error if niveau is unselected", async () => {
+    render(<MemoryRouter><SignUpPage /></MemoryRouter>);
+
+    fireEvent.change(screen.getByPlaceholderText(/^Nom$/i), { target: { value: "Doe" } });
+    fireEvent.change(screen.getByPlaceholderText(/Prenom/i), { target: { value: "John" } });
+    fireEvent.change(screen.getByPlaceholderText(/Pseudo/i), { target: { value: "johnny" } });
+    fireEvent.change(screen.getByPlaceholderText(/Adresse mail/i), { target: { value: "john@example.com" } });
+    fireEvent.change(screen.getByPlaceholderText(/Mot de passe/i), { target: { value: "Password123!" } });
+
+    fireEvent.click(screen.getByText(/Niveau/i));
+    await waitFor(() => screen.getByText("Iron 2"));
+    fireEvent.click(screen.getByText("Iron 2"));
+
+    fireEvent.click(screen.getByTestId("submit-button"));
+    
+    await waitFor(() => {
+      expect(screen.getByText(/Veuillez remplir tous les champs/i)).toBeInTheDocument();
+    });
+  });
+
+
+
   it("shows backend error if signup fails", async () => {
     useAuthStore.mockReturnValue({
       signup: mockSignup,
