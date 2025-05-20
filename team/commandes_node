@@ -1,0 +1,58 @@
+ENLEVER RESTRICTIONS 
+Set-ExecutionPolicy RemoteSigned -Scope CurrentUser
+Get-ExecutionPolicy //verif
+
+
+# Download and install fnm:
+winget install Schniz.fnm
+
+# Download and install Node.js:
+fnm install 22
+
+# Verify the Node.js version:
+node -v # Should print "v22.14.0".
+
+# Verify npm version:
+npm -v # Should print "10.9.2".
+
+
+API
+
+npm install express mongoose dotenv nodemon
+
+
+ {
+    "type": "module",
+
+ }
+ { "scripts": 
+    "start": "nodemon ./api_backend/server.js"}
+
+nodemon start //redemarre automatiquement apres chaque mise à jour 
+
+
+```test requette API pour créer un local
+{
+    "nom": "local 203",
+    "tempMoy": "24",
+    "carte": "exemple.com/image"
+}```
+
+''' pour la mise à jour juste le champ modifié
+{
+    "nom": "local 203 up"
+}
+'''
+
+
+ WEB
+npm install -D vite
+npm create vite@latest ./web_backend  //attention commandes differentes en fct de si on travaille dans le back ou front
+
+npm i
+
+npm i react-router-dom
+
+npm i cors
+
+npm i axios

@@ -1,0 +1,32 @@
+{
+  "name": "rdi25",
+  "version": "1.0.0",
+  "description": "Template de repo pour le projet Dev Web 2024-2025",
+  "main": "index.js",
+  "scripts": {
+    "start": "nodemon api_backend/server.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/loyde07/RDI25.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "module",
+  "bugs": {
+    "url": "https://github.com/loyde07/RDI25/issues"
+  },
+  "homepage": "https://github.com/loyde07/RDI25#readme",
+  "dependencies": {
+    "cors": "^2.8.5",
+    "dotenv": "^16.4.7",
+    "express": "^4.21.2",
+    "framer-motion": "^6.5.1",
+    "mongoose": "^8.13.1",
+    "nodemon": "^3.1.9"
+  },
+  "devDependencies": {
+    "vite": "^6.2.4"
+  }
+}
