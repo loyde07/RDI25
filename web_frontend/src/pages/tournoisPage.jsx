@@ -1,99 +1,22 @@
-import React, { useState, useEffect } from "react";
-import axios from "axios";
-import { Trophy, Swords } from "lucide-react";
-
-// Utilisez si vous voulez passer l'URL via une variable d'environnement
-// const API = import.meta.env.VITE_API;
-
-/**
- * Composant générique pour gérer un match (score + gagnant)
- */
-const Match = ({ team1 = "?", team2 = "?", onWinner, matchId }) => {
-  const [score1, setScore1] = useState("");
-  const [score2, setScore2] = useState("");
-
-  /* ------------------------------------------------------------------ */
-  /* Chargement / persistance des scores                                 */
-  /* ------------------------------------------------------------------ */
-  useEffect(() => {
-    const saved = JSON.parse(localStorage.getItem(`scores-${matchId}`));
-    if (saved) {
-      setScore1(saved.score1);
-      setScore2(saved.score2);
-    }
-  }, [matchId]);
-
-  const saveScores = (s1, s2) => {
-    localStorage.setItem(`scores-${matchId}`, JSON.stringify({ score1: s1, score2: s2 }));
-  };
-
-  const handleScore1Change = (e) => {
-    const value = e.target.value;
-    setScore1(value);
-    saveScores(value, score2);
-  };
-
-  const handleScore2Change = (e) => {
-    const value = e.target.value;
-    setScore2(value);
-    saveScores(score1, value);
-  };
-
-  /* ------------------------------------------------------------------ */
-  /* Validation du gagnant                                               */
-  /* ------------------------------------------------------------------ */
-  const handleValidate = () => {
-    const s1 = parseInt(score1, 10);
-    const s2 = parseInt(score2, 10);
-
-    if (!isNaN(s1) && !isNaN(s2) && s1 >= 0 && s2 >= 0) {
-      onWinner(s1 > s2 ? team1 : team2);
-    }
-  };
-
-  /* ------------------------------------------------------------------ */
-  /* UI                                                                 */
-  /* ------------------------------------------------------------------ */
-  return (
-    <div className="bg-gray-800 text-white rounded-lg p-4 shadow-lg flex flex-col items-center gap-2 w-full max-w-xs">
-      <div className="w-full flex justify-between items-center">
-        <span>{team1}</span>
-        <input
-          type="number"
-          value={score1}
-          onChange={handleScore1Change}
-          min="0"
-          className="w-16 px-2 py-1 bg-gray-700 text-white rounded-md [&::-webkit-inner-spin-button]:appearance-none [&::-webkit-outer-spin-button]:appearance-none"
-        />
-      </div>
-      <div className="w-full flex justify-between items-center">
-        <span>{team2}</span>
-        <input
-          type="number"
-          value={score2}
-          onChange={handleScore2Change}
-          min="0"
-          className="w-16 px-2 py-1 bg-gray-700 text-white rounded-md [&::-webkit-inner-spin-button]:appearance-none [&::-webkit-outer-spin-button]:appearance-none"
-        />
-      </div>
-      <button
-        onClick={handleValidate}
-        className="mt-2 px-4 py-2 bg-blue-600 hover:bg-blue-700 rounded-md text-white"
-      >
-        Valider
-      </button>
-    </div>
-  );
-};
-
 /**
  * Composant principal du tournoi (arbre à 8 équipes : quart -> demi -> finale)
  */
+
+
+import React, { useState, useEffect } from "react";
+import axios from "axios";
+import { Trophy, Swords } from "lucide-react";
+import { Link } from "react-router-dom";
+import Match from "./tournoisMatch.jsx";
+
+const API = import.meta.env.VITE_API;
+
 const Tournament = () => {
   const [round1, setRound1] = useState([]);            // 8 équipes
   const [round2, setRound2] = useState(Array(4).fill(null));
   const [semis, setSemis]  = useState(Array(2).fill(null));
   const [final, setFinal]  = useState(null);
+  const [tournamentStarted, setTournamentStarted] = useState(false);
 
   /* ------------------------------------------------------------------ */
   /* Chargement initial (équipes + state précédent)                      */
@@ -103,9 +26,9 @@ const Tournament = () => {
     const savedTeams = JSON.parse(localStorage.getItem("round1"));
     if (savedTeams && savedTeams.length) {
       setRound1(savedTeams);
-    } else {
-      fetchTeams(); // API fallback
-    }
+      setTournamentStarted(true); // Si déjà généré, on montre le tournoi
+
+    } 
 
     // Autres rounds / finale
     const savedRound2 = JSON.parse(localStorage.getItem("round2"));
@@ -124,7 +47,8 @@ const Tournament = () => {
   const fetchTeams = async () => {
     try {
       const { data } = await axios.get(
-        "http://localhost:5000/api/teams/67f8c2993634ef292b6a5d0b/teams"
+        `${API}/api/teams/67f8c2993634ef292b6a5d0b/teams`
+        
       );
 
       // On extrait max 8 noms valides
@@ -161,6 +85,28 @@ const Tournament = () => {
     setResetId((prev) => prev + 1);
     fetchTeams();
   };
+
+
+
+const generateMatches = async () => {
+  try {
+    const { data } = await axios.post(
+      `${API}/api/tournois/67f8c2993634ef292b6a5d0b/generate-matches`
+    );
+    
+    const noms = data.matchs.map(m => [m.team1.nom, m.team2.nom]).flat();
+    const uniques = [...new Set(noms)].slice(0, 8); // Juste pour être sûr d’avoir 8 noms
+    localStorage.clear();
+
+    setRound1(uniques);
+    localStorage.setItem("round1", JSON.stringify(uniques));
+    alert('Matchs créés avec succès !');
+  } catch (err) {
+    alert(err.response?.data?.message || 'Erreur');
+  }
+};
+
+
 
   /* ------------------------------------------------------------------ */
   /* UI                                                                 */
@@ -236,8 +182,32 @@ const Tournament = () => {
       >
         Réinitialiser le tournoi
       </button>
+      {/* Génère */}
+        <button
+          disabled={round1.length === 8}
+          className={`mt-12 px-6 py-3 rounded-md text-white transition 
+            ${round1.length === 8 
+              ? "bg-gray-400 cursor-not-allowed" 
+              : "bg-blue-600 hover:bg-blue-900"}
+          `}
+          onClick={() => {
+            fetchTeams();
+            setTournamentStarted(true);
+          }}
+        >
+          {round1.length === 8 ? "Tournoi déjà généré" : "Générer le tournoi"}
+        </button>
+
+        <Link to="/inscriptionTournois">
+        
+          <button
+            className="mt-12 px-6 py-3 bg-blue-600 hover:bg-blue-900 rounded-md text-white"
+
+          >Inscrire des équipes au tournois</button>
+        </Link>
     </div>
   );
 };
+
 
 export default Tournament;

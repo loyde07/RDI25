@@ -29,10 +29,11 @@ import Home from "./pages/home.jsx";
 import Header from "./pages/header.jsx"
 
 // Page du tournois
-import Tournement from "./pages/tournois.jsx"
+import Tournement from "./pages/tournoisPage.jsx"
 
 // fonction d'authentification
 import {useAuthStore} from './store/authStore.js'
+import InscriptionTourn from "./pages/inscritTournois.jsx";
 
 // Protège les routes qui demandent une authentification
 const ProtectedRoute = ({ children }) => {
@@ -97,6 +98,7 @@ function App() {
 						<Route path="/gestion" element={<Gestion/>} />
 						<Route path="/gestion/:id" element= {<MyTeam/>} />
 						<Route path="/team" element={<Team/>} />
+						<Route path="/inscriptionTournois" element={<InscriptionTourn/>} />
 					</Routes>
 				</div>
 			</div>
