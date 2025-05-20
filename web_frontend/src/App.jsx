@@ -31,6 +31,7 @@ import Header from "./pages/header.jsx"
 // import Tournement from "./pages/tournois.jsx"
 
 // Protège les routes qui demandent une authentification
+
 const ProtectedRoute = ({ children }) => {
 	const { isAuthenticated, user } = useAuthStore();
 

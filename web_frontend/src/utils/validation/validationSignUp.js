@@ -33,30 +33,10 @@ export function validateSignup({ lName, fName, pseudo, email, password, ecole_id
         errors.pseudo = 'Le pseudo ne peut contenir que lettres, chiffres, tirets et underscores';
     }
 
-     // École
-     if (!selectedEcoleId || typeof selectedEcoleId !== 'string') {
-        errors.ecole_id = 'Veuillez sélectionner une école valide';
-    }
-
-    // Niveau
-    if (!selectedNiveau || isNaN(selectedNiveau)) {
-        console.log(typeof selectedNiveau !== Number);
-        console.log(selectedNiveau, isNan(selectedNiveau));
-        console.log(!selectedNiveau);
-        errors.niveau = 'Veuillez sélectionner un niveau valide';
-    }
-
-
     // Email
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     if (!emailRegex.test(trimmedEmail)) {
         errors.email = 'Veuillez entrer une adresse email valide';
-    } else {
-        const tempEmailDomains = ['yopmail.com', 'mailinator.com', 'tempmail.com', '10minutemail.com'];
-        const domain = trimmedEmail.split('@')[1];
-        if (tempEmailDomains.includes(domain)) {
-            errors.email = 'Les adresses email temporaires ne sont pas autorisées';
-        }
     }
 
     // Mot de passe

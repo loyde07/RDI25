@@ -56,3 +56,5 @@ npm install --save-dev @testing-library/jest-dom
 
 
 npm install react-select
+
+npm install -D @vitest/coverage-c8

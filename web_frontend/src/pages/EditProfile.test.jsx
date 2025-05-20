@@ -465,71 +465,42 @@ describe("EditProfilePage", () => {
     });
   });
 
-  // it("succès modifier le champs pseudo", async () => {
-  //   render(<MemoryRouter><EditProfilePage /></MemoryRouter>);
 
-  //   const pseudoLabel = screen.getByLabelText("Pseudo");
-  //   const pseudoContainer = pseudoLabel.closest("div");
-  //   const pencilButton = pseudoContainer?.querySelector("button svg");
+  it("annule la modification via l’icône ban", async () => {
+    render(<MemoryRouter><EditProfilePage /></MemoryRouter>);
 
-  //   if (pencilButton) {
-  //     fireEvent.click(pencilButton.parentElement);
-  //   }
+    const pseudoInput = screen.getByLabelText("Pseudo");
+    const pseudoContainer = pseudoInput.closest("div");
 
-  //   const input = screen.getByDisplayValue("jean42");
-  //   fireEvent.change(input, { target: { value: "nouveauPseudo" } });
+    const pencilButton = within(pseudoContainer).getByRole("button");
 
-  //   const checkButton = pseudoContainer?.querySelector("button svg[data-icon='check']") ||
-  //                       pseudoContainer?.querySelector("button > svg");
+    await waitFor(() => {
+      expect(pseudoInput).toBeDisabled();
+    });
 
-  //   if (checkButton) {
-  //     fireEvent.click(checkButton.parentElement);
-  //   }
+    fireEvent.click(pencilButton);
 
-  //   const submitButton = screen.getByRole("button", { name: /Enregistrer les informations/i });
-  //   fireEvent.click(submitButton);
-
-  //   await waitFor(() => {
-  //     expect(mockUpdateUser).toHaveBeenCalledWith({ pseudo: "nouveauPseudo" });
-  //   });
-  // });
+    await waitFor(() => {
+      expect(pseudoInput).not.toBeDisabled();
+    });
 
 
-  // it("annule la modification du champ pseudo via l’icône ban", async () => {
-  //   render(<MemoryRouter><EditProfilePage /></MemoryRouter>);
+    fireEvent.change(pseudoInput, { target: { value: "valeurTemporaire" } });
 
-  //   const pseudoInput = screen.getByLabelText("Pseudo");
-  //   const pseudoContainer = pseudoInput.closest("div");
+    const buttons = within(pseudoContainer).getAllByRole("button");
+    const banButton = buttons[1]; // Assurez-vous que c'est le bon bouton
 
-  //   const pencilButton = within(pseudoContainer).getByRole("button");
+    fireEvent.click(banButton);
 
-  //   await waitFor(() => {
-  //     expect(pseudoInput).toBeDisabled();
-  //   });
+    await waitFor(() => {
+      expect(pseudoInput.value).toBe("jean42");
+    });
 
-  //   fireEvent.click(pencilButton);
+    const submitButton = screen.getByRole("button", { name: /Enregistrer les informations/i });
+    fireEvent.click(submitButton);
 
-  //   await waitFor(() => {
-  //     expect(pseudoInput).not.toBeDisabled();
-  //   });
-
-
-  //   fireEvent.change(pseudoInput, { target: { value: "valeurTemporaire" } });
-
-  //   const buttons = within(pseudoContainer).getAllByRole("button");
-  //   const banButton = buttons[1]; // Assurez-vous que c'est le bon bouton
-
-  //   fireEvent.click(banButton);
-
-  //   await waitFor(() => {
-  //     expect(pseudoInput.value).toBe("jean42");
-  //   });
-
-  //   const submitButton = screen.getByRole("button", { name: /Enregistrer les informations/i });
-  //   fireEvent.click(submitButton);
-
-  //   await waitFor(() => {
-  //     expect(mockUpdateUser).not.toHaveBeenCalled();
-  //   });
-  // });
+    await waitFor(() => {
+      expect(mockUpdateUser).not.toHaveBeenCalled();
+    });
+  });
 });
