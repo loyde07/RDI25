@@ -5,8 +5,7 @@ import {motion} from 'framer-motion'
 import { useAuthStore } from "../../store/authStore";
 import { useParams } from 'react-router-dom';
 import toast from "react-hot-toast";
-import { ajouterJoueurAListe, retirerJoueurDeListe, toggleSuppressionLogic } from './outilsGestionTeams/outilsUpdate.jsx';
-import { ajouterJoueurDansEquipe } from './outilsGestionTeams/outilsJoin.jsx';
+import {  toggleSuppressionLogic, ajouterJoueurDansEquipe } from './outilsGestionTeams/outilsUpdate.jsx';
 import { ImagePlus } from "lucide-react";
 
 const API = import.meta.env.VITE_API ;
