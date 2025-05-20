@@ -1,17 +1,19 @@
 import React, { useState, useEffect } from 'react';
-import { Pencil, Check, Ban, icons } from 'lucide-react';
+import { Pencil, Check, Ban } from 'lucide-react';
+
+
 
 const EditableField = ({ label, name, value, initialValue, onChange, icon: Icon, type = 'text', options = [] }) => {
   const [isEditing, setIsEditing] = useState(false);
   const [tempValue, setTempValue] = useState(value);
 
-  // Synchroniser quand la valeur externe change
+  // Met à jour la valeur temporaire quand la prop `value` change
   useEffect(() => {
     setTempValue(value);
   }, [value]);
 
   const handleConfirm = () => {
-    onChange(name, tempValue);
+    onChange(name, tempValue); // ✅ corrige ici
     setIsEditing(false);
   };
 
@@ -27,17 +29,20 @@ const EditableField = ({ label, name, value, initialValue, onChange, icon: Icon,
   }`;
 
   return (
-    <div className="relative mb-3  text-indigo-900 ">
-      <label className="flex items-center text-sm font-medium  ml-1 mb-1">
+    <div className="relative mb-3 text-indigo-900">
+      <label htmlFor={name} className="flex items-center text-sm font-medium ml-1 mb-1">
         {Icon && <Icon className="mr-2 text-indigo-900" />}
         {label}
       </label>
       <div className="flex items-center">
         {options.length > 0 ? (
           <select
+            label={label}
+            name={name}
+            id={name}
             disabled={!isEditing}
             value={tempValue}
-            onChange={(e) => setTempValue(e.target.value)}
+            onChange={(e) => setTempValue(e.target.value)} // ✅ seulement setTempValue ici
             className={inputClassNames}
           >
             {options.map((option) => (
@@ -48,14 +53,15 @@ const EditableField = ({ label, name, value, initialValue, onChange, icon: Icon,
           </select>
         ) : (
           <input
+            label={label}
+            id={name}
             type={type}
             name={name}
             value={tempValue}
             disabled={!isEditing}
-            onChange={(e) => setTempValue(e.target.value)}
+            onChange={(e) => setTempValue(e.target.value)} // ✅ seulement setTempValue ici
             className={inputClassNames}
-          >
-          </input>
+          />
         )}
         <div className="ml-2 flex items-center">
           {isEditing ? (
@@ -68,7 +74,7 @@ const EditableField = ({ label, name, value, initialValue, onChange, icon: Icon,
               </button>
             </>
           ) : (
-            <button type="button" onClick={() => setIsEditing(true)} className="text-orange-500 hover:text-orange-400">
+            <button type="button" onClick={() => setIsEditing(true)} className="text-blue-700 hover:text-blue-900">
               <Pencil />
             </button>
           )}

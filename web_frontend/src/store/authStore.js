@@ -119,11 +119,13 @@ export const useAuthStore = create((set) => ({
 		try {
 			const response = await axios.put(`${API_URL}/updateProfile`, updatePayload);
 			set({ user: response.data.user, isAuthenticated: true, isLoading: false });
+			toast.success("Profil mis à jour avec succès");
 		} catch (error) {
 			set({
 				error: error.response?.data?.message || "Erreur lors de la mise à jour",
 				isLoading: false,
 			});
+			toast.error(error.response?.data?.message || "Erreur lors de la mise à jour");
 			throw error;
 		}
 	},

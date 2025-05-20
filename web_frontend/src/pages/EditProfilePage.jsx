@@ -11,6 +11,7 @@ import PasswordStrengthMeter from "../components/PasswordStrengthMeter";
 import EditableField from "../components/EditableField";
 
 import { valorantRanks } from "../utils/valorantRanks";
+import { validateProfileUpdate } from "../utils/validation/validationEditProfile";
 
 const EditProfilePage = () => {
   const navigate = useNavigate();
@@ -55,18 +56,20 @@ const EditProfilePage = () => {
   const handleUpdateProfile = async (e) => {
     e.preventDefault();
 
-    const { nom, prenom, pseudo, niveau, ecole_id, password, confirmPassword } = formData;
+    const { modifiedFields, errors } = validateProfileUpdate(formData, user, showPasswordSection);
 
-    if (showPasswordSection && password !== confirmPassword) {
-      toast.error("Les mots de passe ne correspondent pas.");
+    if (errors.length > 0) {
+      errors.forEach(err => toast.error(err));
+      return;
+    }
+
+    if (!modifiedFields || Object.keys(modifiedFields).length === 0) {
+      toast.error("Aucune modification détectée.");
       return;
     }
 
     try {
-      const updatePayload = { nom, prenom, pseudo, niveau, ecole_id };
-      if (showPasswordSection && password) updatePayload.password = password;
-
-      await updateProfile(updatePayload);
+      await updateProfile(modifiedFields);
       navigate("/profile");
     } catch (error) {
       toast.error("Erreur lors de la mise à jour");
@@ -76,7 +79,7 @@ const EditProfilePage = () => {
 
   return (
     <div className="max-w-md w-3xl mx-auto p-5 bg-gradient-to-tl from-white to-indigo-800 rounded-2xl shadow-md mt-10">
-      <h2 className="text-2xl font-bold mb-4 text-center bg-clip-text text-transparent bg-gradient-to-r from-indigo-900 to-gray-900 ">Modifier mon profil</h2>
+      <h2 className="text-2xl font-bold mb-4 text-center bg-clip-text text-transparent bg-gradient-to-r from-blue-400 via-blue-600 to-blue-800 ">Modifier mon profil</h2>
       <form onSubmit={handleUpdateProfile}>
         <EditableField
           label="Nom"
@@ -133,6 +136,7 @@ const EditProfilePage = () => {
               <input
                 type="password"
                 name="password"
+                data-testid="password"
                 value={formData.password}
                 onChange={(e) => handleFieldChange("password", e.target.value)}
                 className="w-full px-3 py-2 bg-gray-800 text-white rounded-lg border border-gray-700 focus:outline-none focus:ring-2 focus:ring-blue-500"
@@ -143,6 +147,7 @@ const EditProfilePage = () => {
               <input
                 type="password"
                 name="confirmPassword"
+                data-testid="confirmPassword"
                 value={formData.confirmPassword}
                 onChange={(e) => handleFieldChange("confirmPassword", e.target.value)}
                 className="w-full px-3 py-2 bg-gray-800 text-white rounded-lg border border-gray-700 focus:outline-none focus:ring-2 focus:ring-blue-500"
@@ -163,6 +168,7 @@ const EditProfilePage = () => {
           whileTap={{ scale: 0.98 }}
           type='submit'
           disabled={isLoading}
+          data-testid="submit-button"
         >
           {isLoading ? <Loader className='animate-spin mx-auto' size={24} /> : "Enregistrer les informations"}
         </motion.button>
