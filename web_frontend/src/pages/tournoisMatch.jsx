@@ -44,7 +44,9 @@ const Match = ({ team1 = "?", team2 = "?", onWinner, matchDbId }) => {
         <button
           className="px-3 py-1 bg-green-800 hover:bg-green-600 rounded-md"
           disabled={!team1 || team1 === "?"}
-          onClick={() => handleWinner(team1)}
+          onClick={() => {
+            onWinner(team1); // ou team2
+          }}
         >
           Gagnant
         </button>

@@ -16,12 +16,14 @@ const Tournament = () => {
   const [round1, setRound1] = useState([]);            // 8 équipes
   const [round2, setRound2] = useState(Array(4).fill(null));
   const [semis, setSemis]  = useState(Array(2).fill(null));
-  const [final, setFinal]  = useState(null);
+  const [final, setFinal]  = useState(Array(1).fill(null));
   const [tournamentStarted, setTournamentStarted] = useState(false);
   const [matches, setMatches] = useState([]);
   const round1Matches = matches.filter((m) => m.round === 1);
   const round2Matches = matches.filter((m) => m.round === 2);
   const round3Matches = matches.filter((m) => m.round === 3);
+  const [finalWinner, setFinalWinner] = useState(null);
+
 
 
   const id = localStorage.getItem("tournoisId") || "67f8c2993634ef292b6a5d0b";
@@ -31,8 +33,7 @@ const Tournament = () => {
   /* Chargement initial (équipes + state précédent)                      */
   /* ------------------------------------------------------------------ */
 
-  console.log("tournamentStarted:", tournamentStarted);
-  console.log("round1Matches:", round1Matches);
+  
 useEffect(() => {
   axios.get(`${API}/api/tournois/${id}/matches`)
     .then(res => {
@@ -68,7 +69,25 @@ useEffect(() => {
     .catch(console.error);
 }, [id]);
 
-  
+
+
+useEffect(() => {
+  const savedWinner = JSON.parse(localStorage.getItem("finalWinner"));
+  if (savedWinner) setFinalWinner(savedWinner);
+}, []);
+
+
+
+    const refetchMatches = async () => {
+    try {
+      const { data } = await axios.get(`${API}/api/tournois/${id}/matches`);
+      setMatches(data.matchs);
+    } catch (err) {
+      console.error("Erreur lors du rafraîchissement des matchs :", err);
+    }
+  };
+
+
   /* ------------------------------------------------------------------ */
   /* Récupération des équipes serveur                                   */
   /* ------------------------------------------------------------------ */
@@ -89,28 +108,42 @@ useEffect(() => {
     }
   };
 
+
+
   /* ------------------------------------------------------------------ */
   /* Helpers pour propager les gagnants                                  */
   /* ------------------------------------------------------------------ */
 const updateNextRound = (roundSetter, storageKey, index, nextRound, roundNumber) => async (winner) => {
-  roundSetter((prev) => {
-    const updated = [...prev];
-    updated[index] = winner;
-    localStorage.setItem(storageKey, JSON.stringify(updated));
-    return updated;
-  });
+    roundSetter((prev) => {
+      const updated = [...(prev)];
+      updated[index] = winner;
+      localStorage.setItem(storageKey, JSON.stringify(updated));
+
+      if (roundNumber === 4) {
+        localStorage.setItem("final", JSON.stringify(updated));
+      }
+      return updated;
+    });
+
+
+
+  if (roundNumber === 4) {
+    setFinalWinner((prevWinner) => {
+      localStorage.setItem("finalWinner", JSON.stringify(winner.nom || winner));
+      return winner.nom || winner;
+    });
+}
+
+
 
   
   setTimeout(async () => {
+
     const current = JSON.parse(localStorage.getItem(storageKey));
    if (!current || current.length < 2) {
-      console.log("Plus assez d'équipes pour continuer (tournoi terminé ?)");
       return;
     }
-    if (!roundNumber || isNaN(Number(roundNumber))) {
-    console.log("Round invalide ou tournoi terminé");
-    return;
-  }
+
     const i = index % 2 === 0 ? index : index - 1;
     const team1 = current[i];
     const team2 = current[i + 1];
@@ -119,11 +152,12 @@ const updateNextRound = (roundSetter, storageKey, index, nextRound, roundNumber)
       try {
         const check = await axios.get(`${API}/api/matches/check`, {
           params: {
-            team1_id: team1,
-            team2_id: team2,
+            team1_id: team1._id,
+            team2_id: team2._id,
             round: Number(roundNumber)
           }
-        });
+        }
+      );
 
         if (!check.data.exists) {
           const { data } = await axios.post(`${API}/api/matches/new`, {
@@ -133,7 +167,8 @@ const updateNextRound = (roundSetter, storageKey, index, nextRound, roundNumber)
             round: Number(roundNumber)
           });
 
-          if (typeof nextRound === "function" && nextRound !== (() => {})) {
+
+          if (typeof nextRound === "function" ) {
             nextRound((prev) => {
               const copy = [...prev];
               copy[Math.floor(i / 2)] = null;
@@ -142,17 +177,25 @@ const updateNextRound = (roundSetter, storageKey, index, nextRound, roundNumber)
             });
           }
 
-          toast.success("✅ Match créé pour le round " + roundNumber);
+
+
+          toast.success(" Match créé pour le round " + roundNumber);
+
         } else {
-          toast.success("⏭️ Match déjà existant, on ne fait rien.");
+          toast.success(" Match déjà existant, on ne fait rien.");
         }
+
+
       } catch (err) {
-        toast.error("❌ Erreur création match :", err);
+        toast.error(" Erreur création match :", err);
       }
     }
+
+
+          await refetchMatches();
+
   }, 100);
 };
-
 
 
 
@@ -168,7 +211,7 @@ const updateNextRound = (roundSetter, storageKey, index, nextRound, roundNumber)
       setRound1([]);
       setRound2(Array(4).fill(null));
       setSemis(Array(2).fill(null));
-      setFinal(null);
+      setFinal(Array(1).fill(null));
       setMatches([]); // ← SUPER IMPORTANT
       localStorage.clear();
       setResetId((prev) => prev + 1);
@@ -181,7 +224,7 @@ const updateNextRound = (roundSetter, storageKey, index, nextRound, roundNumber)
     toast.success("Tournoi réinitialisé avec succès.");
   } catch (err) {
     console.error("Erreur lors du reset :", err);
-    alert("Erreur lors du reset du tournoi.");
+    toast.error("Erreur lors du reset du tournoi.");
   }
 };
 
@@ -261,22 +304,24 @@ const generateMatches = async () => {
         <div className="flex flex-col items-center flex-1 min-w-[250px]">
           <h2 className="text-xl font-semibold mb-4">Finale</h2>
           <div className="mt-[345px]">
-        {round3Matches.map((match, idx) => (
+        {round3Matches.map((match) => (
           <Match
             key={match._id}
             matchDbId={match._id}
             team1={match.team1_id}
             team2={match.team2_id}
-            onWinner={updateNextRound(setFinal, "final", 0, 1, 4)} // round 4 = finale
+            onWinner={updateNextRound(setFinal, "final", 0, null, 4)} // round 4 = finale
             />
 
         ))}
           </div>
-          {final && (
-            <div className="mt-10 text-2xl font-bold text-yellow-400 flex items-center gap-2">
-              <Trophy size={28} /> Vainqueur : {final}
-            </div>
-          )}
+            {finalWinner && (
+              <div className="mt-10 text-2xl font-bold text-yellow-400 flex items-center gap-2">
+                <Trophy size={28} /> Vainqueur : {finalWinner}
+              </div>
+            )}
+
+
         </div>
       </div>
           ) : (
