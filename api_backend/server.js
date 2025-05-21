@@ -22,7 +22,7 @@ import matchRoutes from "./routes/match.routes.js";
 
 import inscriptionRoutes from "./routes/inscription.route.js";
 
-
+import tournoisRoutes from "./routes/tournois.route.js";
 
 dotenv.config();
 
@@ -55,6 +55,8 @@ app.use("/api/ecoles", ecoleRoutes);
     
 
 app.use("/api/inscription", inscriptionRoutes);
+
+app.use("/api/tournois", tournoisRoutes); // Inscription aux tournois
 
 
 app.get("/", (req, res) => {

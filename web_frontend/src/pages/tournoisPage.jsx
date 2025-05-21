@@ -8,6 +8,7 @@ import axios from "axios";
 import { Trophy, Swords } from "lucide-react";
 import { Link } from "react-router-dom";
 import Match from "./tournoisMatch.jsx";
+import toast from "react-hot-toast";
 
 const API = import.meta.env.VITE_API;
 
@@ -17,28 +18,55 @@ const Tournament = () => {
   const [semis, setSemis]  = useState(Array(2).fill(null));
   const [final, setFinal]  = useState(null);
   const [tournamentStarted, setTournamentStarted] = useState(false);
+  const [matches, setMatches] = useState([]);
+  const round1Matches = matches.filter((m) => m.round === 1);
+  const round2Matches = matches.filter((m) => m.round === 2);
+  const round3Matches = matches.filter((m) => m.round === 3);
+
+
+  const id = localStorage.getItem("tournoisId") || "67f8c2993634ef292b6a5d0b";
+  const [resetId, setResetId] = useState(0);
 
   /* ------------------------------------------------------------------ */
   /* Chargement initial (équipes + state précédent)                      */
   /* ------------------------------------------------------------------ */
-  useEffect(() => {
-    // Round 1 — on regarde d'abord le localStorage
-    const savedTeams = JSON.parse(localStorage.getItem("round1"));
-    if (savedTeams && savedTeams.length) {
-      setRound1(savedTeams);
-      setTournamentStarted(true); // Si déjà généré, on montre le tournoi
 
-    } 
+  console.log("tournamentStarted:", tournamentStarted);
+  console.log("round1Matches:", round1Matches);
+useEffect(() => {
+  axios.get(`${API}/api/tournois/${id}/matches`)
+    .then(res => {
+      const matchs = res.data.matchs;
+      setMatches(matchs);
 
-    // Autres rounds / finale
-    const savedRound2 = JSON.parse(localStorage.getItem("round2"));
-    const savedSemis  = JSON.parse(localStorage.getItem("semis"));
-    const savedFinal  = JSON.parse(localStorage.getItem("final"));
+      // Round 1
+      const round1Teams = matchs
+        .filter(m => m.round === 1)
+        .map(m => [m.team1_id.nom, m.team2_id.nom])
+        .flat()
+        .filter(Boolean);
+      setRound1([...new Set(round1Teams)]);
 
-    if (savedRound2) setRound2(savedRound2);
-    if (savedSemis)  setSemis(savedSemis);
-    if (savedFinal)  setFinal(savedFinal);
-  }, []);
+      // Round 2 (demi-finales)
+      const round2Teams = matchs
+        .filter(m => m.round === 2)
+        .map(m => [m.team1_id.nom, m.team2_id.nom])
+        .flat()
+        .filter(Boolean);
+      setRound2([...new Set(round2Teams)]);
+
+      // Round 3 (finale)
+      const finalTeams = matchs
+        .filter(m => m.round === 3)
+        .map(m => [m.team1_id.nom, m.team2_id.nom])
+        .flat()
+        .filter(Boolean);
+      setFinal([...new Set(finalTeams)]);
+
+      setTournamentStarted(true);
+    })
+    .catch(console.error);
+}, [id]);
 
   
   /* ------------------------------------------------------------------ */
@@ -55,6 +83,7 @@ const Tournament = () => {
       const names = data.filter((t) => t?.nom).map((t) => t.nom).slice(0, 8);
       setRound1(names);
       localStorage.setItem("round1", JSON.stringify(names));
+
     } catch (err) {
       console.error("Erreur lors de la récupération des équipes :", err);
     }
@@ -63,49 +92,121 @@ const Tournament = () => {
   /* ------------------------------------------------------------------ */
   /* Helpers pour propager les gagnants                                  */
   /* ------------------------------------------------------------------ */
-  const updateNextRound = (roundSetter, storageKey, index) => (winner) => {
-    roundSetter((prev) => {
-      const updated = [...prev];
-      updated[index] = winner;
-      localStorage.setItem(storageKey, JSON.stringify(updated));
-      return updated;
-    });
-  };
+const updateNextRound = (roundSetter, storageKey, index, nextRound, roundNumber) => async (winner) => {
+  roundSetter((prev) => {
+    const updated = [...prev];
+    updated[index] = winner;
+    localStorage.setItem(storageKey, JSON.stringify(updated));
+    return updated;
+  });
+
+  
+  setTimeout(async () => {
+    const current = JSON.parse(localStorage.getItem(storageKey));
+   if (!current || current.length < 2) {
+      console.log("Plus assez d'équipes pour continuer (tournoi terminé ?)");
+      return;
+    }
+    if (!roundNumber || isNaN(Number(roundNumber))) {
+    console.log("Round invalide ou tournoi terminé");
+    return;
+  }
+    const i = index % 2 === 0 ? index : index - 1;
+    const team1 = current[i];
+    const team2 = current[i + 1];
+
+    if (team1 && team2) {
+      try {
+        const check = await axios.get(`${API}/api/matches/check`, {
+          params: {
+            team1_id: team1,
+            team2_id: team2,
+            round: Number(roundNumber)
+          }
+        });
+
+        if (!check.data.exists) {
+          const { data } = await axios.post(`${API}/api/matches/new`, {
+            tournois_id: id,
+            team1_id: team1,
+            team2_id: team2,
+            round: Number(roundNumber)
+          });
+
+          if (typeof nextRound === "function" && nextRound !== (() => {})) {
+            nextRound((prev) => {
+              const copy = [...prev];
+              copy[Math.floor(i / 2)] = null;
+              localStorage.setItem(`round${roundNumber}`, JSON.stringify(copy));
+              return copy;
+            });
+          }
+
+          toast.success("✅ Match créé pour le round " + roundNumber);
+        } else {
+          toast.success("⏭️ Match déjà existant, on ne fait rien.");
+        }
+      } catch (err) {
+        toast.error("❌ Erreur création match :", err);
+      }
+    }
+  }, 100);
+};
+
+
+
 
   /* ------------------------------------------------------------------ */
   /* RESET / RESTART                                                    */
   /* ------------------------------------------------------------------ */
-  const [resetId, setResetId] = useState(0);
-  const resetTournament = () => {
-    setRound1([]);
-    setRound2(Array(4).fill(null));
-    setSemis(Array(2).fill(null));
-    setFinal(null);
-    localStorage.clear();
-    setResetId((prev) => prev + 1);
-    fetchTeams();
-  };
+  const resetTournament = async () => {
+    try {
+      // 1. Supprime tous les matchs du tournoi en base
+      await axios.delete(`${API}/api/tournois/${id}/reset`);
+
+      // 2. Réinitialise tous les rounds côté client
+      setRound1([]);
+      setRound2(Array(4).fill(null));
+      setSemis(Array(2).fill(null));
+      setFinal(null);
+      setMatches([]); // ← SUPER IMPORTANT
+      localStorage.clear();
+      setResetId((prev) => prev + 1);
+      setTournamentStarted(false);
+
+
+    // 3. Recharge les équipes si besoin
+    setMatches([]); // vide les anciens matchs
+
+    toast.success("Tournoi réinitialisé avec succès.");
+  } catch (err) {
+    console.error("Erreur lors du reset :", err);
+    alert("Erreur lors du reset du tournoi.");
+  }
+};
 
 
 
 const generateMatches = async () => {
   try {
-    const { data } = await axios.post(
-      `${API}/api/tournois/67f8c2993634ef292b6a5d0b/generate-matches`
-    );
-    
-    const noms = data.matchs.map(m => [m.team1.nom, m.team2.nom]).flat();
-    const uniques = [...new Set(noms)].slice(0, 8); // Juste pour être sûr d’avoir 8 noms
-    localStorage.clear();
+    await axios.post(`${API}/api/tournois/${id}/generate-matches`);
+    // Après la création côté serveur, refetch pour mettre à jour le front
+    const { data } = await axios.get(`${API}/api/tournois/${id}/matches`);
+    setMatches(data.matchs);
 
-    setRound1(uniques);
-    localStorage.setItem("round1", JSON.stringify(uniques));
-    alert('Matchs créés avec succès !');
+    const round1Teams = data.matchs
+      .filter(m => m.round === 1)
+      .map(m => [m.team1_id.nom, m.team2_id.nom]) 
+      .flat()
+      .filter(Boolean);
+
+    setRound1([...new Set(round1Teams)]);
+    setTournamentStarted(true);
+    toast.success('Matchs créés avec succès !');
   } catch (err) {
-    alert(err.response?.data?.message || 'Erreur');
+    toast.error(err.response?.data?.message || 'Erreur');
   }
 };
-
 
 
   /* ------------------------------------------------------------------ */
@@ -117,56 +218,60 @@ const generateMatches = async () => {
       <h1 className="text-4xl font-bold mb-10 flex items-center gap-3">
         <Swords size={32} /> Tournoi Valo
       </h1>
+          {tournamentStarted && round1Matches.length > 0 ? (
 
        <div className="flex w-full justify-center items-start gap-32 px-4 overflow-x-auto">
         {/* -------------------- Round 1 -------------------- */}
         <div className="flex flex-col items-center flex-1 min-w-[250px]">
           <h2 className="text-xl font-semibold mb-4">1er tour</h2>
           <div className="flex flex-col gap-12">
-                {[0, 2, 4, 6].map((i, idx) => (
-                    <Match
-                    key={`R1-${idx}-${resetId}`}
-                    matchId={`R1-${idx}-${resetId}`}
-                    team1={round1[i]}
-                    team2={round1[i + 1]}
-                    onWinner={updateNextRound(setRound2, "round2", idx)}
-                    />
-                ))}
-            </div>
+            {round1Matches.map((match, idx) => {
+              if (!match.team1_id || !match.team2_id) return null;
+              return (
+                <Match
+                  key={match._id}
+                  matchDbId={match._id}
+                  team1={match.team1_id}
+                  team2={match.team2_id}
+                  onWinner={updateNextRound(setRound2, "round2", idx, setSemis, 2)}
+                />
+              );
+            })}
+          </div>
         </div>
 
         {/* ---------------- Demi-finales ------------------- */}
         <div className="flex flex-col items-center gap-24 flex-1 min-w-[250px]">
           <h2 className="text-xl font-semibold mb-4">Demi-finales</h2>
-          {[0, 2].map((i, idx) => (
-            <div key={`R2-${idx}-${resetId}`} className="mt-[76px]">
-                <Match
-                key={`R2-${idx}-${resetId}`}
-                matchId={`R2-${idx}-${resetId}`}
-                team1={round2[i]}
-                team2={round2[i + 1]}
-                onWinner={updateNextRound(setSemis, "semis", idx)}
-                />
-            </div>
-            
-          ))}
+        {round2Matches.map((match, idx) => (
+          <Match
+            key={match._id}
+            matchDbId={match._id}
+            team1={match.team1_id}
+            team2={match.team2_id}
+            onWinner={updateNextRound(setSemis, "semis", idx, setFinal, 3)}
+          />
+        ))}
+
+
         </div>
+
 
         {/* -------------------- Finale --------------------- */}
         <div className="flex flex-col items-center flex-1 min-w-[250px]">
           <h2 className="text-xl font-semibold mb-4">Finale</h2>
           <div className="mt-[345px]">
-                <Match
-                    key={`Final-${resetId}`}
-                    matchId={`Final-${resetId}`}
-                    team1={semis[0] ?? "?"}
-                    team2={semis[1] ?? "?"}
-                    onWinner={(winner) => {
-                        setFinal(winner);
-                        localStorage.setItem("final", JSON.stringify(winner));
-                    }}
-                />
-            </div>
+        {round3Matches.map((match, idx) => (
+          <Match
+            key={match._id}
+            matchDbId={match._id}
+            team1={match.team1_id}
+            team2={match.team2_id}
+            onWinner={updateNextRound(setFinal, "final", 0, 1, 4)} // round 4 = finale
+            />
+
+        ))}
+          </div>
           {final && (
             <div className="mt-10 text-2xl font-bold text-yellow-400 flex items-center gap-2">
               <Trophy size={28} /> Vainqueur : {final}
@@ -174,7 +279,9 @@ const generateMatches = async () => {
           )}
         </div>
       </div>
-
+          ) : (
+            <p>Aucun match à afficher</p> // ou rien du tout
+          )}
       {/* Bouton Reset */}
       <button
         className="mt-12 px-6 py-3 bg-red-600 hover:bg-red-700 rounded-md text-white"
@@ -190,10 +297,8 @@ const generateMatches = async () => {
               ? "bg-gray-400 cursor-not-allowed" 
               : "bg-blue-600 hover:bg-blue-900"}
           `}
-          onClick={() => {
-            fetchTeams();
-            setTournamentStarted(true);
-          }}
+            onClick={generateMatches}
+
         >
           {round1.length === 8 ? "Tournoi déjà généré" : "Générer le tournoi"}
         </button>

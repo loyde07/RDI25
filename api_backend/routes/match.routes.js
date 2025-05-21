@@ -7,30 +7,28 @@ const router = express.Router();
 router.post('/init/:tournoisId', async (req, res) => {
   try {
     const { tournoisId } = req.params;
-
-    // Récupérer les équipes du tournoi
-    const teams = await Team.find({tournois_id: tournoisId}); // Tu peux ajouter un filtre par tournoi si nécessaire
+    const teams = await Team.find({ tournois_id: tournoisId });
 
     if (teams.length % 2 !== 0) {
       return res.status(400).json({ message: "Nombre d'équipes impair, impossible de créer les matchs." });
     }
 
-    // Mélanger les équipes
     const shuffled = teams.sort(() => Math.random() - 0.5);
 
     const matches = [];
     for (let i = 0; i < shuffled.length; i += 2) {
-      const match = new Match({
+      matches.push({
         tournois_id: tournoisId,
         team1_id: shuffled[i]._id,
         team2_id: shuffled[i + 1]._id,
-        winner_id: null
+        winner_id: null,
+        round: 1,
       });
-      await match.save();
-      matches.push(match);
     }
 
-    res.status(201).json(matches);
+    const createdMatches = await Match.insertMany(matches);
+
+    res.status(201).json(createdMatches);
   } catch (error) {
     console.error(error);
     res.status(500).json({ message: 'Erreur serveur' });
@@ -38,6 +36,29 @@ router.post('/init/:tournoisId', async (req, res) => {
 });
 
 router.put('/:id/winner', async (req, res) => {
+  try {
+    const { id } = req.params;
+    const { winner_id } = req.body;
+
+    // Récupère le match
+    const match = await Match.findById(id);
+    if (!match) {
+      return res.status(404).json({ message: 'Match non trouvé' });
+    }
+
+    // Met à jour le gagnant
+    match.winner_id = winner_id;
+    await match.save();
+
+    // Renvoie juste le match mis à jour
+    res.status(200).json(match);
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ message: 'Erreur serveur' });
+  }
+});
+
+router.put('/:id/winnerr/testtt', async (req, res) => {
     try {
       const { id } = req.params;
       const { winner_id } = req.body;
@@ -66,17 +87,22 @@ router.put('/:id/winner', async (req, res) => {
   
       const nextRound = match.round + 1;
       const newMatches = [];
-      for (let i = 0; i < winners.length; i += 2) {
-        const newMatch = new Match({
-          tournois_id: match.tournois_id,
-          team1_id: winners[i],
-          team2_id: winners[i + 1],
-          winner_id: null,
-          round: nextRound
-        });
-        await newMatch.save();
-        newMatches.push(newMatch);
-      }
+        for (let i = 0; i < winners.length; i += 2) {
+          if (winners[i] && winners[i + 1]) {
+            const newMatch = new Match({
+              tournois_id: match.tournois_id,
+              team1_id: winners[i],
+              team2_id: winners[i + 1],
+              winner_id: null,
+              round: nextRound
+            });
+            await newMatch.save();
+            newMatches.push(newMatch);
+          } else {
+            // Si nombre impair, gérer le cas (bye, passage direct, etc.) ou ignorer
+          }
+        }
+
   
       res.status(200).json({ match, newMatches });
     } catch (error) {
@@ -85,6 +111,45 @@ router.put('/:id/winner', async (req, res) => {
     }
   });
   
+router.get('/check', async (req, res) => {
+  try {
+    const { team1_id, team2_id, round } = req.query;
+    const match = await Match.findOne({
+      team1_id,
+      team2_id,
+      round: Number(round)
+    });
+    res.json({ exists: !!match });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ message: "Erreur serveur" });
+  }
+});
+
+router.post('/new', async (req, res) => {
+  try {
+    const { tournois_id, team1_id, team2_id, round } = req.body;
+
+    if (!tournois_id || !team1_id || !team2_id || round === undefined) {
+      return res.status(400).json({ message: "Paramètres manquants" });
+    }
+
+    const newMatch = new Match({
+      tournois_id,
+      team1_id,
+      team2_id,
+      round
+    });
+
+    await newMatch.save();
+    res.status(201).json(newMatch);
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ message: 'Erreur serveur lors de la création du match' });
+  }
+});
+
+
   router.get('/', async (req, res) => {
     const { tournois_id } = req.query;
     const matches = await Match.find({ tournois_id })
