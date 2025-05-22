@@ -247,7 +247,7 @@ export const updatePic = async (req, res) => {
 export const updateProfile = async (req, res) => {
 	try {
 		const userId = req.userId; // Injecté par verifyToken
-		const { nom, prenom, pseudo, password } = req.body;
+		const { nom, prenom, pseudo, password,droit } = req.body;
 
 		const user = await User.findById(userId);
 		if (!user) {
@@ -258,6 +258,7 @@ export const updateProfile = async (req, res) => {
 		if (nom) user.lName = nom;
 		if (prenom) user.fName = prenom;
 		if (pseudo) user.pseudo = pseudo;
+        if (droit) user.droit = droit;
 
 		// Si password fourni, on le hash avant update
 		if (password) {

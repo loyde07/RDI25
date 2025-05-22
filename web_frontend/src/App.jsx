@@ -6,8 +6,8 @@ import { Toaster } from 'react-hot-toast'
 
 // gestion des teams
 import Team from "./pages/team.jsx";
-import Gestion from "./pages/gestionTeam.jsx"
-
+import Gestion from "./pages/gestionTeam.jsx";
+import MyTeam from "./pages/MyTeamDash.jsx";
 // Composant de style
 import FloatingShape from "./components/FloatingShape.jsx"
 import LoadingSpinner from "./components/LoadingSpinner.jsx"
@@ -15,9 +15,9 @@ import LoadingSpinner from "./components/LoadingSpinner.jsx"
 
 // Page d'authentification
 import SignUpPage from "./pages/SignUpPage.jsx"
-import LoginPage from "./pages/LoginPage.jsx"
+import LoginPage from "./pages/loginPage.jsx"
 import EmailVerificationPage from "./pages/EmailVerificationPage.jsx"
-import DashboardPage from "./pages/DashBoardPage.jsx"
+import DashboardPage from "./pages/DashboardPage.jsx"
 import EditProfilePage from "./pages/EditProfilePage.jsx";
 import ForgotPasswordPage from "./pages/ForgotPasswordPage.jsx"
 import ResetPasswordPage from "./pages/ResetPasswordPage.jsx"
@@ -102,6 +102,7 @@ function App() {
 						<Route path="/valorantInfo" element={<ValorantInfo />} />
 						<Route path="/valorantTournament" element={<ValorantTournament />} />
 						<Route path="/gestion" element={<Gestion/>} />
+						<Route path="/gestion/:id" element= {<MyTeam/>} />
 						<Route path="/team" element={<Team/>} />
 					</Routes>
 				</div>

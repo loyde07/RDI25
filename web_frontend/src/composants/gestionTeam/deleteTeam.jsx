@@ -1,12 +1,21 @@
 import React, {useEffect, useState} from "react";
 import axios from 'axios';
 import {motion} from 'framer-motion'
+import toast from "react-hot-toast";
+import { useAuthStore} from "../../store/authStore";
+import { useParams, useNavigate } from 'react-router-dom';
+
 
 const API = import.meta.env.VITE_API ;
 
 function SupprimerTeam(){
     const [teams, setTeams] = useState([]);
     const [selectedTeamId, setSelectedTeamId] = useState('');
+    const { user } = useAuthStore();
+    const {id} = useParams();
+    const navigate = useNavigate();
+
+    const teamToDelete = user.droit === "admin" ? selectedTeamId : id;
 
 
 useEffect(() => {
@@ -15,6 +24,8 @@ useEffect(() => {
         try{
             const res = await axios.get(API + '/api/teams' );
             setTeams(res.data.data);
+
+
         }catch (error){
             console.error("Erreur lors de la récupération des teams :", error.message)
         }
@@ -30,15 +41,24 @@ const handleDelete = async (e) => {
 
     e.preventDefault();
 
+
     try{
-        await axios.delete(`${API}/api/teams/${selectedTeamId}/delete`);
-        setTeams(prev => prev.filter(team => team._id !== selectedTeamId));
+        
+
+        await axios.delete(`${API}/api/teams/delete-logo/${selectedTeamId}`);
+
+        await axios.delete(`${API}/api/teams/${teamToDelete}/delete`);
+      
+        setTeams(prev => prev.filter(team => team._id !== teamToDelete));
 
         setSelectedTeamId('');;
-        alert("Équipe supprimée avec succès !");
+        toast.success("Équipe supprimée avec succès !");
+
+        navigate("/dashboard");
+
     }catch (error){
         console.error("erreur de la suppression:", error.response?.data || error.message);
-        alert("Erreur de suppression")
+        toast.error("Erreur de suppression")
     }
 };
 
@@ -51,10 +71,13 @@ return (
       transition={{ duration: 0.5 }}
       className="max-w-md w-full mx-auto bg-gray-800 bg-opacity-50 backdrop-blur-md rounded-2xl shadow-xl p-8"
     >
+
+    {user.droit == "admin" ? (
+      <div>
       <h2 className="text-3xl font-bold mb-6 text-center bg-gradient-to-r from-blue-400 to-indigo-400 text-transparent bg-clip-text">
         Supprimer une équipe
       </h2>
-  
+
       <select
         value={selectedTeamId}
         onChange={(e) => setSelectedTeamId(e.target.value)}
@@ -66,6 +89,13 @@ return (
           <option key={team._id} value={team._id}>{team.nom}</option>
         ))}
       </select>
+      </div>
+      ) : (
+
+        <h2 className="text-3xl font-bold mb-6 text-center bg-gradient-to-r from-blue-400 to-indigo-400 text-transparent bg-clip-text">
+        Confirmer la suppression
+        </h2>
+      )}
   
       <motion.button
         type="submit"
@@ -77,4 +107,6 @@ return (
       </motion.button>
     </motion.form>
   );}
+
+
 export default SupprimerTeam;

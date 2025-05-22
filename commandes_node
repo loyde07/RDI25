@@ -77,4 +77,7 @@ npm install lucide-react  react-hot-toast framer-motion //dans le front
 
 npm install cookie-parser bcrypt crypto jsonwebtoken
 
+npm install multer
 
+
+npm install -D vitest @vitest/coverage-v8
