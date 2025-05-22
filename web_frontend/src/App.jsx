@@ -25,6 +25,10 @@ import ResetPasswordPage from "./pages/ResetPasswordPage.jsx"
 // Page principale
 import Home from "./pages/home.jsx";
 
+// Page des tournois
+import ValorantInfo from "./pages/ValorantInfoPage.jsx";
+import ValorantTournament from "./pages/ValorantTournament.jsx";
+
 // Navbar, header dans toutes les pages
 import Header from "./pages/header.jsx"
 
@@ -93,7 +97,10 @@ function App() {
 						<Route path="/forgotPassword" element={<ForgotPasswordPage />} />
 						<Route path="/ResetPassword" element={<ResetPasswordPage />} />
 						<Route path="/editProfile/" element={<ProtectedRoute><EditProfilePage/></ProtectedRoute>} />
+
 						<Route path="/tournois" element={<Tournement/>} />
+						<Route path="/valorantInfo" element={<ValorantInfo />} />
+						<Route path="/valorantTournament" element={<ValorantTournament />} />
 						<Route path="/gestion" element={<Gestion/>} />
 						<Route path="/team" element={<Team/>} />
 					</Routes>

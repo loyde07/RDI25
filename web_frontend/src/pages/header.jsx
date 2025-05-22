@@ -18,7 +18,7 @@ const Navbar = () => {
               <div className="size-9 rounded-lg bg-primary/10 flex items-center justify-center">
                 <Swords className="w-5 h-5 text-primary text-indigo-400" />
               </div>
-              <h1 className="text-lg font-bold bg-clip-text text-transparent bg-gradient-to-bl from-blue-400 to-indigo-900">Lan-Party Ephec</h1>
+              <h1 className="text-lg font-bold bg-clip-text text-transparent bg-gradient-to-r from-blue-100 to-indigo-400">Lan-Party Ephec</h1>
             </Link>
           </div>
 
@@ -27,14 +27,14 @@ const Navbar = () => {
               <>
                 <Link to="/dashboard" className="flex btn btn-sm gap-2">
                   <User className="w-5 h-5 text-primary text-indigo-400" />
-                  <span className="bg-clip-text text-transparent bg-gradient-to-l from-blue-400 to-indigo-500 hidden sm:inline">
+                  <span className="bg-clip-text text-transparent bg-gradient-to-l from-blue-100 to-indigo-400 hidden sm:inline">
                     Compte
                   </span>
                 </Link>
 
-                <button className="flex btn btn-sm gap-2 items-center" onClick={logout}>
-                  <LogOut className="w-5 h-5 text-indigo-400" />
-                  <span className="bg-clip-text text-transparent bg-gradient-to-l from-blue-400 to-indigo-500 hidden sm:inline">
+                <button className="flex btn btn-sm gap-2 items-center  " onClick={logout}>
+                  <LogOut className="w-5 h-3 text-indigo-400" />
+                  <span className="bg-clip-text text-transparent bg-gradient-to-l from-blue-100 to-indigo-400 hidden sm:inline">
                     Déconnecter
                   </span>
                 </button>
@@ -43,14 +43,14 @@ const Navbar = () => {
               <>
                 <Link to="/login" className="flex btn btn-sm gap-2">
                   <LogIn className="w-5 h-5 text-indigo-400" />
-                  <span className="bg-clip-text text-transparent bg-gradient-to-l from-blue-400 to-indigo-500 hidden sm:inline">
+                  <span className="bg-clip-text text-transparent bg-gradient-to-l from-blue-100 to-indigo-400 hidden sm:inline">
                     Se connecter
                   </span>
                 </Link>
 
                 <Link to="/signup" className="flex btn btn-sm gap-2">
                   <User className="w-5 h-5 text-indigo-400" />
-                  <span className="bg-clip-text text-transparent bg-gradient-to-l from-blue-400 to-indigo-500 hidden sm:inline">
+                  <span className="bg-clip-text text-transparent bg-gradient-to-l from-blue-100 to-indigo-400 hidden sm:inline">
                     S'inscrire
                   </span>
                 </Link>
@@ -61,13 +61,13 @@ const Navbar = () => {
 
         {/* Bottom section with links */}
         <div className="flex   gap-6 py-2 ">
-          <Link to="/tournois" className=" mr-15 text-sm font-medium hover:opacity-80 transition-all bg-clip-text text-transparent bg-gradient-to-r from-blue-400 to-indigo-700">
+          <Link to="/tournois" className=" mr-15 text-sm font-medium hover:opacity-80 transition-all bg-clip-text text-transparent bg-gradient-to-r from-blue-100 to-indigo-500">
             Tournois
           </Link>
-          <Link to="/team" className=" mx-15 text-sm font-medium hover:opacity-80 transition-all bg-clip-text text-transparent bg-gradient-to-r from-blue-400 to-indigo-700">
+          <Link to="/team" className=" mx-15 text-sm font-medium hover:opacity-80 transition-all bg-clip-text text-transparent bg-gradient-to-r from-blue-100 to-indigo-400">
             Équipes
           </Link>
-          <Link to="/gestion" className="mx-15 text-sm font-medium hover:opacity-80 transition-all bg-clip-text text-transparent bg-gradient-to-r from-blue-400 to-indigo-700">
+          <Link to="/gestion" className="mx-15 text-sm font-medium hover:opacity-80 transition-all bg-clip-text text-transparent bg-gradient-to-r from-blue-100 to-indigo-400">
             Gestion
           </Link>
         </div>

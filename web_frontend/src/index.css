@@ -1,2 +1,11 @@
 @import "tailwindcss";
 
+@theme {
+
+  /* Ajoutez vos couleurs personnalisées */
+  --color-valorant-dark: #0f1923;
+  --color-valorant-card: #1a242d;
+  --color-valorant-red: #ff4655;
+  --color-valorant-red-dark: #d53848;
+  --color-valorant-accent: #bd3944;
+}
