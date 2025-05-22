@@ -1,6 +1,6 @@
 import mongoose from "mongoose";
 
-
+import Ecole from './ecole.model.js';
 
 const teamScheama = new mongoose.Schema({
     nom:{
@@ -9,7 +9,8 @@ const teamScheama = new mongoose.Schema({
     },
     logo:{
         type: String,
-    },joueurs: [{
+    },
+    joueurs: [{
         type: mongoose.Schema.Types.ObjectId,
         ref: 'Joueur' 
       }],

@@ -1,0 +1,141 @@
+body {
+  background-color: #e9d9d9;
+  margin: 0;
+  font-family: 'Arial', sans-serif;
+}
+
+.home-container {
+  max-width: 1000px;
+  margin: 0 auto;
+  padding: 40px 20px;
+  text-align: center;
+}
+
+.home-title {
+  font-size: 48px;
+  color: #382c2c;
+  margin-bottom: 20px;
+}
+
+.home-image {
+  width: 100%;
+  max-width: 800px;
+  border: 5px solid #8d695d;
+  border-radius: 12px;
+  margin: 0 auto 40px;
+  display: block;
+}
+
+.prix-section h2 {
+  color: #382c2c;
+  margin-bottom: 15px;
+}
+
+.prix-section ul {
+  list-style: none;
+  padding: 0;
+  font-size: 18px;
+  color: #382c2c;
+  border-radius: 10px;
+  max-width: 500px;
+  margin: 0 auto 40px;
+  padding: 20px;
+}
+
+.button-container {
+  margin-bottom: 30px;
+}
+
+.home-button {
+  padding: 15px 30px;
+  font-size: 16px;
+  margin: 10px;
+  cursor: pointer;
+  border-radius: 8px;
+  border: none;
+  color: #fff;
+  transition: background-color 0.3s ease;
+}
+
+.home-button.creation {
+  background-color: #8f8360;
+}
+
+.home-button.join {
+  background-color: #8f8360;
+}
+
+.home-button:hover {
+  background-color: #52130c;
+}
+
+.home-button.active {
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.4);
+}
+
+.action-container {
+  margin-top: 50px;
+  background-color: #8f8360;
+  padding: 30px;
+  border-radius: 10px;
+}
+
+
+/* Formulaire de création d'une équipe */
+form {
+  background-color: #fff;
+  padding: 20px;
+  border-radius: 12px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+  width: 100%;
+  max-width: 600px;
+  margin: 0 auto;
+  font-size: 18px;
+  color: #382c2c;
+  text-align: left;
+}
+
+form h2 {
+  font-size: 24px;
+  color: #382c2c;
+  margin-bottom: 20px;
+  font-weight: bold;
+  text-align: center;
+}
+
+form input {
+  width: 100%;
+  padding: 12px 1px;
+  margin: 10px 0;
+  border: 2px solid #8d695d;
+  border-radius: 8px;
+  background-color: #e9d9d9;
+  font-size: 16px;
+  color: #382c2c;
+}
+
+form input::placeholder {
+  color: #8f8360;
+}
+
+form button {
+  padding: 15px 30px;
+  background-color: #8d695d;
+  color: white;
+  border: none;
+  border-radius: 8px;
+  font-size: 18px;
+  cursor: pointer;
+  width: 100%;
+  margin-top: 15px;
+  transition: background-color 0.3s ease;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+form button:hover {
+  background-color: #52130c;
+}
+
+form button:active {
+  transform: scale(0.98);
+}

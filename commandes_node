@@ -1,4 +1,3 @@
-
 ENLEVER RESTRICTIONS 
 Set-ExecutionPolicy RemoteSigned -Scope CurrentUser
 Get-ExecutionPolicy //verif
@@ -22,7 +21,6 @@ API
 npm install express mongoose dotenv nodemon
 
 
-
  {
     "type": "module",
 
@@ -44,7 +42,6 @@ nodemon start //redemarre automatiquement apres chaque mise à jour
 {
     "nom": "local 203 up"
 }
-
 '''
 
 
@@ -60,3 +57,27 @@ npm i cors
 
 npm i axios
 
+
+test unitaire
+npm install vitest --save-dev
+npm install -D vitest @testing-library/react @testing-library/jest-dom jsdom
+    
+    ajout dans package.json dans scripts --> "test": "vitest"
+    ajout dans vite.config.js --> 
+    test: {
+        environment: 'jsdom',
+        globals: true,
+    },
+
+
+
+//Hassan instalation
+
+npm install lucide-react  react-hot-toast framer-motion //dans le front
+
+npm install cookie-parser bcrypt crypto jsonwebtoken
+
+npm install multer
+
+
+npm install -D vitest @vitest/coverage-v8
