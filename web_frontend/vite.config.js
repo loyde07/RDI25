@@ -9,7 +9,13 @@ export default defineConfig({
     tailwindcss(),
   ],
   server: {
-    port: 5173,
+    proxy: {
+      '/api': {
+        target: 'http://localhost:5000', // Redirige vers le serveur Express
+        changeOrigin: true,
+        secure: false,
+      },
+    },
   },
   test: {
     environment: 'jsdom', // Pour émuler un environnement de navigateur

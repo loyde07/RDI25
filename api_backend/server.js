@@ -30,7 +30,7 @@ const app = express();
 const PORT = process.env.PORT || 5000;
 
 // CORS configuration
-app.use(cors({ origin: 'http://localhost:3000', credentials:true }));
+// app.use(cors({ origin: 'http://localhost:3000', credentials:true }));
 
 
 app.use(express.json()); //permet d'accepeter du JSOn dans le req.body

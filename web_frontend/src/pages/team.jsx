@@ -2,8 +2,7 @@ import React, { useEffect, useState } from "react";
 import axios from "axios";
 import "./team.css";
 
-const API = "http://localhost:5000";
-;
+const API = "";
 
 function Team() {
   const [teams, setTeams] = useState([]);
