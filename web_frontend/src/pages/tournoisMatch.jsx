@@ -23,16 +23,19 @@ const Match = ({ team1 = "?", team2 = "?", onWinner, matchDbId }) => {
 
   
   const handleWinner = async (winnerTeam) => {
+    console.log("Appel handleWinner avec:", winnerTeam); 
+    console.log("matchDbId envoyé :", matchDbId);
+    console.log("Requête PUT vers :", `${API}/api/matches/${matchDbId}/winner`);
     onWinner(winnerTeam); // mise à jour UI immédiate
 
     try {
-      await axios.put(`${API}/api/matches/${matchDbId}/winner`, {
+      const response = await axios.put(`${API}/api/matches/${matchDbId}/winner`, {
         winner_id: winnerTeam._id,
       });
+      console.log("✅ Réponse du serveur :", response.data);
     } catch (err) {
-      console.error("Erreur enregistrement gagnant :", err);
+      console.error("Erreur enregistrement gagnant :", err.response?.data || err.message);
     }
-
 
   };
  
@@ -44,9 +47,7 @@ const Match = ({ team1 = "?", team2 = "?", onWinner, matchDbId }) => {
         <button
           className="px-3 py-1 bg-green-800 hover:bg-green-600 rounded-md"
           disabled={!team1 || team1 === "?"}
-          onClick={() => {
-            onWinner(team1); // ou team2
-          }}
+          onClick={() => handleWinner(team1)}
         >
           Gagnant
         </button>
