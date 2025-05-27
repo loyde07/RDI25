@@ -1,6 +1,5 @@
-//const mongoose = require('mongoose');
 
-import mongoose from 'mongoose';
+import mongoose from "mongoose";
 
 const ecoleSchema = new mongoose.Schema({
   nom: {

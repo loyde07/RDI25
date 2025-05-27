@@ -1,6 +1,7 @@
-// routes/ecoles.js
 import express from 'express';
 import Ecole from '../models/ecole.model.js';
+import { getEcoleByJoueur, getAllEcoles } from "../controller/controller.ecole.js";
+
 
 const router = express.Router();
 
@@ -13,4 +14,12 @@ router.get('/', async (req, res) => {
     }
 });
 
+router.get("/", getAllEcoles);
+
+router.get("/joueur/:joueurId", getEcoleByJoueur);
+
+
 export default router;
+
+
+

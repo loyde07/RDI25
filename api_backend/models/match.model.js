@@ -8,7 +8,7 @@ import Tournois from './tournois.model.js';
 
 const matchScheama = new mongoose.Schema({
     tournois_id:{
-        type: String,
+        type: mongoose.Schema.Types.ObjectId,
         ref: 'Tournois',
         required: true
     },
@@ -25,7 +25,8 @@ const matchScheama = new mongoose.Schema({
     winner_id: {
         type: mongoose.Schema.Types.ObjectId,
         ref: 'Team',
-        required: true
+        required: false,
+        default : null
     },
     round: {
         type: Number,

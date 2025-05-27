@@ -1,10 +1,13 @@
 import { motion } from "framer-motion";
 import { Camera, Mail, User } from "lucide-react";
+import { Link } from "react-router-dom";
+import { useState } from "react";
 
 
 import { useAuthStore } from "../store/authStore";
 import { formatDate } from "../utils/date";
-import { useState } from "react";
+
+import DashTeam from "./TeamDash.jsx"
 
 const DashboardPage = () => {
 	const { user, logout, isUpdatingPic, updatePic } = useAuthStore();
@@ -26,17 +29,28 @@ const DashboardPage = () => {
           await updatePic({ profilePic: base64Image });
         };
       };
+
+    const handleUpdateProfile = async (e) => {
+        
+    }
 	const handleLogout = () => {
 		logout();
 	};
 	return (
+		
 		<motion.div
+		className="flex flex-wrap justify-center items-start gap-10 mt-10"
+		initial={{ opacity: 0 }}
+		animate={{ opacity: 1 }}
+		transition={{ duration: 0.5 }}
+	  >
+			<motion.div
 			initial={{ opacity: 0, scale: 0.9 }}
 			animate={{ opacity: 1, scale: 1 }}
 			exit={{ opacity: 0, scale: 0.9 }}
 			transition={{ duration: 0.5 }}
-			className='max-w-md w-full mx-auto mt-10 p-8 bg-gray-900 bg-opacity-80 backdrop-filter backdrop-blur-lg rounded-xl shadow-2xl border border-gray-800'
-		>
+			className="w-full max-w-md p-8 bg-gray-900 bg-opacity-80 backdrop-filter backdrop-blur-lg rounded-xl shadow-2xl border border-gray-800"
+			>
 			<h2 className='text-3xl font-bold mb-6 text-center bg-gradient-to-r from-blue-400 to-indigo-600 text-transparent bg-clip-text'>
 				Profil de  {user.fName}
 			</h2>
@@ -76,6 +90,8 @@ const DashboardPage = () => {
             </div>
 
 			<div className='space-y-6'>
+
+				
 				<motion.div
 
                     
@@ -134,11 +150,27 @@ const DashboardPage = () => {
 					</p>
 				</motion.div>
 			</div>
-
-			<motion.div
+            <motion.div
 				initial={{ opacity: 0, y: 20 }}
 				animate={{ opacity: 1, y: 0 }}
 				transition={{ delay: 0.6 }}
+				className='mt-4'
+			>
+				<motion.button
+					whileHover={{ scale: 1.05 }}
+					whileTap={{ scale: 0.95 }}
+					className='w-full py-3 px-4 bg-gradient-to-r from-blue-500 to-indigo-600 text-white 
+				 font-bold rounded-lg shadow-lg hover:from-blue-600 hover:to-indigo-700
+				 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 focus:ring-offset-gray-900'
+				>
+				    <Link to="/editProfile" >Modifier Profile</Link> 
+
+				</motion.button>
+			</motion.div>
+			<motion.div
+				initial={{ opacity: 0, y: 20 }}
+				animate={{ opacity: 1, y: 0 }}
+				transition={{ delay: 0.8 }}
 				className='mt-4'
 			>
 				<motion.button
@@ -152,7 +184,14 @@ const DashboardPage = () => {
 					Se déconnecter
 				</motion.button>
 			</motion.div>
+			
 		</motion.div>
+
+			<DashTeam/>				
+		
+		</motion.div>
+
+
 	);
 };
 export default DashboardPage;

@@ -2,9 +2,8 @@ import { create } from "zustand";
 import axios from "axios";
 import toast from "react-hot-toast";
 
-
-const API_URL = import.meta.env.MODE === "development" ? "http://localhost:5000/api/auth" : "/api/auth";
-
+//const API_URL = import.meta.env.MODE === "development" ? "http://localhost:5000/api/auth" : "/api/auth";
+const API_URL = import.meta.env.VITE_API + "/api/auth";
 axios.defaults.withCredentials = true;
 
 export const useAuthStore = create((set) => ({
@@ -36,6 +35,7 @@ export const useAuthStore = create((set) => ({
 				error: null,
 				isLoading: false,
 			});
+			toast.success(`Bon retour ${response.data.user.pseudo}`)
 		} catch (error) {
 			set({ error: error.response?.data?.message || "Error logging in", isLoading: false });
 			throw error;
@@ -113,4 +113,20 @@ export const useAuthStore = create((set) => ({
           set({ isUpdatingPic: false });
         }
       },
+
+	  updateProfile: async (updatePayload) => {
+		set({ isLoading: true, error: null });
+		try {
+			const response = await axios.put(`${API_URL}/updateProfile`, updatePayload);
+			set({ user: response.data.user, isAuthenticated: true, isLoading: false });
+		} catch (error) {
+			set({
+				error: error.response?.data?.message || "Erreur lors de la mise à jour",
+				isLoading: false,
+			});
+			throw error;
+		}
+	},
+	
 }));
+

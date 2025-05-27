@@ -1,56 +1,76 @@
-import { useNavigate } from "react-router-dom";
-import React from "react";
-import "../header.css"; // n'oublie pas d'importer ton CSS
+import { Link } from "react-router-dom";
+import { useAuthStore } from "../store/authStore";
+import { LogOut, Swords , User, LogIn } from "lucide-react";
 
-function Header() {
-  const navigate = useNavigate();
+const Navbar = () => {
+  const { logout, user, isAuthenticated } = useAuthStore();
 
   return (
-    <header>
-      {/* Bande 1 - Sponsors */}
-      <div className="header-sponsors">
+    <header
+      className="bg-base-100 border-b border-base-300 fixed w-full top-0 z-40 
+    backdrop-blur-lg bg-base-100/80  bg-gradient-to-tl from-gray-900 "
+    >
+      <div className="container mx-auto px-4">
+        {/* Top section */}
+        <div className="flex items-center justify-between h-16">
+          <div className="flex items-center gap-8">
+            <Link to="/" className="flex items-center gap-2.5 hover:opacity-80 transition-all">
+              <div className="size-9 rounded-lg bg-primary/10 flex items-center justify-center">
+                <Swords className="w-5 h-5 text-primary text-indigo-400" />
+              </div>
+              <h1 className="text-lg font-bold bg-clip-text text-transparent bg-gradient-to-bl from-blue-400 to-indigo-900">Lan-Party Ephec</h1>
+            </Link>
+          </div>
 
-        {/*logo ephec qui dois etre mis sur la gauche tout en haut */}
-        <img src="https://www.aseus.be/sites/default/files/upload/aseus/EPHEC_Sport.png" alt="logoEphec" className="logo-left" />
-        
-        <div className="sponsor-title">POWERED BY</div>
-        <div className="sponsor-logos">
-          {/*<img src="" alt="logo" />*/}
+          <div className="flex items-center gap-2">
+            {isAuthenticated ? (
+              <>
+                <Link to="/dashboard" className="flex btn btn-sm gap-2">
+                  <User className="w-5 h-5 text-primary text-indigo-400" />
+                  <span className="bg-clip-text text-transparent bg-gradient-to-l from-blue-400 to-indigo-500 hidden sm:inline">
+                    Compte
+                  </span>
+                </Link>
 
+                <button className="flex btn btn-sm gap-2 items-center" onClick={logout}>
+                  <LogOut className="w-5 h-5 text-indigo-400" />
+                  <span className="bg-clip-text text-transparent bg-gradient-to-l from-blue-400 to-indigo-500 hidden sm:inline">
+                    Déconnecter
+                  </span>
+                </button>
+              </>
+            ) : (
+              <>
+                <Link to="/login" className="flex btn btn-sm gap-2">
+                  <LogIn className="w-5 h-5 text-indigo-400" />
+                  <span className="bg-clip-text text-transparent bg-gradient-to-l from-blue-400 to-indigo-500 hidden sm:inline">
+                    Se connecter
+                  </span>
+                </Link>
+
+                <Link to="/signup" className="flex btn btn-sm gap-2">
+                  <User className="w-5 h-5 text-indigo-400" />
+                  <span className="bg-clip-text text-transparent bg-gradient-to-l from-blue-400 to-indigo-500 hidden sm:inline">
+                    S'inscrire
+                  </span>
+                </Link>
+              </>
+            )}
+          </div>
         </div>
-      </div>
 
-      {/* Bande 2 - Navigation + Réseaux */}
-      <div className="header-nav">
-
-        {/*Pour les boutons revoir la taille pour que ca soit propotionnel au site et bouton register sur l'extreme droit */}
-        <div className="nav-buttons">
-          <button onClick={() => navigate('')}>Home</button>
-
-          <button onClick={() => navigate('')}>Team</button>
-          <button onClick={() => navigate('')}>Score</button>
-          <button onClick={() => navigate('/tournois')}>Tournament</button>
-          <button onClick={() => navigate('')}>Register</button>
+        {/* Bottom section with links */}
+        <div className="flex   gap-6 py-2 ">
+          <Link to="/tournois" className=" mr-15 text-sm font-medium hover:opacity-80 transition-all bg-clip-text text-transparent bg-gradient-to-r from-blue-400 to-indigo-700">
+            Tournois
+          </Link>
+          <Link to="/team" className=" mx-15 text-sm font-medium hover:opacity-80 transition-all bg-clip-text text-transparent bg-gradient-to-r from-blue-400 to-indigo-700">
+            Équipes
+          </Link>
         </div>
-        <div className="social-links">
-
-          {/* Ajoute ici des icônes ex : à voir plus tard*/}
-
-          <a href="#"><img src="/icons/facebook.svg" alt="FB" /></a>
-          <a href="#"><img src="/icons/twitter.svg" alt="TW" /></a>
-          <a href="#"><img src="/icons/instagram.svg" alt="IG" /></a>
-        </div>
-      </div>
-
-
-      {/* Bande 3 - Écoles  à voir plus tard aussi faut que je vois avec le prof*/}
-
-      <div className="header-schools">
-        {/* Ajoute ici les logos des écoles */}
-        {/* Exemple : <img src="/logos/ephec.png" alt="EPHEC" /> */}
       </div>
     </header>
   );
-}
+};
 
-export default Header;
+export default Navbar;

@@ -19,6 +19,10 @@ const userSchema = new mongoose.Schema({
         sparse: true,
         trim: true
     },
+    droit: {
+        type: String,
+        default: null
+    },
     email: {
         type: String,
         required: true,
@@ -43,10 +47,6 @@ const userSchema = new mongoose.Schema({
     ecole_id: {
         type: mongoose.Schema.Types.ObjectId,
         ref: 'Ecole',
-    },
-    team_id: {
-        type: mongoose.Schema.Types.ObjectId,
-        ref: 'Team' // à créer plus tard
     },
     lastLogin:{
     type: Date,

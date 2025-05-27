@@ -79,3 +79,63 @@ body {
   padding: 30px;
   border-radius: 10px;
 }
+
+
+/* Formulaire de création d'une équipe */
+form {
+  background-color: #fff;
+  padding: 20px;
+  border-radius: 12px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+  width: 100%;
+  max-width: 600px;
+  margin: 0 auto;
+  font-size: 18px;
+  color: #382c2c;
+  text-align: left;
+}
+
+form h2 {
+  font-size: 24px;
+  color: #382c2c;
+  margin-bottom: 20px;
+  font-weight: bold;
+  text-align: center;
+}
+
+form input {
+  width: 100%;
+  padding: 12px 1px;
+  margin: 10px 0;
+  border: 2px solid #8d695d;
+  border-radius: 8px;
+  background-color: #e9d9d9;
+  font-size: 16px;
+  color: #382c2c;
+}
+
+form input::placeholder {
+  color: #8f8360;
+}
+
+form button {
+  padding: 15px 30px;
+  background-color: #8d695d;
+  color: white;
+  border: none;
+  border-radius: 8px;
+  font-size: 18px;
+  cursor: pointer;
+  width: 100%;
+  margin-top: 15px;
+  transition: background-color 0.3s ease;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+form button:hover {
+  background-color: #52130c;
+}
+
+form button:active {
+  transform: scale(0.98);
+}
