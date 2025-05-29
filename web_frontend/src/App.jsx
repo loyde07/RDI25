@@ -7,7 +7,8 @@ import { Toaster } from 'react-hot-toast'
 // gestion des teams
 import Team from "./pages/team.jsx";
 import Gestion from "./pages/gestionTeam.jsx";
-import MyTeam from "./pages/MyTeamDash.jsx";
+import MyTeam from "./pages/ProfileSections/MyTeamDash.jsx";
+
 // Composant de style
 import FloatingShape from "./components/FloatingShape.jsx"
 import LoadingSpinner from "./components/LoadingSpinner.jsx"
@@ -28,15 +29,14 @@ import Home from "./pages/home.jsx";
 // Page des tournois
 import ValorantInfo from "./pages/ValorantInfoPage.jsx";
 import ValorantTournament from "./pages/ValorantTournament.jsx";
+import Tournement from "./pages/tournois.jsx"
+
 
 // Navbar, header dans toutes les pages
 import Header from "./pages/header.jsx"
 
-// Page du tournois
-import Tournement from "./pages/tournois.jsx"
-
 // fonction d'authentification
-import {useAuthStore} from './store/authStore.js'
+import { useAuthStore } from './store/authStore.js'
 
 // Protège les routes qui demandent une authentification
 const ProtectedRoute = ({ children }) => {
@@ -71,7 +71,7 @@ function App() {
 		checkAuth();
 	}, [checkAuth]);
 
-  if (isCheckingAuth) return <LoadingSpinner />;
+	if (isCheckingAuth) return <LoadingSpinner />;
 
 
 
@@ -96,14 +96,17 @@ function App() {
 						<Route path="/verifyEmail" element={<EmailVerificationPage />} />
 						<Route path="/forgotPassword" element={<ForgotPasswordPage />} />
 						<Route path="/ResetPassword" element={<ResetPasswordPage />} />
-						<Route path="/editProfile/" element={<ProtectedRoute><EditProfilePage/></ProtectedRoute>} />
+						<Route path="/editProfile/" element={<ProtectedRoute><EditProfilePage /></ProtectedRoute>} />
 
-						<Route path="/tournois" element={<Tournement/>} />
+						<Route path="/tournois" element={<Tournement />} />
 						<Route path="/valorantInfo" element={<ValorantInfo />} />
 						<Route path="/valorantTournament" element={<ValorantTournament />} />
-						<Route path="/gestion" element={<Gestion/>} />
-						<Route path="/gestion/:id" element= {<MyTeam/>} />
-						<Route path="/team" element={<Team/>} />
+						<Route path="/gestion" element={<Gestion />} />
+						<Route path="/gestion/:id" element={<ProtectedRoute> <MyTeam /></ProtectedRoute>} />
+						<Route path="/team" element={<Team />} />
+						<Route path="*" element={<Home />} />
+
+						{/* Redirection par défaut */}
 					</Routes>
 				</div>
 			</div>

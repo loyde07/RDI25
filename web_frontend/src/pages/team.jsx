@@ -116,8 +116,8 @@ function Team() {
           <ul className="player-list">
             {joueurs.slice(0, 5).map((j) => (
               <li key={j._id} className="player-card">
-                <strong>{j.prenom} {j.nom}</strong> — {j.email}<br />
-                <strong>École :</strong> {j.ecole_id?.nom || "Non renseigné"}
+                <strong>{j.fName} {j.lName}</strong> — {j.email}<br />
+                <strong>École :</strong> {j.ecole_id?.lName || "Non renseigné"}
               </li>
             ))}
           </ul>

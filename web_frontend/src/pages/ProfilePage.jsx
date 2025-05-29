@@ -6,6 +6,8 @@ import MonProfil from "./ProfileSections/MonProfil";
 import MesTournois from "./ProfileSections/MesTournois";
 import MesEquipes from "./ProfileSections/MesEquipes";
 import EditProfile from "./EditProfilePage";
+import DashTeam from "./ProfileSections/TeamDash.jsx"
+
 
 const ProfilPage = () => {
   const [activeSection, setActiveSection] = useState("profil");
@@ -19,7 +21,7 @@ const ProfilPage = () => {
       case "tournois":
         return <MesTournois />;
       case "equipes":
-        return <MesEquipes />;
+        return <DashTeam />;
       case "editProfile":
         return <EditProfile />;
       default:
