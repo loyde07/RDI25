@@ -74,7 +74,8 @@ export const getMatchsAvecEquipes = async (req, res) => {
 
     const matches = await Match.find({ tournois_id: tournoisId })
       .populate('team1_id')
-      .populate('team2_id');
+      .populate('team2_id')
+      .populate('winner_id');
 
     res.json({ matchs: matches });
   } catch (err) {

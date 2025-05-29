@@ -9,6 +9,7 @@ import { Trophy, Swords } from "lucide-react";
 import { Link } from "react-router-dom";
 import Match from "./tournoisMatch.jsx";
 import toast from "react-hot-toast";
+import { motion } from "framer-motion";
 
 const API = import.meta.env.VITE_API;
 
@@ -39,6 +40,7 @@ useEffect(() => {
     .then(res => {
       const matchs = res.data.matchs;
       setMatches(matchs);
+      fetchFinalWinner();
 
       // Round 1
       const round1Teams = matchs
@@ -67,18 +69,29 @@ useEffect(() => {
       setTournamentStarted(true);
     })
     .catch(console.error);
+
+
+
 }, [id]);
 
+  const fetchFinalWinner = async () => {
+    try {
+      const { data } = await axios.get(`${API}/api/tournois/${id}/matches`);
+      const finale = data.matchs.find(m => m.round === 3 && m.winner_id);
+
+      if (finale) {
+        setFinalWinner(finale.winner_id.nom);
+
+      }
+    } catch (err) {
+      console.error("Erreur lors de la récupération du gagnant final :", err);
+    }
+  };
 
 
-useEffect(() => {
-  const savedWinner = JSON.parse(localStorage.getItem("finalWinner"));
-  if (savedWinner) setFinalWinner(savedWinner);
-}, []);
 
 
-
-    const refetchMatches = async () => {
+  const refetchMatches = async () => {
     try {
       const { data } = await axios.get(`${API}/api/tournois/${id}/matches`);
       setMatches(data.matchs);
@@ -87,26 +100,6 @@ useEffect(() => {
     }
   };
 
-
-  /* ------------------------------------------------------------------ */
-  /* Récupération des équipes serveur                                   */
-  /* ------------------------------------------------------------------ */
-  const fetchTeams = async () => {
-    try {
-      const { data } = await axios.get(
-        `${API}/api/teams/67f8c2993634ef292b6a5d0b/teams`
-        
-      );
-
-      // On extrait max 8 noms valides
-      const names = data.filter((t) => t?.nom).map((t) => t.nom).slice(0, 8);
-      setRound1(names);
-      localStorage.setItem("round1", JSON.stringify(names));
-
-    } catch (err) {
-      console.error("Erreur lors de la récupération des équipes :", err);
-    }
-  };
 
 
 
@@ -118,21 +111,14 @@ const updateNextRound = (roundSetter, storageKey, index, nextRound, roundNumber)
       const updated = [...(prev)];
       updated[index] = winner;
       localStorage.setItem(storageKey, JSON.stringify(updated));
+      if (roundNumber === 4 || roundSetter === "final") {
+       localStorage.setItem("finalWinner", JSON.stringify(updated));
 
-      if (roundNumber === 4) {
-        localStorage.setItem("final", JSON.stringify(updated));
+        fetchFinalWinner(); // ← ajoute ceci ici
       }
       return updated;
     });
 
-
-
-  if (roundNumber === 4) {
-    setFinalWinner((prevWinner) => {
-      localStorage.setItem("finalWinner", JSON.stringify(winner.nom || winner));
-      return winner.nom || winner;
-    });
-}
 
 
 
@@ -146,7 +132,7 @@ const updateNextRound = (roundSetter, storageKey, index, nextRound, roundNumber)
 
     const i = index % 2 === 0 ? index : index - 1;
     const team1 = current[i];
-    const team2 = current[i + 1];
+    const team2 = current[i +1];
 
     if (team1 && team2) {
       try {
@@ -192,7 +178,7 @@ const updateNextRound = (roundSetter, storageKey, index, nextRound, roundNumber)
     }
 
 
-          await refetchMatches();
+    await refetchMatches();
 
   }, 100);
 };
@@ -216,6 +202,7 @@ const updateNextRound = (roundSetter, storageKey, index, nextRound, roundNumber)
       localStorage.clear();
       setResetId((prev) => prev + 1);
       setTournamentStarted(false);
+      setFinalWinner(null);
 
 
     // 3. Recharge les équipes si besoin
@@ -256,107 +243,128 @@ const generateMatches = async () => {
   /* UI                                                                 */
   /* ------------------------------------------------------------------ */
   return (
-     <div className="min-h-screen w-screen bg-[#1e1e1e] text-white overflow-x-auto overflow-y-auto flex flex-col items-center p-6">
-      {/* Titre */}
-      <h1 className="text-4xl font-bold mb-10 flex items-center gap-3">
-        <Swords size={32} /> Tournoi Valo
-      </h1>
-          {tournamentStarted && round1Matches.length > 0 ? (
+<div className="min-h-screen w-full bg-[#1e1e1e] text-white p-6 overflow-auto">
+  {/* Titre */}
+  <h1 className="text-4xl font-bold mb-10 flex items-center gap-3 justify-center">
+    <Swords size={32} /> Tournoi Valo
+  </h1>
 
-       <div className="flex w-full justify-center items-start gap-32 px-4 overflow-x-auto">
-        {/* -------------------- Round 1 -------------------- */}
-        <div className="flex flex-col items-center flex-1 min-w-[250px]">
-          <h2 className="text-xl font-semibold mb-4">1er tour</h2>
-          <div className="flex flex-col gap-12">
-            {round1Matches.map((match, idx) => {
-              if (!match.team1_id || !match.team2_id) return null;
-              return (
-                <Match
-                  key={match._id}
-                  matchDbId={match._id}
-                  team1={match.team1_id}
-                  team2={match.team2_id}
-                  onWinner={updateNextRound(setRound2, "round2", idx, setSemis, 2)}
-                />
-              );
-            })}
-          </div>
-        </div>
+  {tournamentStarted && matches.length > 0 ? (
+    <div className="flex justify-center gap-16 w-full relative overflow-x-auto">
+      {/* Ligne centrale verticale */}
+      <div className="absolute top-0 bottom-0 left-1/2 w-1 bg-gray-700 z-0" />
 
-        {/* ---------------- Demi-finales ------------------- */}
-        <div className="flex flex-col items-center gap-24 flex-1 min-w-[250px]">
-          <h2 className="text-xl font-semibold mb-4">Demi-finales</h2>
-        {round2Matches.map((match, idx) => (
-          <Match
-            key={match._id}
-            matchDbId={match._id}
-            team1={match.team1_id}
-            team2={match.team2_id}
-            onWinner={updateNextRound(setSemis, "semis", idx, setFinal, 3)}
-          />
-        ))}
+      {/* Colonne Round 1 */}
+      <div className="flex flex-col gap-16 z-10">
+        <h2 className="text-xl text-center mb-4">1er tour</h2>
+        {Array.from({ length: 4 }).map((_, idx) => {
+          const match = round1Matches[idx];
+          const team1 = match?.team1_id || "en attente...";
+          const team2 = match?.team2_id || "en attente...";
+          return (
+            <motion.div key={idx} className="relative">
+              <Match
+                matchDbId={match?._id}
+                team1={team1}
+                team2={team2}
+                winnerId={match.winner_id}
+                onWinner={updateNextRound(setRound2, "round2", idx, setSemis, 2)}
+              />
+              <div className="absolute right-[-24px] top-1/2 w-6 h-0.5 bg-white" />
+            </motion.div>
+          );
+        })}
 
-
-        </div>
-
-
-        {/* -------------------- Finale --------------------- */}
-        <div className="flex flex-col items-center flex-1 min-w-[250px]">
-          <h2 className="text-xl font-semibold mb-4">Finale</h2>
-          <div className="mt-[345px]">
-        {round3Matches.map((match) => (
-          <Match
-            key={match._id}
-            matchDbId={match._id}
-            team1={match.team1_id}
-            team2={match.team2_id}
-            onWinner={updateNextRound(setFinal, "final", 0, null, 4)} // round 4 = finale
-            />
-
-        ))}
-          </div>
-            {finalWinner && (
-              <div className="mt-10 text-2xl font-bold text-yellow-400 flex items-center gap-2">
-                <Trophy size={28} /> Vainqueur : {finalWinner}
-              </div>
-            )}
-
-
-        </div>
       </div>
-          ) : (
-            <p>Aucun match à afficher</p> // ou rien du tout
-          )}
-      {/* Bouton Reset */}
-      <button
-        className="mt-12 px-6 py-3 bg-red-600 hover:bg-red-700 rounded-md text-white"
-        onClick={resetTournament}
-      >
-        Réinitialiser le tournoi
-      </button>
-      {/* Génère */}
-        <button
-          disabled={round1.length === 8}
-          className={`mt-12 px-6 py-3 rounded-md text-white transition 
-            ${round1.length === 8 
-              ? "bg-gray-400 cursor-not-allowed" 
-              : "bg-blue-600 hover:bg-blue-900"}
-          `}
-            onClick={generateMatches}
 
-        >
-          {round1.length === 8 ? "Tournoi déjà généré" : "Générer le tournoi"}
-        </button>
+      {/* Colonne Demi-finales */}
+      <div className="flex flex-col gap-24 z-10">
+        <h2 className="text-xl text-center mb-4">Demi-finales</h2>
+      {Array.from({ length: 2 }).map((_, idx) => {
+        const match = round2Matches[idx];
+        const team1 = match?.team1_id || "en attente...";
+        const team2 = match?.team2_id || "en attente...";
+        return (
+          <motion.div key={idx} className="relative">
+            <Match
+              matchDbId={match?._id}
+              team1={team1}
+              team2={team2}
+              winnerId={match?.winner_id} 
+              onWinner={updateNextRound(setSemis, "semis", idx, setFinal, 3)}
+            />
+            <div className="absolute right-[-24px] top-1/2 w-6 h-0.5 bg-white" />
+          </motion.div>
+        );
+      })}
 
-        <Link to="/inscriptionTournois">
-        
-          <button
-            className="mt-12 px-6 py-3 bg-blue-600 hover:bg-blue-900 rounded-md text-white"
+      </div>
 
-          >Inscrire des équipes au tournois</button>
-        </Link>
+      {/* Colonne Finale */}
+      <div className="flex flex-col justify-center gap-12 z-10">
+        <h2 className="text-xl text-center mb-4">Finale</h2>
+      {Array.from({ length: 1 }).map((_, idx) => {
+        const match = round3Matches[0];
+        const team1 = match?.team1_id || "en attente...";
+        const team2 = match?.team2_id || "en attente...";
+        return (
+          <motion.div key={idx}>
+            <Match
+              matchDbId={match?._id}
+              team1={team1}
+              team2={team2}
+              winnerId={match?.winner_id} 
+              onWinner={updateNextRound(setFinal, "final", 0, null, 4)}
+            />
+          </motion.div>
+        );
+      })}
+
+
+        {finalWinner && (
+          <motion.div
+            className="mt-10 text-2xl font-bold text-yellow-400 flex items-center gap-2 justify-center"
+            initial={{ scale: 0.8, opacity: 0 }}
+            animate={{ scale: 1, opacity: 1 }}
+            transition={{ delay: 0.5 }}
+          >
+            <Trophy size={28} /> Vainqueur : {finalWinner}
+          </motion.div>
+        )}
+      </div>
     </div>
-  );
+  ) : (
+    <p className="text-center">Aucun match à afficher</p>
+  )}
+
+  {/* Boutons bas */}
+  <div className="mt-12 flex flex-col gap-4 items-center">
+    <button
+      className="px-6 py-3 bg-red-600 hover:bg-red-700 rounded-md"
+      onClick={resetTournament}
+    >
+      Réinitialiser le tournoi
+    </button>
+
+    <button
+      disabled={round1.length === 8}
+      className={`px-6 py-3 rounded-md transition ${
+        round1.length === 8
+          ? "bg-gray-400 cursor-not-allowed"
+          : "bg-blue-600 hover:bg-blue-900"
+      }`}
+      onClick={generateMatches}
+    >
+      {round1.length === 8 ? "Tournoi déjà généré" : "Générer le tournoi"}
+    </button>
+
+    <Link to="/inscriptionTournois">
+      <button className="px-6 py-3 bg-blue-600 hover:bg-blue-900 rounded-md">
+        Inscrire des équipes au tournoi
+      </button>
+    </Link>
+  </div>
+</div>  );
 };
 
 
