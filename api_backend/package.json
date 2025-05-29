@@ -2,9 +2,9 @@
   "name": "rdi25",
   "version": "1.0.0",
   "description": "Template de repo pour le projet Dev Web 2024-2025",
-  "main": "index.js",
+  "main": "server.js",
   "scripts": {
-    "start": "nodemon api_backend/server.js"
+    "start": "nodemon server.js"
   },
   "repository": {
     "type": "git",

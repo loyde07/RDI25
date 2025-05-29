@@ -8,7 +8,7 @@ import cors from 'cors';
 import path from 'path';
 
 // database mongo
-import { connectDB } from '../config/db.js';
+import { connectDB } from './config/db.js';
 
 
 // api/routes
