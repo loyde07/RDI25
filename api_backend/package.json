@@ -4,9 +4,7 @@
   "description": "Template de repo pour le projet Dev Web 2024-2025",
   "main": "server.js",
   "scripts": {
-    "test": "jest",
-    "test:cov": "node --experimental-vm-modules node_modules/jest/bin/jest.js --coverage",
-    "start": "nodemon api_backend/server.js"
+    "start": "nodemon server.js"
   },
   "repository": {
     "type": "git",

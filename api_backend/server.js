@@ -6,7 +6,7 @@ import path from 'path';
 
 import ecoleRoutes from './routes/ecoles.route.js';
 import authRoutes from './routes/auth.route.js';
-import { connectDB } from '../config/db.js';
+import { connectDB } from './config/db.js';
 
 dotenv.config();
 
