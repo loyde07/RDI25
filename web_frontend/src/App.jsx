@@ -17,7 +17,7 @@ import LoadingSpinner from "./components/LoadingSpinner.jsx"
 import SignUpPage from "./pages/SignUpPage.jsx"
 import LoginPage from "./pages/loginPage.jsx"
 import EmailVerificationPage from "./pages/EmailVerificationPage.jsx"
-import DashboardPage from "./pages/DashboardPage.jsx"
+import ProfilePage from "./pages/ProfilePage.jsx"
 import EditProfilePage from "./pages/EditProfilePage.jsx";
 import ForgotPasswordPage from "./pages/ForgotPasswordPage.jsx"
 import ResetPasswordPage from "./pages/ResetPasswordPage.jsx"
@@ -90,7 +90,7 @@ function App() {
 				<div className="flex items-center justify-center min-h-[calc(100vh-100px)]">
 					<Routes>
 						<Route path="/" element={<Home />} />
-						<Route path="/dashboard" element={<ProtectedRoute><DashboardPage /></ProtectedRoute>} />
+						<Route path="/profile" element={<ProtectedRoute><ProfilePage /></ProtectedRoute>} />
 						<Route path="/signup" element={<RedirectAuthenticatedUser><SignUpPage /></RedirectAuthenticatedUser>} />
 						<Route path="/login" element={<RedirectAuthenticatedUser><LoginPage /></RedirectAuthenticatedUser>} />
 						<Route path="/verifyEmail" element={<EmailVerificationPage />} />

@@ -18,6 +18,7 @@ import joueurRoutes from "./routes/route.joueurs.js";
 
 import ecoleRoutes from './routes/ecoles.route.js';
 import authRoutes from './routes/auth.route.js';
+import { connectDB } from './config/db.js';
 import matchRoutes from "./routes/match.routes.js";
 
 
@@ -62,3 +63,5 @@ app.listen(process.env.PORT, () => {
     console.log(`Serveur lancé sur http://localhost:${PORT}`);
 
 });
+
+export default app
