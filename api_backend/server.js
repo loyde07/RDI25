@@ -31,7 +31,10 @@ const app = express();
 const PORT = process.env.PORT || 5000;
 
 // CORS configuration
-app.use(cors({ }));
+app.use(cors({
+  origin: 'http://localhost:3000',
+  credentials: true
+}));
 
 
 
@@ -64,8 +67,11 @@ app.get("/", (req, res) => {
 });
 
 //lancement du serveur
-app.listen(process.env.PORT, () => {
+if (process.env.NODE_ENV !== 'test') {
+  app.listen(process.env.PORT, () => {
     connectDB();
-    console.log(`Serveur lancé sur http://localhost:${PORT}`);
+    console.log(`Serveur lancé sur http://localhost:${process.env.PORT}`);
+  });
+}
 
-});
+export default app; 

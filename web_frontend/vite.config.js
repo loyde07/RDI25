@@ -1,6 +1,8 @@
-import { defineConfig } from 'vite'
-import react from '@vitejs/plugin-react'
+import { defineConfig } from 'vite';
+import react from '@vitejs/plugin-react';
 import tailwindcss from "@tailwindcss/vite";
+import { coverageV8 } from 'vitest/plugins';
+
 
 // https://vite.dev/config/
 export default defineConfig({
@@ -16,6 +18,11 @@ export default defineConfig({
     globals: true,
     transformMode: {
       web: [/\.[jt]sx?$/],
+    },
+    coverage: {
+      provider: 'v8',
+      reporter: ['text', 'json', 'html'],
+      reportsDirectory: './coverage',
     },
   },
 });
