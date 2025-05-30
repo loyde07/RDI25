@@ -11,7 +11,6 @@ import Match from "./tournoisMatch.jsx";
 import toast from "react-hot-toast";
 import { motion } from "framer-motion";
 import { useAuthStore } from "../store/authStore";
-import { set } from "mongoose";
 
 const API = import.meta.env.VITE_API;
 

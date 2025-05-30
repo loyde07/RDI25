@@ -29,7 +29,7 @@ import Home from "./pages/home.jsx";
 // Page des tournois
 import ValorantInfo from "./pages/ValorantInfoPage.jsx";
 import ValorantTournament from "./pages/ValorantTournament.jsx";
-import Tournement from "./pages/tournois.jsx"
+import Tournement from "./pages/tournoisPage.jsx"
 
 
 // Navbar, header dans toutes les pages

@@ -95,3 +95,6 @@ npm install multer
 
 
 npm install -D vitest @vitest/coverage-v8
+
+
+npm install react-icons
