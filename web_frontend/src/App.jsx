@@ -35,8 +35,11 @@ import Tournement from "./pages/tournois.jsx"
 // Navbar, header dans toutes les pages
 import Header from "./pages/header.jsx"
 
+
+
 // fonction d'authentification
-import { useAuthStore } from './store/authStore.js'
+import {useAuthStore} from './store/authStore.js'
+import InscriptionTourn from "./pages/inscritTournois.jsx";
 
 // Protège les routes qui demandent une authentification
 const ProtectedRoute = ({ children }) => {
@@ -97,7 +100,6 @@ function App() {
 						<Route path="/forgotPassword" element={<ForgotPasswordPage />} />
 						<Route path="/ResetPassword" element={<ResetPasswordPage />} />
 						<Route path="/editProfile/" element={<ProtectedRoute><EditProfilePage /></ProtectedRoute>} />
-
 						<Route path="/tournois" element={<Tournement />} />
 						<Route path="/valorantInfo" element={<ValorantInfo />} />
 						<Route path="/valorantTournament" element={<ValorantTournament />} />
@@ -105,8 +107,11 @@ function App() {
 						<Route path="/gestion/:id" element={<ProtectedRoute> <MyTeam /></ProtectedRoute>} />
 						<Route path="/team" element={<Team />} />
 						<Route path="*" element={<Home />} />
-
+						<Route path="/inscriptionTournois" element={<InscriptionTourn/>} />
 						{/* Redirection par défaut */}
+
+
+
 					</Routes>
 				</div>
 			</div>
