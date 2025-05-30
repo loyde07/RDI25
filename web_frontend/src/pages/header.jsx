@@ -67,9 +67,13 @@ const Navbar = () => {
           <Link to="/team" className=" mx-15 text-sm font-medium hover:opacity-80 transition-all bg-clip-text text-transparent bg-gradient-to-r from-blue-100 to-indigo-400">
             Équipes
           </Link>
+
+          {user.droit === "admin" && (
+          
           <Link to="/gestion" className="mx-15 text-sm font-medium hover:opacity-80 transition-all bg-clip-text text-transparent bg-gradient-to-r from-blue-100 to-indigo-400">
             Gestion
           </Link>
+          )}
         </div>
       </div>
     </header>
