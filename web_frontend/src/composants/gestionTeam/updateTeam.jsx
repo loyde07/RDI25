@@ -102,7 +102,7 @@ function UpdateTeam() {
       const res = await axios.patch(`${API}/api/teams/${selectedTeamId}/update`, {
           ...form,
           joueurs: nouvelleListe,
-          logo: logoPath // ✅ Ici tu dois bien envoyer logoPath et pas form.logo
+          logo: logoPath // 
       });
   
       toast.success(" Équipe mise à jour !");
