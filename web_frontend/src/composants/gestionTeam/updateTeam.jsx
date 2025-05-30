@@ -111,6 +111,9 @@ function UpdateTeam() {
       const updatePayload = { droit: "" };
       await updateProfile(updatePayload);
 
+
+      window.location.reload();
+
       //  recharger les données de l’équipe pour que l’UI soit à jour
       const updatedTeam = await axios.get(`${API}/api/teams/${selectedTeamId}`);
       setTeamData(updatedTeam.data.data);
