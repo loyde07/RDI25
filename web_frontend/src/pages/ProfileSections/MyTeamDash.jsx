@@ -52,7 +52,7 @@ function MyTeam() {
         <ul className="player-list">
           {joueurs.slice(0, 5).map((j) => (
             <li key={j._id} className="player-card">
-              <strong>{j.lName} {j.fName}</strong> — {j.email}<br />
+              <strong>{j.lName} {j.fName}</strong><br /><strong>E-mail: </strong>{j.email}<br />
               <strong>École :</strong> {j.ecole_id?.nom || "Non renseigné"}
             </li>
           ))}
