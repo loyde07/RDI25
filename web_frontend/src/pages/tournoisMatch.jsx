@@ -16,12 +16,24 @@ const Match = ({ team1 = "?", team2 = "?",  winnerId ,onWinner, matchDbId}) => {
   const [winnerTeam, setWinnerTeam] = useState(null); // ← état pour le gagnant
   const { user } = useAuthStore();
   const isAdmin = user?.droit === "admin";
+  const isTeam1Winner = winnerTeam?._id === (team1?._id || team1);
+  const isTeam2Winner = winnerTeam?._id === (team2?._id || team2);
 
-  useEffect(() => {
-    if (winnerId) {
-      setWinnerTeam(winnerId === team1? team1 : team2);
+useEffect(() => {
+  if (winnerId && winnerId._id) {
+    if (typeof team1 === "object" && team1?._id === winnerId._id) {
+      setWinnerTeam(team1);
+    } else if (typeof team2 === "object" && team2?._id === winnerId._id) {
+      setWinnerTeam(team2);
+    } else {
+      setWinnerTeam(null);
     }
-  }, [winnerId, team1, team2]);
+  } else {
+    setWinnerTeam(null);
+  }
+}, [winnerId, team1, team2]);
+
+
 
     const getTeamName = (team) => {
     if (!team || typeof team === "string") return team || "?";
@@ -44,20 +56,24 @@ const Match = ({ team1 = "?", team2 = "?",  winnerId ,onWinner, matchDbId}) => {
     }
 
   };
- 
- 
+ // Plus bas dans le composant, avant le return, ajoute aussi :
+
  return (
     <div className="bg-gray-800 text-white rounded-lg p-4 shadow-lg w-full max-w-xs flex flex-col gap-4">
       {/* Équipe 1 */}
       <div className="flex justify-between items-center">
-        <span className={winnerTeam === team1 ? "text-yellow-500" : ""}>
-          {getTeamName(team1)}
-        </span>
-          {(team1 && getTeamName(team1) !== "en attente..." && isAdmin )&& (
+          <span className={
+            isTeam1Winner
+              ? "text-yellow-500"
+              : ""
+          }>
+            {getTeamName(team1)}
+          </span>
+          {(team1  !== "en attente..." && isAdmin )&& (
           <button
             className={`px-3 py-1 rounded-md transition ${
-              winnerTeam === team2
-                ? "bg-red-900 cursor-not-allowed"
+            isTeam2Winner
+                  ? "bg-red-900 cursor-not-allowed"
                 : "bg-green-800 hover:bg-green-600"
             }`}
             disabled={winnerTeam !== null}
@@ -70,12 +86,17 @@ const Match = ({ team1 = "?", team2 = "?",  winnerId ,onWinner, matchDbId}) => {
 
       {/* Équipe 2 */}
       <div className="flex justify-between items-center">
-        <span className={winnerTeam === team2 ? "text-yellow-500" : ""}>
+        <span className={
+            isTeam2Winner
+            ? "text-yellow-500"
+            : ""
+        }>
           {getTeamName(team2)}
-        </span>        {(team2 && getTeamName(team2) !== "en attente..." && isAdmin) && (
+        </span>
+        {(team2  !== "en attente..." && isAdmin) && (
           <button
             className={`px-3 py-1 rounded-md transition ${
-              winnerTeam === team1
+            isTeam1Winner
                 ? "bg-red-900 cursor-not-allowed"
                 : "bg-green-800 hover:bg-green-600"
             }`}

@@ -11,6 +11,7 @@ import Match from "./tournoisMatch.jsx";
 import toast from "react-hot-toast";
 import { motion } from "framer-motion";
 import { useAuthStore } from "../store/authStore";
+import { set } from "mongoose";
 
 const API = import.meta.env.VITE_API;
 
@@ -72,6 +73,7 @@ useEffect(() => {
     })
     .catch(console.error);
 
+      fetchFinalWinner(); // ← pour les visiteurs
 
 
 }, [id]);
@@ -256,8 +258,6 @@ const generateMatches = async () => {
 
   {tournamentStarted && matches.length > 0 ? (
     <div className="flex justify-center gap-16 w-full relative overflow-x-auto">
-      {/* Ligne centrale verticale */}
-      <div className="absolute top-0 bottom-0 left-1/2 w-1 bg-gray-700 z-0" />
 
       {/* Colonne Round 1 */}
       <div className="flex flex-col gap-16 z-10">
