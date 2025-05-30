@@ -1,6 +1,6 @@
 import { Link } from "react-router-dom";
 import { useAuthStore } from "../store/authStore";
-import { LogOut, Swords , User, LogIn } from "lucide-react";
+import { LogOut, Swords, User, LogIn } from "lucide-react";
 
 const Navbar = () => {
   const { logout, user, isAuthenticated } = useAuthStore();
@@ -25,7 +25,7 @@ const Navbar = () => {
           <div className="flex items-center gap-2">
             {isAuthenticated ? (
               <>
-                <Link to="/dashboard" className="flex btn btn-sm gap-2">
+                <Link to="/profile" className="flex btn btn-sm gap-2">
                   <User className="w-5 h-5 text-primary text-indigo-400" />
                   <span className="bg-clip-text text-transparent bg-gradient-to-l from-blue-100 to-indigo-400 hidden sm:inline">
                     Compte
@@ -56,6 +56,11 @@ const Navbar = () => {
                 </Link>
               </>
             )}
+          {user?.droit === "admin" && (
+          <Link to="/admin" className="mx-15 text-sm font-medium hover:opacity-80 transition-all bg-clip-text text-transparent bg-gradient-to-r from-blue-100 to-indigo-400">
+            Dashboard
+          </Link>
+          )}
           </div>
         </div>
 
@@ -67,9 +72,14 @@ const Navbar = () => {
           <Link to="/team" className=" mx-15 text-sm font-medium hover:opacity-80 transition-all bg-clip-text text-transparent bg-gradient-to-r from-blue-100 to-indigo-400">
             Équipes
           </Link>
-          <Link to="/gestion" className="mx-15 text-sm font-medium hover:opacity-80 transition-all bg-clip-text text-transparent bg-gradient-to-r from-blue-100 to-indigo-400">
-            Gestion
-          </Link>
+
+          {user?.droit === "admin" && (
+
+            <Link to="/gestion" className="mx-15 text-sm font-medium hover:opacity-80 transition-all bg-clip-text text-transparent bg-gradient-to-r from-blue-100 to-indigo-400">
+              Gestion
+            </Link>
+          )}
+
         </div>
       </div>
     </header>

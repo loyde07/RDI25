@@ -41,8 +41,6 @@ routes.get("/:tournois_id/teams", async (req, res) => {
 
 
 
-
-
 // Destination et nom du fichier
 const storage = multer.diskStorage({
   destination: function (req, file, cb) {

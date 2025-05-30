@@ -1,6 +1,7 @@
 import Team from "../models/team.model.js";
 import {User} from "../models/user.model.js";
 
+
 export const getTeams = async (req, res) => {
 
     try{
@@ -125,7 +126,14 @@ export const updateTeam = async (req, res) => {
 export const getTeamById = async (req, res) => {
   const { id } = req.params;
   try {
-    const team = await Team.findById(id).populate('joueurs');
+    const team = await Team.findById(id)
+      .populate({
+        path: 'joueurs',
+        populate: {
+          path: 'ecole_id',
+          select: 'nom' 
+        }
+      });
 
     if (!team) {
       return res.status(404).json({ success: false, message: "Équipe introuvable" });
@@ -137,3 +145,5 @@ export const getTeamById = async (req, res) => {
     res.status(500).json({ success: false, message: "Erreur serveur" });
   }
 };
+
+

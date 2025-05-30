@@ -7,7 +7,8 @@ import { Toaster } from 'react-hot-toast'
 // gestion des teams
 import Team from "./pages/team.jsx";
 import Gestion from "./pages/gestionTeam.jsx";
-import MyTeam from "./pages/MyTeamDash.jsx";
+import MyTeam from "./pages/ProfileSections/MyTeamDash.jsx";
+
 // Composant de style
 import FloatingShape from "./components/FloatingShape.jsx"
 import LoadingSpinner from "./components/LoadingSpinner.jsx"
@@ -17,7 +18,7 @@ import LoadingSpinner from "./components/LoadingSpinner.jsx"
 import SignUpPage from "./pages/SignUpPage.jsx"
 import LoginPage from "./pages/loginPage.jsx"
 import EmailVerificationPage from "./pages/EmailVerificationPage.jsx"
-import DashboardPage from "./pages/DashboardPage.jsx"
+import ProfilePage from "./pages/ProfilePage.jsx"
 import EditProfilePage from "./pages/EditProfilePage.jsx";
 import ForgotPasswordPage from "./pages/ForgotPasswordPage.jsx"
 import ResetPasswordPage from "./pages/ResetPasswordPage.jsx"
@@ -28,15 +29,16 @@ import Home from "./pages/home.jsx";
 // Page des tournois
 import ValorantInfo from "./pages/ValorantInfoPage.jsx";
 import ValorantTournament from "./pages/ValorantTournament.jsx";
+import Tournement from "./pages/tournoisPage.jsx"
+
 
 // Navbar, header dans toutes les pages
 import Header from "./pages/header.jsx"
 
-// Page du tournois
-import Tournement from "./pages/tournois.jsx"
-
 // fonction d'authentification
 import {useAuthStore} from './store/authStore.js'
+import AdminDashboard from "./pages/Admin/AdminDashboard.jsx";
+import InscriptionTourn from "./pages/inscritTournois.jsx";
 
 // Protège les routes qui demandent une authentification
 const ProtectedRoute = ({ children }) => {
@@ -71,7 +73,7 @@ function App() {
 		checkAuth();
 	}, [checkAuth]);
 
-  if (isCheckingAuth) return <LoadingSpinner />;
+	if (isCheckingAuth) return <LoadingSpinner />;
 
 
 
@@ -90,20 +92,24 @@ function App() {
 				<div className="flex items-center justify-center min-h-[calc(100vh-100px)]">
 					<Routes>
 						<Route path="/" element={<Home />} />
-						<Route path="/dashboard" element={<ProtectedRoute><DashboardPage /></ProtectedRoute>} />
+						<Route path="/profile" element={<ProtectedRoute><ProfilePage /></ProtectedRoute>} />
 						<Route path="/signup" element={<RedirectAuthenticatedUser><SignUpPage /></RedirectAuthenticatedUser>} />
 						<Route path="/login" element={<RedirectAuthenticatedUser><LoginPage /></RedirectAuthenticatedUser>} />
 						<Route path="/verifyEmail" element={<EmailVerificationPage />} />
 						<Route path="/forgotPassword" element={<ForgotPasswordPage />} />
 						<Route path="/ResetPassword" element={<ResetPasswordPage />} />
-						<Route path="/editProfile/" element={<ProtectedRoute><EditProfilePage/></ProtectedRoute>} />
-
-						<Route path="/tournois" element={<Tournement/>} />
+						<Route path="/editProfile/" element={<ProtectedRoute><EditProfilePage /></ProtectedRoute>} />
+						<Route path="/tournois" element={<Tournement />} />
 						<Route path="/valorantInfo" element={<ValorantInfo />} />
 						<Route path="/valorantTournament" element={<ValorantTournament />} />
-						<Route path="/gestion" element={<Gestion/>} />
-						<Route path="/gestion/:id" element= {<MyTeam/>} />
-						<Route path="/team" element={<Team/>} />
+						<Route path="/gestion" element={<Gestion />} />
+						<Route path="/gestion/:id" element={<ProtectedRoute> <MyTeam /></ProtectedRoute>} />
+						<Route path="/team" element={<Team />} />
+						<Route path="/inscriptionTournois" element={<InscriptionTourn/>} />
+						<Route path="/admin" element={<ProtectedRoute><AdminDashboard /></ProtectedRoute> } />
+						<Route path="*" element={<Home />} />
+						{/* Redirection vers la page d'accueil pour les routes non définies */}
+						
 					</Routes>
 				</div>
 			</div>

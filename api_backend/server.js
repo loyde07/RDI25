@@ -14,14 +14,12 @@ import { connectDB } from './config/db.js';
 // api/routes
 import routesTeam from "./routes/r.team.js";
 import joueurRoutes from "./routes/route.joueurs.js";
-
-
 import ecoleRoutes from './routes/ecoles.route.js';
 import authRoutes from './routes/auth.route.js';
 import matchRoutes from "./routes/match.routes.js";
-
-
-
+import inscriptionRoutes from "./routes/inscription.route.js";
+import tournoisRoutes from "./routes/tournois.route.js";
+import userRoutes from "./routes/user.route.js";
 
 dotenv.config();
 
@@ -31,6 +29,7 @@ const PORT = process.env.PORT || 5000;
 
 // CORS configuration
 // app.use(cors({ origin: 'http://localhost:3000', credentials:true }));
+
 
 
 app.use(express.json()); //permet d'accepeter du JSOn dans le req.body
@@ -50,7 +49,14 @@ app.use("/api/joueurs", joueurRoutes);
 app.use('/uploads', express.static(path.join(process.cwd(), 'uploads')));
 
 app.use("/api/ecoles", ecoleRoutes); 
+
+app.use("/api/users", userRoutes); // Routes pour les utilisateurs);
     
+
+app.use("/api/inscription", inscriptionRoutes);
+
+app.use("/api/tournois", tournoisRoutes); // Inscription aux tournois
+
 
 app.get("/", (req, res) => {
     res.send("Server is ready");
@@ -62,3 +68,5 @@ app.listen(process.env.PORT, () => {
     console.log(`Serveur lancé sur http://localhost:${PORT}`);
 
 });
+
+export default app

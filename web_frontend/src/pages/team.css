@@ -1,5 +1,5 @@
-/* CARROUSEL*/
-
+/* CARROUSEL */
+ 
 .carousel3D-wrapper {
   position: relative;
   perspective: 1600px;
@@ -9,10 +9,9 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  margin-top: 200px;
-  margin: 200px auto 2rem auto ;
+  margin: 200px auto 2rem auto;
 }
-
+ 
 .carousel3D {
   width: 100%;
   height: 350px;
@@ -20,9 +19,8 @@
   transform-style: preserve-3d;
   transition: transform 1s ease;
   overflow: visible;
-
 }
-
+ 
 .carousel3D-item {
   position: absolute;
   top: 0;
@@ -33,12 +31,12 @@
   opacity: 0.4;
   cursor: pointer;
 }
-
+ 
 .carousel3D-item.active {
   opacity: 1;
   z-index: 2;
 }
-
+ 
 .carousel3D-img {
   width: 240px;
   height: 240px;
@@ -46,25 +44,20 @@
   border-radius: 16px;
   box-shadow: 0 6px 12px rgba(0, 0, 0, 0.25);
   transition: transform 0.3s;
-}
-
-.carousel3D-img {
   animation: spin 8s linear infinite;
-} 
-
-/*  Bouttons  */
+}
+ 
+/* Boutons */
+ 
 .carousel3D-controls {
   display: flex;
-  justify-content: center; 
+  justify-content: center;
   align-items: center;
-  gap: 40px; 
-  margin-top: 20px;
-  margin-bottom: 40px;
+  gap: 40px;
+  margin: 20px 0 40px 0;
 }
-
+ 
 .carousel3D-btn {
-  position: static; 
-  transform: none;
   background: #689bb9;
   font-size: 28px;
   color: white;
@@ -74,22 +67,15 @@
   box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
   transition: all 0.3s ease;
 }
-
+ 
 .carousel3D-btn:hover {
   transform: scale(1.1);
   background-color: #6970ac ;  
   color: white;
 }
-
-.carousel3D-btn.left {
-  left: 30px; 
-}
-
-.carousel3D-btn.right {
-  right: 30px; 
-} 
-
-/* Espace de détails */
+ 
+/* Détails équipe */
+ 
 .team-detail-container {
   background-color: #d6cbcb;
   padding: 50px;
@@ -101,7 +87,7 @@
   text-align: center;
   animation: fadeInUp 0.6s ease both;
 }
-
+ 
 .team-logo {
   width: 220px;
   border-radius: 10px;
@@ -112,7 +98,9 @@
   margin-left: auto;
   margin-right: auto;
 }
-
+ 
+/* Liste joueurs */
+ 
 .player-list {
   list-style: none;
   padding: 0;
@@ -122,23 +110,187 @@
   align-items: center;
   gap: 20px;
 }
-
+ 
 .player-card {
+  position: relative;
   background-color: #8d94cc;
   border: 4px solid #5d7486;
-  border-radius: 14px;
-  padding: 20px;
-  width: 320px;
+  border-radius: 12px;
+  padding: 14px 16px;
+  width: 280px;
   text-align: left;
   box-shadow: 0 6px 14px rgba(0, 0, 0, 0.1);
   transition: transform 0.3s ease, box-shadow 0.3s ease;
 }
-
+ 
 .player-card:hover {
   transform: translateY(-8px) scale(1.03);
   box-shadow: 0 12px 24px rgba(0, 0, 0, 0.15);
 }
-
+ 
+.card-line {
+  display: inline-flex;
+  gap: 6px;
+  font-size: 1.1rem;
+  font-weight: 500;
+  color: #3e4574;
+  width: 100%;
+  text-align: center;
+}
+ 
+/* Bouton info "i" */
+ 
+.info-button {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  background: #785792;
+  color: white;
+  border: none;
+  border-radius: 9999px;
+  width: 24px;
+  height: 24px;
+  font-weight: bold;
+  cursor: pointer;
+  opacity: 1;
+  transition: opacity 0.2s ease-in-out;
+  z-index: 10;
+}
+ 
+.player-card:hover .info-button {
+  opacity: 1;
+}
+ 
+/* Masquer bouton i global */
+ 
+.rotate-in-card > button.info-button {
+  display: none !important;
+}
+ 
+/* Modal */
+ 
+.modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  backdrop-filter: blur(5px);
+  background-color: rgba(0, 0, 0, 0.3);
+  z-index: 1000;
+}
+ 
+.player-modal {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%) rotateY(0deg);
+  transform-origin: center center;
+  background: linear-gradient(145deg, rgba(141, 148, 204, 0.85), rgba(93, 116, 134, 0.85));
+  padding: 40px;
+  border-radius: 24px;
+  box-shadow: 0 12px 35px rgba(0, 0, 0, 0.3);
+  width: 90%;
+  max-width: 600px;
+  max-height: 700px;
+  padding: 20px 25px;
+  z-index: 1001;
+  text-align: left;
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  animation: rotateCardIn 0.6s ease;
+}
+ 
+.player-modal-content {
+  display: flex;
+  gap: 5px;
+  align-items: center;
+}
+ 
+.modal-title {
+  font-size: 2rem;
+  font-weight: bold;
+  text-align: center;
+  margin-bottom: 24px;
+  color: #333;
+}
+ 
+.modal-logo {
+  display: block;
+  margin: 0 auto 16px auto;
+  width: 80px;
+  height: 80px;
+  object-fit: cover;
+  border-radius: 50%;
+  border: 3px solid #4856b1;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+}
+ 
+.modal-infos {
+  font-size: 1.1rem;
+  line-height: 1.6;
+  padding-left: 10px;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  margin-top: 20px;
+}
+ 
+.player-info-field {
+  background: rgba(255, 255, 255, 0.06);
+  border-left: 5px solid #6970ac;
+  padding: 10px 14px;
+  border-radius: 8px;
+  box-shadow: 0 1px 5px rgba(0,0,0,0.1);
+  transition: transform 0.3s ease;
+}
+ 
+.player-info-field:hover {
+  transform: scale(1.015);
+}
+ 
+.field-label {
+  font-size: 0.9rem;
+  font-weight: 600;
+  color: #3e4574;
+  margin-bottom: 2px;
+  display: block;
+  text-transform: uppercase;
+  letter-spacing: 0.1px;
+}
+ 
+.field-value {
+  font-size: 1.1rem;
+  font-weight: 600;
+  color: #99afb9ec;
+  line-height: 1.4;
+}
+ 
+.close-btn {
+  position: absolute;
+  top: 10px;
+  right: 15px;
+  background: none;
+  border: none;
+  font-size: 24px;
+  color: white; /* blanc */
+  text-shadow: 0 1px 2px rgba(0,0,0,0.7); /* léger reflet / ombre */
+  cursor: pointer;
+  transition: color 0.3s ease;
+  z-index: 1100; /* au-dessus de tout */
+}
+ 
+.close-btn:hover {
+  color: #ddd; /* un peu plus clair au survol */
+}
+ 
+ 
+/* Animations */
+ 
 @keyframes fadeInUp {
   from {
     opacity: 0;
@@ -149,11 +301,20 @@
     transform: translateY(0);
   }
 }
-
+ 
 @keyframes spin {
   0% { transform: rotateY(0deg); }
   100% { transform: rotateY(360deg); }
 }
-
-
-
+ 
+@keyframes rotateCardIn {
+  from {
+    opacity: 0;
+    transform: translate(-50%, -50%) perspective(800px) rotateY(90deg);
+  }
+  to {
+    opacity: 1;
+    transform: translate(-50%, -50%) perspective(800px) rotateY(0deg);
+  }
+}
+ 

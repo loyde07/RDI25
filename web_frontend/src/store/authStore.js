@@ -15,10 +15,10 @@ export const useAuthStore = create((set) => ({
     isUpdatingPic: false,
 	message: null,
 
-	signup: async (lName, fName, pseudo, email, password) => {
+	signup: async (lName, fName, pseudo, ecole_id, niveau, email, password) => {
 		set({ isLoading: true, error: null });
 		try {
-			const response = await axios.post(`${API_URL}/signup`, { lName, fName, pseudo, email, password });
+			const response = await axios.post(`${API_URL}/signup`, { lName, fName, pseudo, ecole_id, niveau, email, password });
 			set({ user: response.data.user, isAuthenticated: true, isLoading: false });
 		} catch (error) {
 			set({ error: error.response.data.message || "Error signing up", isLoading: false });
@@ -35,7 +35,7 @@ export const useAuthStore = create((set) => ({
 				error: null,
 				isLoading: false,
 			});
-			toast.success(`Bon retour ${response.data.user.pseudo}`)
+			toast.success(`Salut ${response.data.user.pseudo}`)
 		} catch (error) {
 			set({ error: error.response?.data?.message || "Error logging in", isLoading: false });
 			throw error;
@@ -119,13 +119,16 @@ export const useAuthStore = create((set) => ({
 		try {
 			const response = await axios.put(`${API_URL}/updateProfile`, updatePayload);
 			set({ user: response.data.user, isAuthenticated: true, isLoading: false });
+			toast.success("Profil mis à jour avec succès");
 		} catch (error) {
 			set({
 				error: error.response?.data?.message || "Erreur lors de la mise à jour",
 				isLoading: false,
 			});
+			toast.error(error.response?.data?.message || "Erreur lors de la mise à jour");
 			throw error;
 		}
 	},
+
 	
 }));

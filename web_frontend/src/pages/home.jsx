@@ -102,7 +102,7 @@ function Home() {
               whileHover={{ scale: 1.05, cursor: 'pointer' }}
               whileTap={{ scale: 0.95 }}
             >
-              <img className='mt-4 w-30 border-4 rounded-2xl' src='./logo_ssb.jpg' />
+              <img className='mt-4 w-30 border-4 rounded-2xl' src='./games/logo_ssb.jpg' />
             </motion.button>
           </motion.div>
           <motion.div
@@ -115,7 +115,7 @@ function Home() {
               whileTap={{ scale: 0.95 }}
               onClick={() => {navigate('/valorantInfo')}}
             >
-              <img className='mt-4 w-30 border-4 rounded-2xl' src='./logo_valorant.jpg' />
+              <img className='mt-4 w-30 border-4 rounded-2xl' src='./games/logo_valorant.jpg' />
             </motion.button>
           </motion.div>
           <motion.div
@@ -127,7 +127,7 @@ function Home() {
               whileHover={{ scale: 1.05, cursor: 'pointer' }}
               whileTap={{ scale: 0.95 }}
             >
-              <img className='mt-4 w-30 border-4 rounded-2xl' src='./logo_marvel_rivals.jpg' />
+              <img className='mt-4 w-30 border-4 rounded-2xl' src='./games/logo_marvel_rivals.jpg' />
             </motion.button>
           </motion.div>
           <motion.div
@@ -139,7 +139,7 @@ function Home() {
               whileHover={{ scale: 1.05, cursor: 'pointer' }}
               whileTap={{ scale: 0.95 }}
             >
-            <img className='mt-4 w-30 border-4 rounded-2xl' src='./logo_minecraft.jpg' />
+            <img className='mt-4 w-30 border-4 rounded-2xl' src='./games/logo_minecraft.jpg' />
             </motion.button>
           </motion.div>
           <motion.div
@@ -151,7 +151,7 @@ function Home() {
               whileHover={{ scale: 1.05, cursor: 'pointer' }}
               whileTap={{ scale: 0.95 }}
             >
-            <img className='mt-4 w-30 border-4 rounded-2xl' src='./logo_lol.jpg' />
+            <img className='mt-4 w-30 border-4 rounded-2xl' src='./games/logo_lol.jpg' />
             </motion.button>
           </motion.div>
 
@@ -229,9 +229,9 @@ function Home() {
 
 
             <div className='w-3/4 flex justify-end mx-2'>
-              <div> <img className=' w-35 mx-1 border-2 rounded-2xl' src='/Lp_1.jpg' /> </div>
-              <div> <img className=' w-35 mx-1 border-2 rounded-2xl' src='/Lp_2.jpg' /></div>
-              <div> <img className=' w-35 mx-1 border-2 rounded-2xl' src='/Lp_3.jpg' /></div>
+              <div> <img className=' w-35 mx-1 border-2 rounded-2xl' src='/galerie/Lp_1.jpg' /> </div>
+              <div> <img className=' w-35 mx-1 border-2 rounded-2xl' src='/galerie/Lp_2.jpg' /></div>
+              <div> <img className=' w-35 mx-1 border-2 rounded-2xl' src='/galerie/Lp_3.jpg' /></div>
             </div>
           </div>
         </div>
