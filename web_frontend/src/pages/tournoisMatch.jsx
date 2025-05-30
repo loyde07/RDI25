@@ -1,5 +1,6 @@
 import axios from "axios";
 import { useState, useEffect } from "react";
+import { useAuthStore } from "../store/authStore";
 
 // Utilisez si vous voulez passer l'URL via une variable d'environnement
 const API = import.meta.env.VITE_API;
@@ -13,6 +14,8 @@ const API = import.meta.env.VITE_API;
 
 const Match = ({ team1 = "?", team2 = "?",  winnerId ,onWinner, matchDbId}) => {
   const [winnerTeam, setWinnerTeam] = useState(null); // ← état pour le gagnant
+  const { user } = useAuthStore();
+  const isAdmin = user?.droit === "admin";
 
   useEffect(() => {
     if (winnerId) {
@@ -24,6 +27,9 @@ const Match = ({ team1 = "?", team2 = "?",  winnerId ,onWinner, matchDbId}) => {
     if (!team || typeof team === "string") return team || "?";
     return team.nom || "?";
   };
+
+
+
   const handleWinner = async (winnerTeam) => {
     setWinnerTeam(winnerTeam); // mise à jour locale immédiate
 
@@ -44,12 +50,14 @@ const Match = ({ team1 = "?", team2 = "?",  winnerId ,onWinner, matchDbId}) => {
     <div className="bg-gray-800 text-white rounded-lg p-4 shadow-lg w-full max-w-xs flex flex-col gap-4">
       {/* Équipe 1 */}
       <div className="flex justify-between items-center">
-        <span>{getTeamName(team1)}</span>
-        {team1 && getTeamName(team1) !== "en attente..." && (
+        <span className={winnerTeam === team1 ? "text-yellow-500" : ""}>
+          {getTeamName(team1)}
+        </span>
+          {(team1 && getTeamName(team1) !== "en attente..." && isAdmin )&& (
           <button
             className={`px-3 py-1 rounded-md transition ${
-              winnerTeam === team1
-                ? "bg-green-900 cursor-not-allowed"
+              winnerTeam === team2
+                ? "bg-red-900 cursor-not-allowed"
                 : "bg-green-800 hover:bg-green-600"
             }`}
             disabled={winnerTeam !== null}
@@ -62,12 +70,13 @@ const Match = ({ team1 = "?", team2 = "?",  winnerId ,onWinner, matchDbId}) => {
 
       {/* Équipe 2 */}
       <div className="flex justify-between items-center">
-        <span>{getTeamName(team2)}</span>
-        {team2 && getTeamName(team2) !== "en attente..." && (
+        <span className={winnerTeam === team2 ? "text-yellow-500" : ""}>
+          {getTeamName(team2)}
+        </span>        {(team2 && getTeamName(team2) !== "en attente..." && isAdmin) && (
           <button
             className={`px-3 py-1 rounded-md transition ${
-              winnerTeam === team2
-                ? "bg-green-900 cursor-not-allowed"
+              winnerTeam === team1
+                ? "bg-red-900 cursor-not-allowed"
                 : "bg-green-800 hover:bg-green-600"
             }`}
             disabled={winnerTeam !== null}

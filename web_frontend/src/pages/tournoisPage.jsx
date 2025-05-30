@@ -10,6 +10,7 @@ import { Link } from "react-router-dom";
 import Match from "./tournoisMatch.jsx";
 import toast from "react-hot-toast";
 import { motion } from "framer-motion";
+import { useAuthStore } from "../store/authStore";
 
 const API = import.meta.env.VITE_API;
 
@@ -24,6 +25,8 @@ const Tournament = () => {
   const round2Matches = matches.filter((m) => m.round === 2);
   const round3Matches = matches.filter((m) => m.round === 3);
   const [finalWinner, setFinalWinner] = useState(null);
+  const { user } = useAuthStore();
+  const isAdmin = user?.droit === "admin";
 
 
 
@@ -40,7 +43,6 @@ useEffect(() => {
     .then(res => {
       const matchs = res.data.matchs;
       setMatches(matchs);
-      fetchFinalWinner();
 
       // Round 1
       const round1Teams = matchs
@@ -106,7 +108,7 @@ useEffect(() => {
   /* ------------------------------------------------------------------ */
   /* Helpers pour propager les gagnants                                  */
   /* ------------------------------------------------------------------ */
-const updateNextRound = (roundSetter, storageKey, index, nextRound, roundNumber) => async (winner) => {
+const updateNextRound = (roundSetter, storageKey, index, nextRound, roundNumber, bigWinner) => async (winner) => {
     roundSetter((prev) => {
       const updated = [...(prev)];
       updated[index] = winner;
@@ -119,7 +121,9 @@ const updateNextRound = (roundSetter, storageKey, index, nextRound, roundNumber)
       return updated;
     });
 
-
+    if (typeof bigWinner === "function") {
+      bigWinner(winner.nom);
+    }
 
 
   
@@ -129,6 +133,7 @@ const updateNextRound = (roundSetter, storageKey, index, nextRound, roundNumber)
    if (!current || current.length < 2) {
       return;
     }
+
 
     const i = index % 2 === 0 ? index : index - 1;
     const team1 = current[i];
@@ -179,7 +184,7 @@ const updateNextRound = (roundSetter, storageKey, index, nextRound, roundNumber)
 
 
     await refetchMatches();
-
+    fetchFinalWinner();
   }, 100);
 };
 
@@ -285,7 +290,7 @@ const generateMatches = async () => {
         const team1 = match?.team1_id || "en attente...";
         const team2 = match?.team2_id || "en attente...";
         return (
-          <motion.div key={idx} className="relative">
+          <motion.div key={idx} className={`relative ${idx === 0 ? "mt-15" : "mt-35"}`}>
             <Match
               matchDbId={match?._id}
               team1={team1}
@@ -304,17 +309,17 @@ const generateMatches = async () => {
       <div className="flex flex-col justify-center gap-12 z-10">
         <h2 className="text-xl text-center mb-4">Finale</h2>
       {Array.from({ length: 1 }).map((_, idx) => {
-        const match = round3Matches[0];
+        const match = round3Matches[idx];
         const team1 = match?.team1_id || "en attente...";
         const team2 = match?.team2_id || "en attente...";
         return (
-          <motion.div key={idx}>
+          <motion.div key={idx} className="relative mt-1 ">
             <Match
               matchDbId={match?._id}
               team1={team1}
               team2={team2}
               winnerId={match?.winner_id} 
-              onWinner={updateNextRound(setFinal, "final", 0, null, 4)}
+              onWinner={updateNextRound(setFinal, "final", idx, null, 4, setFinalWinner)}
             />
           </motion.div>
         );
@@ -323,7 +328,7 @@ const generateMatches = async () => {
 
         {finalWinner && (
           <motion.div
-            className="mt-10 text-2xl font-bold text-yellow-400 flex items-center gap-2 justify-center"
+            className="mt-5 text-2xl font-bold text-yellow-400 flex items-center gap-2 justify-center"
             initial={{ scale: 0.8, opacity: 0 }}
             animate={{ scale: 1, opacity: 1 }}
             transition={{ delay: 0.5 }}
@@ -338,6 +343,7 @@ const generateMatches = async () => {
   )}
 
   {/* Boutons bas */}
+  {isAdmin && (
   <div className="mt-12 flex flex-col gap-4 items-center">
     <button
       className="px-6 py-3 bg-red-600 hover:bg-red-700 rounded-md"
@@ -364,6 +370,8 @@ const generateMatches = async () => {
       </button>
     </Link>
   </div>
+
+  )}
 </div>  );
 };
 

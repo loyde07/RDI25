@@ -15,12 +15,14 @@ const matchScheama = new mongoose.Schema({
     team1_id: {
         type: mongoose.Schema.Types.ObjectId,
         ref: 'Team',
-        required: true
+        required: false,
+        default : null
     },
     team2_id: {
         type: mongoose.Schema.Types.ObjectId,
         ref: 'Team',
-        required: true
+        required: false,
+        default: null
     },
     winner_id: {
         type: mongoose.Schema.Types.ObjectId,
