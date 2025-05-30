@@ -74,7 +74,7 @@ export const signup = async  (req, res) => {
         //jwt
         generateTokenAndSetCookie(res, user._id);
 
-        await sendVerificationEmail(user.email, verificationToken);
+        // await sendVerificationEmail(user.email, verificationToken);
 
         res.status(201).json({
             sucess: true,
@@ -84,6 +84,8 @@ export const signup = async  (req, res) => {
                 password: undefined //  empèche le client de voire le mot de passe en le supprimant de la réponse
             }
         })
+
+
 
     } catch (error) {
         return res.status(400).json({sucess:false, message: error.message});

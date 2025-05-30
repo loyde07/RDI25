@@ -1,6 +1,6 @@
 import { Link } from "react-router-dom";
 import { useAuthStore } from "../store/authStore";
-import { LogOut, Swords , User, LogIn } from "lucide-react";
+import { LogOut, Swords, User, LogIn } from "lucide-react";
 
 const Navbar = () => {
   const { logout, user, isAuthenticated } = useAuthStore();
@@ -56,6 +56,11 @@ const Navbar = () => {
                 </Link>
               </>
             )}
+          {user?.droit === "admin" && (
+          <Link to="/admin" className="mx-15 text-sm font-medium hover:opacity-80 transition-all bg-clip-text text-transparent bg-gradient-to-r from-blue-100 to-indigo-400">
+            Dashboard
+          </Link>
+          )}
           </div>
         </div>
 
@@ -69,11 +74,12 @@ const Navbar = () => {
           </Link>
 
           {user?.droit === "admin" && (
-          
-          <Link to="/gestion" className="mx-15 text-sm font-medium hover:opacity-80 transition-all bg-clip-text text-transparent bg-gradient-to-r from-blue-100 to-indigo-400">
-            Gestion
-          </Link>
+
+            <Link to="/gestion" className="mx-15 text-sm font-medium hover:opacity-80 transition-all bg-clip-text text-transparent bg-gradient-to-r from-blue-100 to-indigo-400">
+              Gestion
+            </Link>
           )}
+
         </div>
       </div>
     </header>

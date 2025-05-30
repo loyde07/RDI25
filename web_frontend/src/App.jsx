@@ -35,10 +35,9 @@ import Tournement from "./pages/tournoisPage.jsx"
 // Navbar, header dans toutes les pages
 import Header from "./pages/header.jsx"
 
-
-
 // fonction d'authentification
 import {useAuthStore} from './store/authStore.js'
+import AdminDashboard from "./pages/Admin/AdminDashboard.jsx";
 import InscriptionTourn from "./pages/inscritTournois.jsx";
 
 // Protège les routes qui demandent une authentification
@@ -106,12 +105,11 @@ function App() {
 						<Route path="/gestion" element={<Gestion />} />
 						<Route path="/gestion/:id" element={<ProtectedRoute> <MyTeam /></ProtectedRoute>} />
 						<Route path="/team" element={<Team />} />
-						<Route path="*" element={<Home />} />
 						<Route path="/inscriptionTournois" element={<InscriptionTourn/>} />
-						{/* Redirection par défaut */}
-
-
-
+						<Route path="/admin" element={<ProtectedRoute><AdminDashboard /></ProtectedRoute> } />
+						<Route path="*" element={<Home />} />
+						{/* Redirection vers la page d'accueil pour les routes non définies */}
+						
 					</Routes>
 				</div>
 			</div>

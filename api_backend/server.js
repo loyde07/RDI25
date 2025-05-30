@@ -14,15 +14,12 @@ import { connectDB } from './config/db.js';
 // api/routes
 import routesTeam from "./routes/r.team.js";
 import joueurRoutes from "./routes/route.joueurs.js";
-
-
 import ecoleRoutes from './routes/ecoles.route.js';
 import authRoutes from './routes/auth.route.js';
 import matchRoutes from "./routes/match.routes.js";
-
 import inscriptionRoutes from "./routes/inscription.route.js";
-
 import tournoisRoutes from "./routes/tournois.route.js";
+import userRoutes from "./routes/user.route.js";
 
 dotenv.config();
 
@@ -52,6 +49,8 @@ app.use("/api/joueurs", joueurRoutes);
 app.use('/uploads', express.static(path.join(process.cwd(), 'uploads')));
 
 app.use("/api/ecoles", ecoleRoutes); 
+
+app.use("/api/users", userRoutes); // Routes pour les utilisateurs);
     
 
 app.use("/api/inscription", inscriptionRoutes);
