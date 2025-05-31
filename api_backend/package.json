@@ -4,7 +4,10 @@
   "description": "Template de repo pour le projet Dev Web 2024-2025",
   "main": "server.js",
   "scripts": {
-    "start": "nodemon server.js"
+    "start": "node server.js",
+    "dev": "nodemon server.js",
+    "build": "vite build"
+
   },
   "repository": {
     "type": "git",
